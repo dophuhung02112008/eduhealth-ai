@@ -12,7 +12,7 @@ export interface EducationalImage {
 
 export interface HealbookTopic {
   id: string;
-  category: 'DA LIÊU' | 'TRUYỀN NHIỄM' | 'MẮT';
+  category: 'DA LIÊU' | 'TRUYỀN NHIỄM' | 'MẮT' | 'HÔ HẤP' | 'TIÊU HÓA' | 'KÝ SINH TRÙNG';
   title: string;
   shortDescription: string;
   educationalImages: EducationalImage[];
