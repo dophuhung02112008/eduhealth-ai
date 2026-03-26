@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"e:/eduhealth-ai---trợ-lý-sức-khỏe-học-đường \\(1\\)/\")",
+      "Bash(cp .env.example .env)",
+      "Bash(npm install:*)",
+      "Bash(timeout 5 node server.js)",
+      "Bash(ls -la \"e:/eduhealth-ai---trợ-lý-sức-khỏe-học-đường \\(1\\)/backend/\")",
+      "Bash(git config:*)"
+    ]
+  }
+}
