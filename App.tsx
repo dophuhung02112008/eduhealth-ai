@@ -21,7 +21,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     title: 'Chốc lở (Impetigo) - Nhiễm trùng da học đường',
     shortDescription: 'Chốc lở là một bệnh nhiễm trùng da do vi khuẩn (thường là tụ cầu hoặc liên cầu) rất phổ biến ở trẻ em và học sinh tiểu học. Bệnh đặc trưng bởi các vết loét đỏ, mụn nước nông, khi vỡ tạo thành lớp vảy màu vàng óng như mật ong. Vị trí thường gặp nhất là quanh mũi, miệng, nhưng có thể lan sang tay, chân hoặc các vùng da khác qua tiếp xúc trực tiếp hoặc dùng chung đồ dùng cá nhân.',
     educationalImages: [
-      { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Impetigo2011.JPG/640px-Impetigo2011.JPG', caption: 'Hình ảnh điển hình của vết loét đóng vảy tiết màu vàng mật ong đặc trưng của bệnh chốc lở.' }
+      { url: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Impetigo_crouteux_jambes.jpg', caption: 'Hình ảnh điển hình của vết loét đóng vảy tiết màu vàng mật ong đặc trưng của bệnh chốc lở (Impetigo) trên da.' }
     ],
     commonSigns: [
       'Bắt đầu bằng một nốt đỏ hoặc mụn nước nhỏ dễ vỡ.',
@@ -51,7 +51,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     title: 'Tay-Chân-Miệng (HFMD) - Dịch bệnh tiêu hóa học đường',
     shortDescription: 'Bệnh Tay-Chân-Miệng là bệnh truyền nhiễm cấp tính do virus thuộc nhóm Enterovirus gây ra, phổ biến nhất là Coxsackievirus A16 và Enterovirus 71 (EV71). Bệnh lây lan chủ yếu qua đường tiêu hóa và tiếp xúc trực tiếp với dịch tiết mũi họng, nước bọt, hoặc dịch phỏng nước của người bệnh. Đây là nỗi lo lớn tại các trường mầm non và tiểu học vì khả năng gây dịch nhanh và nguy cơ biến chứng thần kinh, tim mạch nếu không được phát hiện kịp thời.',
     educationalImages: [
-      { url: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=800', caption: 'Nốt phỏng nước điển hình ở lòng bàn tay, thường phẳng hoặc hơi lồi.' }
+      { url: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Hand_foot_and_mouth_disease_on_child_feet.jpg', caption: 'Các nốt phỏng nước đặc trưng của bệnh Tay-Chân-Miệng xuất hiện ở lòng bàn chân trẻ em.' }
     ],
     commonSigns: [
       'Sốt nhẹ, mệt mỏi, đau họng, chảy nước mũi trong 1-2 ngày đầu.',
@@ -81,7 +81,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     title: 'Viêm kết mạc (Đau mắt đỏ) - Viêm nhiễm lây lan nhanh',
     shortDescription: 'Đau mắt đỏ là tình trạng viêm lớp màng trong suốt bao phủ lòng trắng mắt và mặt trong mi mắt. Bệnh thường do virus (Adenovirus là phổ biến nhất) hoặc vi khuẩn gây ra. Đau mắt đỏ cực kỳ dễ lây lan qua tiếp xúc trực tiếp hoặc gián tiếp với dịch tiết từ mắt người bệnh. Trong trường học, một ca đau mắt đỏ có thể nhanh chóng bùng phát thành dịch nếu không có các biện pháp phòng ngừa nghiêm ngặt.',
     educationalImages: [
-      { url: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800', caption: 'Lòng trắng mắt đỏ rực do các mạch máu bị viêm và giãn nở.' }
+      { url: 'https://upload.wikimedia.org/wikipedia/commons/3/30/Conjunctivitis_5174.jpg', caption: 'Lòng trắng mắt đỏ rực do viêm kết mạc, các mạch máu bị viêm và giãn nở rõ rệt.' }
     ],
     commonSigns: [
       'Lòng trắng mắt đỏ rực (đỏ tươi hoặc hồng).',
