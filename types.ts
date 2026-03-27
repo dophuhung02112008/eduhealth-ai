@@ -29,9 +29,20 @@ export interface HealthCase {
   title: string;
   category: string;
   analysis: string[];
+  causes: string[];        // Nguyên nhân có thể gây ra tình trạng này
   urgency: UrgencyLevel;
   dangerSigns: string[];
   safetyAdvice: string[];
+  annotations?: HeatmapAnnotation[]; // Tọa độ vùng tổn thương trên ảnh
+}
+
+export interface HeatmapAnnotation {
+  x: number;        // Tọa độ X (0-1, normalized)
+  y: number;        // Tọa độ Y (0-1, normalized)
+  w: number;        // Chiều rộng vùng (0-1)
+  h: number;        // Chiều cao vùng (0-1)
+  label: string;    // Nhãn: "Vùng viêm", "Vùng nguy hiểm", etc.
+  severity: 'high' | 'medium' | 'low';
 }
 
 export interface HeatmapPoint {

@@ -231,72 +231,217 @@ const App: React.FC = () => {
   const [chatInput, setChatInput] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const heatmapCanvasRef = useRef<HTMLCanvasElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
 
   // Initialize and handle Leaflet Map
   useEffect(() => {
-    if (activeTab === 'findcare' && mapMode !== 'idle' && mapContainerRef.current) {
-      if (!mapRef.current) {
-        const initialLat = location?.lat || 21.0285;
-        const initialLng = location?.lng || 105.8542;
-        
-        mapRef.current = L.map('map', {
-          zoomControl: false,
-          attributionControl: false
-        }).setView([initialLat, initialLng], 14);
+    if (activeTab !== 'findcare' || mapMode === 'idle') return;
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-        }).addTo(mapRef.current);
+    const timer = setTimeout(() => {
+      const mapDiv = document.getElementById('map');
+      if (!mapDiv) return;
 
-        L.control.zoom({ position: 'topright' }).addTo(mapRef.current);
-      } else {
-        // Clear existing markers
-        mapRef.current.eachLayer((layer: any) => {
-          if (layer instanceof L.Marker) {
-            mapRef.current.removeLayer(layer);
-          }
-        });
+      // Remove old map if exists
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
       }
 
-      const center = location ? [location.lat, location.lng] : [21.0285, 105.8542];
-      
-      // User Marker
+      const lat = location?.lat || 21.0285;
+      const lng = location?.lng || 105.8542;
+
+      const map = L.map('map', {
+        zoomControl: true,
+        attributionControl: false,
+        width: '100%',
+        height: '100%'
+      }).setView([lat, lng], 14);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+      }).addTo(map);
+
+      // User location marker
       const userIcon = L.divIcon({
         className: 'user-location-marker',
-        html: `<div class="w-6 h-6 bg-indigo-600 rounded-full border-4 border-white shadow-xl flex items-center justify-center"><div class="w-1.5 h-1.5 bg-white rounded-full"></div></div>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
+        html: `<div style="width:28px;height:28px;background:#4f46e5;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;"><div style="width:8px;height:8px;background:white;border-radius:50%;"></div></div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
       });
-      L.marker(center, { icon: userIcon }).addTo(mapRef.current).bindPopup("Vị trí của bạn").openPopup();
+      L.marker([lat, lng], { icon: userIcon })
+        .addTo(map)
+        .bindPopup('<b style="font-size:11px">📍 Vị trí của bạn</b>')
+        .openPopup();
 
-      // Add Place Markers
+      // Place markers
       const count = mapMode === 'hospital' ? 4 : 5;
       for (let i = 1; i <= count; i++) {
-        const offsetLat = (Math.random() - 0.5) * 0.02;
-        const offsetLng = (Math.random() - 0.5) * 0.02;
-        const lat = (center[0] as number) + offsetLat;
-        const lng = (center[1] as number) + offsetLng;
-
-        const iconHtml = mapMode === 'hospital' 
-          ? `<div class="hospital-marker hospital-marker-pulse w-10 h-10 flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hospital"><path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><path d="M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 22V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v18"/></svg></div>`
-          : `<div class="pharmacy-marker w-10 h-10 flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pill"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></div>`;
-
+        const offsetLat = (Math.random() - 0.5) * 0.018;
+        const offsetLng = (Math.random() - 0.5) * 0.018;
+        const mLat = lat + offsetLat;
+        const mLng = lng + offsetLng;
+        const dist = (Math.sqrt(offsetLat**2 + offsetLng**2) * 111).toFixed(1);
+        const label = mapMode === 'hospital' ? `Bệnh viện Đa khoa ${i}` : `Nhà thuốc Pharma ${i}`;
+        const bgColor = mapMode === 'hospital' ? '#ef4444' : '#10b981';
         const icon = L.divIcon({
           className: 'custom-place-marker',
-          html: iconHtml,
-          iconSize: [40, 40],
-          iconAnchor: [20, 20]
+          html: `<div style="width:44px;height:44px;background:${bgColor};border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;">${mapMode === 'hospital' ? '🏥' : '💊'}</div>`,
+          iconSize: [44, 44],
+          iconAnchor: [22, 22],
+          popupAnchor: [0, -22]
         });
-
-        const label = mapMode === 'hospital' ? `Bệnh viện Đa khoa ${i}` : `Nhà thuốc Pharma ${i}`;
-        L.marker([lat, lng], { icon }).addTo(mapRef.current).bindPopup(`<div class="font-bold text-xs uppercase">${label}</div><div class="text-[10px] text-slate-500 font-bold">Cách ~${(Math.sqrt(offsetLat**2 + offsetLng**2)*111).toFixed(1)} km</div>`);
+        L.marker([mLat, mLng], { icon })
+          .addTo(map)
+          .bindPopup(`<b style="font-size:11px">${label}</b><br><span style="font-size:10px;color:#888">📍 Cách ~${dist} km</span>`);
       }
-    }
+
+      // CRITICAL: invalidateSize after map div is visible
+      setTimeout(() => { map.invalidateSize({ force: true }); }, 200);
+
+      mapRef.current = map;
+    }, 100);
 
     return () => {
-      // No cleanup needed usually as we reuse the map ref or it gets garbage collected
+      clearTimeout(timer);
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
     };
   }, [activeTab, mapMode, location]);
+
+  // ── Canvas Heatmap Overlay ───────────────────────────────
+  useEffect(() => {
+    if (!showHeatmap || !aiResult || !heatmapCanvasRef.current || !imageContainerRef.current) return;
+
+    const canvas = heatmapCanvasRef.current;
+    const container = imageContainerRef.current;
+    const annotations = aiResult.annotations || [];
+
+    const drawHeatmap = () => {
+      const rect = container.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      const ctx = canvas.getContext('2d')!;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (annotations.length === 0) {
+        // Fallback: draw a central gradient blob if no annotations
+        const cx = canvas.width * 0.5;
+        const cy = canvas.height * 0.5;
+        const radius = Math.min(canvas.width, canvas.height) * 0.35;
+
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grad.addColorStop(0, 'rgba(220, 38, 38, 0.55)');
+        grad.addColorStop(0.5, 'rgba(249, 115, 22, 0.35)');
+        grad.addColorStop(1, 'rgba(234, 179, 8, 0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        return;
+      }
+
+      annotations.forEach((ann: any) => {
+        const x = ann.x * canvas.width;
+        const y = ann.y * canvas.height;
+        const w = ann.w * canvas.width;
+        const h = ann.h * canvas.height;
+
+        // Gradient fill inside box
+        const severityColors: Record<string, [number, number, number]> = {
+          high:   [220, 38,  38 ],
+          medium: [249, 115, 22 ],
+          low:    [234, 179, 8  ],
+        };
+        const [r, g, b] = severityColors[ann.severity] || severityColors.medium;
+
+        // Draw gradient blob
+        const grad = ctx.createRadialGradient(x + w/2, y + h/2, 0, x + w/2, y + h/2, Math.max(w, h) * 0.8);
+        grad.addColorStop(0, `rgba(${r},${g},${b},0.5)`);
+        grad.addColorStop(0.6, `rgba(${r},${g},${b},0.25)`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(x - w*0.3, y - h*0.3, w*1.6, h*1.6);
+
+        // Bounding box
+        ctx.strokeStyle = `rgba(${r},${g},${b},0.85)`;
+        ctx.lineWidth = ann.severity === 'high' ? 3 : 2;
+        ctx.setLineDash([6, 4]);
+        ctx.strokeRect(x, y, w, h);
+        ctx.setLineDash([]);
+
+        // Label badge
+        const labelText = ann.label;
+        ctx.font = 'bold 11px sans-serif';
+        const textMetrics = ctx.measureText(labelText);
+        const padX = 6;
+        const labelW = textMetrics.width + padX * 2;
+        const labelH = 20;
+
+        ctx.fillStyle = `rgba(${r},${g},${b},0.92)`;
+        ctx.beginPath();
+        ctx.roundRect(x, y - labelH - 4, labelW, labelH, 6);
+        ctx.fill();
+
+        ctx.fillStyle = '#fff';
+        ctx.fillText(labelText, x + padX, y - 8);
+
+        // Pulsing outer ring for high severity
+        if (ann.severity === 'high') {
+          let frame = 0;
+          const pulse = () => {
+            if (!showHeatmap || !heatmapCanvasRef.current) return;
+            frame++;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Redraw all without pulse first
+            annotations.forEach((a: any, idx: number) => {
+              if (idx < annotations.indexOf(ann)) {
+                const ax = a.x * canvas.width;
+                const ay = a.y * canvas.height;
+                const aw = a.w * canvas.width;
+                const ah = a.h * canvas.height;
+                const [ar, ag, ab] = severityColors[a.severity] || severityColors.medium;
+                const aGrad = ctx.createRadialGradient(ax+aw/2, ay+ah/2, 0, ax+aw/2, ay+ah/2, Math.max(aw,ah)*0.8);
+                aGrad.addColorStop(0, `rgba(${ar},${ag},${ab},0.5)`);
+                aGrad.addColorStop(0.6, `rgba(${ar},${ag},${ab},0.25)`);
+                aGrad.addColorStop(1, `rgba(${ar},${ag},${ab},0)`);
+                ctx.fillStyle = aGrad;
+                ctx.fillRect(ax-aw*0.3, ay-ah*0.3, aw*1.6, ah*1.6);
+                ctx.strokeStyle = `rgba(${ar},${ag},${ab},0.85)`;
+                ctx.lineWidth = a.severity === 'high' ? 3 : 2;
+                ctx.setLineDash([6, 4]);
+                ctx.strokeRect(ax, ay, aw, ah);
+                ctx.setLineDash([]);
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillStyle = `rgba(${ar},${ag},${ab},0.92)`;
+                const tm = ctx.measureText(a.label);
+                ctx.fillRect(ax, ay - 24, tm.width + 12, 20);
+                ctx.fillStyle = '#fff';
+                ctx.fillText(a.label, ax + 6, ay - 8);
+              }
+            });
+            // Pulsing ring
+            const pulseAlpha = 0.6 - (frame % 40) / 80;
+            const pulseScale = 1 + (frame % 40) / 60;
+            ctx.strokeStyle = `rgba(220,38,38,${Math.max(0, pulseAlpha)})`;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(
+              x - (w * (pulseScale - 1)) / 2,
+              y - (h * (pulseScale - 1)) / 2,
+              w * pulseScale,
+              h * pulseScale
+            );
+            if (showHeatmap) requestAnimationFrame(pulse);
+          };
+          requestAnimationFrame(pulse);
+        }
+      });
+    };
+
+    // Delay slightly to ensure image is rendered and canvas sized
+    const t = setTimeout(drawHeatmap, 150);
+    return () => clearTimeout(t);
+  }, [showHeatmap, aiResult]);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
@@ -425,10 +570,6 @@ const App: React.FC = () => {
           100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
         .animate-pulse-red { animation: pulse-red 2s infinite; }
-        .heatmap-overlay {
-          background: radial-gradient(circle at 50% 50%, rgba(255,0,0,0.5) 0%, rgba(255,165,0,0.2) 40%, transparent 70%);
-          mix-blend-mode: multiply;
-        }
 
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -719,11 +860,32 @@ const App: React.FC = () => {
                       className={`aspect-video rounded-[2rem] border-2 border-dashed transition-all relative overflow-hidden group shadow-lg ${selectedImage ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-400 bg-slate-50'}`}
                     >
                       {selectedImage ? (
-                        <div className="w-full h-full relative">
+                        <div className="w-full h-full relative" ref={imageContainerRef}>
                           <img src={selectedImage} alt="Preview" className="w-full h-full object-cover rounded-[1.8rem]" />
+
+                          {/* Canvas heatmap overlay — draws bounding boxes + gradient */}
                           {showHeatmap && aiResult && (
-                             <div className="absolute inset-0 heatmap-overlay animate-in fade-in duration-1000" />
+                            <canvas
+                              ref={heatmapCanvasRef}
+                              className="absolute inset-0 w-full h-full rounded-[1.8rem] pointer-events-none"
+                              style={{ objectFit: 'cover' }}
+                            />
                           )}
+
+                          {/* Annotation legend */}
+                          {showHeatmap && aiResult && aiResult.annotations && aiResult.annotations.length > 0 && (
+                            <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-slate-100 space-y-1.5 z-10">
+                              {aiResult.annotations.map((ann, i) => (
+                                <div key={i} className="flex items-center gap-2 text-[10px] font-bold">
+                                  <span className={`w-3 h-3 rounded-sm ${
+                                    ann.severity === 'high' ? 'bg-red-500' : ann.severity === 'medium' ? 'bg-orange-400' : 'bg-yellow-400'
+                                  }`} />
+                                  <span className="text-slate-700">{ann.label}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                              <button onClick={(e) => {e.stopPropagation(); setSelectedImage(null); setAiResult(null); setShowHeatmap(false);}} className="bg-white/90 p-4 rounded-full text-red-600 hover:bg-white shadow-lg"><X size={24}/></button>
                              <button onClick={(e) => {e.stopPropagation(); fileInputRef.current?.click();}} className="bg-white/90 p-4 rounded-full text-blue-600 hover:bg-white shadow-lg"><RefreshCcw size={24}/></button>
@@ -774,60 +936,120 @@ const App: React.FC = () => {
                 <div className="bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-[3rem] border border-slate-100 p-12 flex flex-col shadow-inner">
                   {aiResult ? (
                     <div className="animate-in fade-in zoom-in-95 duration-500 space-y-8 h-full">
-                      <div className="flex flex-col gap-8">
-                        <div className={`p-6 rounded-3xl border-2 flex items-center justify-between shadow-lg ${
-                          aiResult.urgency === UrgencyLevel.URGENT_DOCTOR ? 'bg-red-50 text-red-700 border-red-200' : 'bg-orange-50 text-orange-700 border-orange-200'
+                      {/* Header: urgency badge + title */}
+                      <div className="flex flex-col gap-6">
+                        <div className={`p-5 rounded-2xl border-2 flex items-center gap-4 shadow-lg flex-wrap ${
+                          aiResult.urgency === UrgencyLevel.URGENT_DOCTOR
+                            ? 'bg-red-50 text-red-700 border-red-200'
+                            : aiResult.urgency === UrgencyLevel.SEE_SCHOOL_HEALTH
+                            ? 'bg-orange-50 text-orange-700 border-orange-200'
+                            : 'bg-green-50 text-green-700 border-green-200'
                         }`}>
-                          <div className="flex items-center gap-4">
-                             <AlertTriangle size={28} />
-                             <span className="text-sm font-black uppercase tracking-widest">{aiResult.urgency}</span>
+                          <div className="flex items-center gap-3">
+                            <AlertTriangle size={24} />
+                            <span className="text-xs font-black uppercase tracking-widest">{aiResult.urgency}</span>
                           </div>
-                          {selectedImage && (
-                             <button
-                               onClick={() => setShowHeatmap(!showHeatmap)}
-                               className={`px-6 py-3 rounded-2xl text-xs font-black uppercase transition-all shadow-lg ${showHeatmap ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50'}`}
-                             >
-                                {showHeatmap ? 'Ẩn bản đồ nhiệt' : 'Xem bản đồ nhiệt'}
-                             </button>
+                          {aiResult.annotations && aiResult.annotations.length > 0 && (
+                            <button
+                              onClick={() => setShowHeatmap(!showHeatmap)}
+                              className={`ml-auto px-5 py-2.5 rounded-xl text-xs font-black uppercase transition-all shadow-lg ${
+                                showHeatmap ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50'
+                              }`}
+                            >
+                              <span className="flex items-center gap-2">
+                                <Eye size={14} />
+                                {showHeatmap ? 'Ẩn vùng tổn thương' : 'Xem vùng tổn thương'}
+                              </span>
+                            </button>
                           )}
                         </div>
 
-                        <h3 className="text-3xl font-black text-slate-800 uppercase tracking-tighter leading-tight">{aiResult.title}</h3>
+                        <h3 className="text-2xl font-black text-slate-800 leading-tight">{aiResult.title}</h3>
+                        {aiResult.category && (
+                          <span className="bg-blue-100 text-blue-700 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest w-fit">
+                            {aiResult.category}
+                          </span>
+                        )}
                       </div>
-                      
-                      <div className="space-y-6 flex-1 overflow-y-auto pr-2 no-scrollbar">
-                        <div className="bg-white p-6 rounded-3xl border border-red-50 shadow-sm">
-                           <p className="text-[11px] font-black text-red-500 uppercase tracking-widest mb-4 flex items-center gap-2"><Activity size={14} /> Dấu hiệu nguy hiểm (Cần đi khám ngay)</p>
-                           <ul className="text-xs text-slate-700 space-y-3">
-                              {aiResult.dangerSigns.map((d, i) => <li key={i} className="flex gap-3 items-start"><span className="w-5 h-5 bg-red-100 text-red-600 rounded flex items-center justify-center shrink-0 font-bold">!</span> {d}</li>)}
-                           </ul>
+
+                      {/* Scrollable content */}
+                      <div className="space-y-5 flex-1 overflow-y-auto pr-2 no-scrollbar">
+
+                        {/* Dấu hiệu nguy hiểm */}
+                        <div className="bg-white p-6 rounded-2xl border border-red-100 shadow-sm">
+                          <p className="text-[11px] font-black text-red-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <Activity size={14} /> Dấu hiệu nguy hiểm — Cần đi khám ngay
+                          </p>
+                          <ul className="text-xs text-slate-700 space-y-2.5">
+                            {aiResult.dangerSigns.map((d, i) => (
+                              <li key={i} className="flex gap-3 items-start">
+                                <span className="w-5 h-5 bg-red-100 text-red-600 rounded flex items-center justify-center shrink-0 font-bold mt-0.5">!</span>
+                                {d}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
 
+                        {/* Nguyên nhân */}
+                        {aiResult.causes && aiResult.causes.length > 0 && (
+                          <div className="p-6 rounded-2xl bg-amber-50 border border-amber-100">
+                            <p className="text-[11px] font-black text-amber-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                              <Info size={14} /> Nguyên nhân có thể gây ra
+                            </p>
+                            <ul className="text-xs text-amber-900/80 space-y-2.5">
+                              {aiResult.causes.map((c, i) => (
+                                <li key={i} className="flex gap-3 items-start">
+                                  <span className="w-5 h-5 bg-amber-200 text-amber-700 rounded-full flex items-center justify-center shrink-0 font-black text-[10px] mt-0.5">{i+1}</span>
+                                  {c}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Phân tích chuyên sâu */}
                         <div>
-                           <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">Phân tích chuyên sâu của AI</p>
-                           <ul className="text-xs text-slate-600 space-y-3">
-                              {aiResult.analysis.map((a, i) => <li key={i} className="flex gap-4 items-start"><CheckCircle size={16} className="text-indigo-400 shrink-0 mt-0.5" /> {a}</li>)}
-                           </ul>
+                          <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">Phân tích chuyên sâu của AI</p>
+                          <ul className="text-xs text-slate-600 space-y-3">
+                            {aiResult.analysis.map((a, i) => (
+                              <li key={i} className="flex gap-4 items-start">
+                                <CheckCircle size={15} className="text-blue-400 shrink-0 mt-0.5" />
+                                {a}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
 
-                        <div className="p-6 rounded-3xl bg-indigo-50 border border-indigo-100">
-                           <p className="text-[11px] font-black text-indigo-700 uppercase tracking-widest mb-4 flex items-center gap-2"><ShieldCheck size={16} /> Khuyến nghị EduHealth</p>
-                           <ul className="text-xs text-indigo-900/80 space-y-3 font-medium">
-                              {aiResult.safetyAdvice.map((s, i) => <li key={i} className="flex gap-4 items-start"><span className="w-5 h-5 bg-white text-indigo-600 rounded-full flex items-center justify-center shrink-0 font-bold text-[10px]">{i+1}</span> {s}</li>)}
-                           </ul>
+                        {/* Khuyến nghị */}
+                        <div className="p-6 rounded-2xl bg-indigo-50 border border-indigo-100">
+                          <p className="text-[11px] font-black text-indigo-700 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <ShieldCheck size={16} /> Khuyến nghị từ EduHealth
+                          </p>
+                          <ul className="text-xs text-indigo-900/80 space-y-2.5 font-medium">
+                            {aiResult.safetyAdvice.map((s, i) => (
+                              <li key={i} className="flex gap-4 items-start">
+                                <span className="w-5 h-5 bg-white text-indigo-600 rounded-full flex items-center justify-center shrink-0 font-bold text-[10px]">{i+1}</span>
+                                {s}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       </div>
 
-                      <div className="pt-6 border-t border-slate-200">
-                         <button onClick={() => setActiveTab('findcare')} className="w-full bg-white border border-slate-200 text-slate-600 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-3 shadow-sm">
-                            <MapPin size={18} className="text-indigo-600" /> Tìm cơ sở y tế gần nhất
-                         </button>
+                      {/* Footer */}
+                      <div className="pt-5 border-t border-slate-200">
+                        <button
+                          onClick={() => setActiveTab('findcare')}
+                          className="w-full bg-white border border-slate-200 text-slate-600 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-3 shadow-sm"
+                        >
+                          <MapPin size={18} className="text-indigo-600" /> Tìm cơ sở y tế gần nhất
+                        </button>
                       </div>
                     </div>
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-center p-12 opacity-30">
                       <div className="bg-white w-28 h-28 rounded-full flex items-center justify-center shadow-xl mb-8">
-                         <Stethoscope size={56} className="text-slate-300" />
+                        <Stethoscope size={56} className="text-slate-300" />
                       </div>
                       <h4 className="text-lg font-black text-slate-500 uppercase tracking-tighter">Đang chờ dữ liệu đầu vào</h4>
                       <p className="text-xs text-slate-400 mt-4 max-w-[250px] leading-relaxed font-medium">Cung cấp hình ảnh hoặc mô tả triệu chứng để EduHealth AI bắt đầu quy trình sàng lọc kỹ thuật số.</p>
@@ -880,7 +1102,7 @@ const App: React.FC = () => {
             {mapMode !== 'idle' && (
                <div className="bg-white rounded-[3rem] p-2 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-500 overflow-hidden">
                   <div className="h-[500px] w-full relative bg-slate-100 rounded-[2.8rem] overflow-hidden" ref={mapContainerRef}>
-                     <div id="map"></div>
+                     <div id="map" className="w-full h-full" />
 
                      <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-[10] pointer-events-none">
                         <div className="bg-white/95 backdrop-blur-md px-6 py-3 rounded-3xl shadow-2xl border border-slate-100 text-sm font-black uppercase tracking-widest text-slate-600 flex items-center gap-3">
