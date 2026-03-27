@@ -576,7 +576,14 @@ const App: React.FC = () => {
                 placeholder="Tìm bệnh lý, dấu hiệu hoặc cách xử trí..."
                 className="w-full pl-16 pr-8 py-6 bg-white rounded-[2rem] border-2 border-slate-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none shadow-lg text-base font-medium transition-all"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.currentTarget.blur();
+                  }
+                }}
               />
             </div>
 
