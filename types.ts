@@ -10,18 +10,32 @@ export interface EducationalImage {
   caption: string;
 }
 
+export type HealbookCategory =
+  | 'MỤN & DA LIỄU' | 'BỆNH LÂY NHIỄM' | 'THỊ LỰC' | 'SỨC KHỎE TÂM LÝ' | 'TIÊU HÓA' | 'VỆ SINH';
+
 export interface HealbookTopic {
   id: string;
-  category: 'DA LIÊU' | 'TRUYỀN NHIỄM' | 'MẮT' | 'HÔ HẤP' | 'TIÊU HÓA' | 'KÝ SINH TRÙNG';
+  category: HealbookCategory;
   title: string;
   shortDescription: string;
   educationalImages: EducationalImage[];
   commonSigns: string[];
   schoolContext: string; // Lý do lây lan trong môi trường học tập
-  dangerSigns: string[]; 
+  dangerSigns: string[];
   safeActions: string[];
   references: { title: string; url: string }[];
   samplePrompt: string;
+}
+
+export interface WeeklyTrend {
+  id: string;
+  icon: string;       // emoji
+  title: string;
+  description: string;
+  category: HealbookCategory | 'TẤT CẢ';
+  alertLevel: 'hot' | 'warn' | 'info'; // hot = số ca tăng, warn = cảnh báo, info = thông tin
+  relatedTopicId?: string; // link đến bài trong HEALBOOK_DATA
+  relatedTopicTitle?: string;
 }
 
 export interface HealthCase {

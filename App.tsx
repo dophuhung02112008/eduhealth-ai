@@ -1,51 +1,157 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
-import { 
-  HeartPulse, BookOpen, Camera, MapPin, 
-  AlertTriangle, CheckCircle, Info, Upload, 
+import {
+  HeartPulse, BookOpen, Camera, MapPin,
+  AlertTriangle, CheckCircle, Info, Upload,
   Send, Loader2, ChevronRight, X, Search,
   ShoppingCart, Hospital, FileText,
   Stethoscope, MessageSquare, RefreshCcw,
   ExternalLink, ShieldCheck, School, ChevronLeft,
-  Users, Activity, Zap, Eye, Pill, Map as MapIcon
+  Users, Activity, Zap, Eye, Pill, Map as MapIcon,
+  PenTool, Download, Image as ImageIcon, Layers, Trash2, Circle,
+  Flame, Bell, TrendingUp, Clock
 } from 'lucide-react';
-import { UrgencyLevel, HealthCase, HealbookTopic, UserRole, ChatMessage } from './types';
+import { UrgencyLevel, HealthCase, HealbookTopic, UserRole, ChatMessage, WeeklyTrend } from './types';
 
 // Declare Leaflet globally since it's loaded via script tag
 declare var L: any;
 
 const HEALBOOK_DATA: HealbookTopic[] = [
-  // ── DA LIÊU ──
+  // ── MỤN & DA LIỄU ──
   {
-    id: 'da-1',
-    category: 'DA LIÊU',
-    title: 'Chốc lở (Impetigo)',
-    shortDescription: 'Nhiễm trùng da do vi khuẩn (tụ cầu/liên cầu), phổ biến ở trẻ tiểu học. Đặc trưng bởi vết loét đỏ và vảy vàng như mật ong.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Impetigo_crouteux_jambes.jpg', caption: 'Vết loét đóng vảy vàng mật ong đặc trưng của bệnh chốc lở trên da.' }],
-    commonSigns: ['Mụn nước nhỏ dễ vỡ, để lại vảy vàng.', 'Vùng da xung quanh đỏ, sưng nhẹ, ngứa.', 'Thường xuất hiện quanh mũi, miệng, tay, chân.', 'Dễ lan rộng khi trẻ gãi.'],
-    schoolContext: 'Lây lan qua tiếp xúc trực tiếp, dùng chung khăn, gối ngủ bán trú, đồ chơi. Thời tiết nóng ẩm là điều kiện thuận lợi.',
-    dangerSigns: ['Vết loét lan rộng nhanh dù đã vệ sinh.', 'Sốt cao, mệt mỏi, bỏ ăn.', 'Da sưng nóng đỏ rực, rất đau.', 'Hạch sưng đau ở cổ, nách.'],
-    safeActions: ['Rửa vết loét 2 lần/ngày bằng nước muối sinh lý.', 'Dùng khăn giấy dùng một lần để thấm dịch.', 'Cắt ngắn móng tay trẻ.', 'Cho trẻ nghỉ học đến khi khô hẳn.'],
-    references: [{ title: 'Hướng dẫn Bộ Y tế', url: 'https://moh.gov.vn' }],
-    samplePrompt: 'Quan sát thấy vùng quanh miệng trẻ có các vết trợt đóng vảy vàng.'
+    id: 'mun-1',
+    category: 'MỤN & DA LIỄU',
+    title: 'Mụn trứng cá (Acne Vulgaris)',
+    shortDescription: 'Bệnh da phổ biến nhất ở tuổi dậy thì, do tuyến bã nhờn hoạt động quá mức, vi khuẩn C. acnes và tắc nghẽn lỗ chân lông. Gặp ở 80% học sinh THPT.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Acne_underarm.jpg', caption: 'Mụn trứng cá viêm ở vùng da thân mình - có nốt sần đỏ và mụn mủ.' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Acne_on_back.jpg', caption: 'Mụn trứng cá ở lưng - dạng nặng thường gặp ở nam sinh tuổi dậy thì.' }],
+    commonSigns: ['Comedone (mụn đầu đen, đầu trắng) trên mặt, trán, ngực, lưng.', 'Papule (sẩn) và pustule (mụn mủ) đỏ sưng.', 'Nốt cứng (nodule) và u nang (cyst) ở thể nặng.', 'Da bóng, tiết nhiều dầu, lỗ chân lông to.'],
+    schoolContext: 'Stress học tập, thức khuya, ăn nhiều đồ chiên rán, đồ ngọt làm tăng tiết bã nhờn. Dùng chung khăn mặt, gối ôm nhau có thể lây vi khuẩn C. acnes.',
+    dangerSigns: ['Mụn viêm lan rộng, có nhiều u nang dưới da.', 'Sẹo lồi, sẹo lõm sau mụn.', 'Mụn mọc quanh mũi, rãnh mũi má (có thể viêm não).', 'Trẻ tự ti nặng, bỏ ăn, cô lập với bạn bè.'],
+    safeActions: ['Rửa mặt 2 lần/ngày bằng sữa rửa mặt dịu nhẹ (không xà phòng kiềm).', 'KHÔNG nặn mụn tại nhà (nguy cơ nhiễm trùng, sẹo).', 'Thoa kem/sữa dưỡng ẩm không gây bít tắc (oil-free).', 'Đi khám da liễu nếu mụn viêm nặng hoặc để lại sẹo.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }, { title: 'Hướng dẫn AAD', url: 'https://aad.org' }],
+    samplePrompt: 'Trẻ 14 tuổi có nhiều mụn đầu đen ở trán, mụn mủ ở má, da bóng dầu, đỏ khi đến kỳ thi.'
   },
   {
-    id: 'da-2',
-    category: 'DA LIÊU',
-    title: 'Nấm da đầu (Tinea Capitis)',
-    shortDescription: 'Nhiễm nấm trên da đầu, phổ biến ở trẻ em 3-12 tuổi. Biểu hiện bằng các tổn thương hình tròn, vòng tròn có vảy, rụng tóc từng mảng.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Tinea_capitis.jpg', caption: 'Tổn thương hình tròn trên da đầu do nấm - có thể gây rụng tóc từng mảng.' }],
-    commonSigns: ['Tổn thương hình tròn, vòng tròn trên da đầu.', 'Vảy trắng xám bám trên tóc và da đầu.', 'Rụng tóc từng mảng nhỏ trong vòng tròn.', 'Ngứa và khó chịu tại vùng tổn thương.'],
-    schoolContext: 'Lây qua dùng chung lược, khăn, mũ, gối. Điều kiện vệ sinh kém, nhất là ở các trường bán trú, là yếu tố nguy cơ chính.',
-    dangerSigns: ['Tổn thương lan rộng khắp da đầu.', 'Sưng hạch vùng cổ sau tai.', 'Có mủ hoặc chảy dịch từ tổn thương.', 'Trẻ sốt cao kèm theo.'],
-    safeActions: ['Cho trẻ đi khám da liễu để được kê thuốc chống nấm.', 'Không dùng chung lược, khăn, mũ.', 'Giặt khăn, mũ, ga giường bằng nước sôi.', 'Thường xuyên rửa tay cho trẻ và người chăm sóc.'],
+    id: 'mun-2',
+    category: 'MỤN & DA LIỄU',
+    title: 'Viêm da dị ứng tiếp xúc (Contact Dermatitis)',
+    shortDescription: 'Phản ứng viêm da do tiếp xúc trực tiếp với chất gây dị ứng hoặc kích ứng. Phổ biến khi giao mùa, tiếp xúc hóa chất trong phòng thí nghiệm, hoặc dị ứng kim loại (nijel trong đồng hồ, khuyên tai).',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Allergic_contact_dermatitis_on_neck.jpg', caption: 'Viêm da dị ứng dạng ban đỏ, phồng rộp trên cổ do tiếp xúc với hóa chất.' }],
+    commonSigns: ['Da đỏ, sưng, ngứa dữ dội tại vùng tiếp xúc.', 'Phồng rộp (vesicle), nổi mụn nước nhỏ.', 'Da khô, bong tróc, có thể chảy dịch.', 'Giới hạn rõ vùng tổn thương theo hình dạng chất tiếp xúc.'],
+    schoolContext: 'Tiếp xúc hóa chất trong phòng thí nghiệm, nhựa cây (cây cảnh trong sân trường), keo xịt tóc, dung dịch tẩy rửa. Giao mùa lạnh-ẩm làm da khô, dễ kích ứng hơn.',
+    dangerSigns: ['Phồng rộp lan rộng, da tấy nề, chảy dịch nhiều.', 'Nhiễm trùng da thứ phát (mủ, sốt).', 'Khó thở, phù mặt, họng (phản vệ – cần cấp cứu ngay).', 'Tổn thương quanh mắt, miệng, bộ phận sinh dục.'],
+    safeActions: ['Ngừng tiếp xúc với chất gây dị ứng ngay.', 'Rửa vùng da bằng nước sạch 15-20 phút.', 'Chườm lạnh giảm ngứa, sưng.', 'Thoa kem hydrocortisone 1% (tối đa 7 ngày) hoặc đi khám.'],
     references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
-    samplePrompt: 'Trẻ có vết tròn trên da đầu có vảy trắng, rụng tóc từng mảng.'
+    samplePrompt: 'Sau giờ thí nghiệm hóa, học sinh xuất hiện da đỏ ngứa dữ dội ở hai tay, có nổi mụn nước.'
   },
-  // ── TRUYỀN NHIỄM ──
+  {
+    id: 'mun-3',
+    category: 'MỤN & DA LIỄU',
+    title: 'Nấm da (Tinea / Dermatophytosis)',
+    shortDescription: 'Nhiễm nấm bề mặt da, tóc, móng do các loài Dermatophytes. Có thể xuất hiện ở thân, bẹn, da đầu, chân (bàn chân vận động viên). Lây qua tiếp xúc trực tiếp hoặc qua vật dụng chung.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Tinea_capitis.jpg', caption: 'Nấm da đầu: tổn thương tròn, vảy trắng, rụng tóc từng mảng đặc trưng.' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Tinea_corporis_on_infant.jpg', caption: 'Nấm thân: tổn thương hình tròn với rìa đỏ cao, giữa lành da bình thường.' }],
+    commonSigns: ['Tổn thương hình tròn, vòng tròn đồng tâm (rìa đỏ cao, giữa lành).', 'Vảy trắng, bong tróc ở rìa tổn thương.', 'Ngứa dữ dội, có thể rụng tóc từng mảng (nấm da đầu).', 'Móng dày, đổi màu vàng, giòn, dễ gãy (nấm móng).'],
+    schoolContext: 'Lây qua dùng chung khăn tắm, ga giường, đồ thể thao trong phòng tập gym của trường, lớp bơi. Trẻ bán trú dùng chung gối, mũ, lược có nguy cơ cao.',
+    dangerSigns: ['Tổn thương lan rộng khắp cơ thể.', 'Nấm móng lan rộng, móng biến dạng nặng.', 'Có mủ, sưng đỏ quanh tổn thương (nhiễm trùng thứ phát).', 'Trẻ sốt kèm theo.'],
+    safeActions: ['Giữ da khô ráo, sạch sẽ, mặc quần áo thoáng.', 'Không dùng chung khăn, mũ, lược, đồ thể thao.', 'Thoa kem chống nấm (clotrimazole 1%) 2 lần/ngày trong 2-4 tuần.', 'Đi khám da liễu để được kê thuốc uống nếu nặng.'],
+    references: [{ title: 'CDC Tinea', url: 'https://cdc.gov/fungal/diseases/ringworm.html' }],
+    samplePrompt: 'Trẻ có vết tròn trên da đầu, vảy trắng bám chân tóc, rụng tóc từng mảng nhỏ.'
+  },
+  {
+    id: 'mun-4',
+    category: 'MỤN & DA LIỄU',
+    title: 'Ghẻ (Scabies)',
+    shortDescription: 'Bệnh do ký sinh trùng Sarcoptes scabiei (con ghẻ) đào hang dưới da, gây ngứa dữ dội về đêm. Lây qua tiếp xúc da-da kéo dài hoặc qua vật dụng chung (khăn, ga giường).',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Scabies_on_hand.jpg', caption: 'Ghẻ: các đường hang màu xám nhạt đào dưới da, thường ở kẽ ngón tay, cổ tay.' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Scabies-feet.jpg', caption: 'Tổn thương ghẻ ở bàn chân trẻ em - đặc biệt ở kẽ ngón chân và lòng bàn chân.' }],
+    commonSigns: ['Ngứa dữ dội, đặc biệt vào ban đêm.', 'Đường hang xám nhạt dưới da (đặc trưng nhất), thường ở kẽ ngón, cổ tay, nách, thắt lưng.', 'Nốt đỏ nhỏ rải rác, có thể có mụn nước.', 'Da bào mòn, trầy do gãi, có thể nhiễm trùng.'],
+    schoolContext: 'Lây qua tiếp xúc da-da kéo dài (khó xảy ra trong lớp học thông thường nhưng phổ biến trong ký túc xá, nhà trẻ, hoặc gia đình). Dùng chung khăn, ga giường cũng là con đường lây.',
+    dangerSigns: ['Ngứa không ngủ được, ảnh hưởng học tập nghiêm trọng.', 'Tổn thương lan rộng toàn thân, có mủ (nhiễm trùng).', 'Da trầy sâu, chảy máu, hình thành vảy dày.', 'Trẻ sốt, hạch sưng.'],
+    safeActions: ['Cách ly trẻ bệnh, không dùng chung khăn ga giường.', 'Giặt khăn, ga giường, quần áo bằng nước sôi.', 'Bôi thuốc diệt ghẻ (permethrin 5%) theo hướng dẫn bác sĩ.', 'Tất cả người trong gia đình cùng điều trị.'],
+    references: [{ title: 'CDC Scabies', url: 'https://cdc.gov/parasites/scabies' }],
+    samplePrompt: 'Trẻ ngứa dữ dội về đêm, có đường hang nhỏ màu xám ở kẽ ngón tay, cổ tay.'
+  },
+  {
+    id: 'mun-5',
+    category: 'MỤN & DA LIỄU',
+    title: 'Viêm nang lông (Folliculitis)',
+    shortDescription: 'Viêm nhiễm ở lỗ chân lông do vi khuẩn (thường là tụ cầu), nấm hoặc viêm do cọ xát. Gặp nhiều ở vùng da có nhiều mồ hôi, ma sát (cổ, vai, lưng, đùi).',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/d/d8/Folliculitis.jpg', caption: 'Viêm nang lông: các nốt đỏ nhỏ có mụn mủ ở trung tâm, xung quanh lỗ chân lông.' }],
+    commonSigns: ['Nốt đỏ nhỏ hoặc mụn mủ quanh lỗ chân lông.', 'Ngứa, rát, đau nhẹ tại vùng tổn thương.', 'Thường xuất hiện ở cổ, vai, lưng, đùi, mặt.', 'Có thể hình thành nhọt (có mủ lớn, đau).'],
+    schoolContext: 'Thể thao, đổ mồ hôi nhiều, mặc đồng phục bó sát, tập gym chung. Lông mọc ở vùng ma sát (lưng ghế) hoặc sau khi cạo râu/lông ở học sinh lớp lớn.',
+    dangerSigns: ['Nhọt to, sưng nóng đỏ, đau dữ dội.', 'Viêm lan rộng, có nhiều nhọt liên tiếp (viêm nang lông deep).', 'Sốt, hạch sưng đau gần vùng tổn thương.', 'Để lại thâm, sẹo sau lành.'],
+    safeActions: ['Giữ da sạch, khô, rửa bằng sữa rửa mặt kháng khuẩn.', 'Mặc quần áo rộng rãi, thoáng mát, thấm mồ hôi.', 'KHÔNG cạo, wax hoặc nhổ lông ở vùng đang viêm.', 'Đi khám nếu có nhọt, sốt, hoặc không cải thiện sau 1 tuần.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
+    samplePrompt: 'Học sinh sau giờ chạy thể dục, xuất hiện nhiều nốt đỏ có mụn mủ nhỏ ở cổ và vai.'
+  },
+  {
+    id: 'mun-6',
+    category: 'MỤN & DA LIỄU',
+    title: 'Chốc lở (Impetigo)',
+    shortDescription: 'Nhiễm trùng da do vi khuẩn (tụ cầu Staphylococcus aureus và/hoặc liên cầu Streptococcus pyogenes). Phổ biến nhất ở trẻ 2-6 tuổi, đặc trưng bởi vết loét và vảy vàng như mật ong.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Impetigo_crouteux_jambes.jpg', caption: 'Chốc lở: vết loét nông đóng vảy vàng đặc trưng như mật ong ở cẳng chân trẻ em.' }],
+    commonSigns: ['Mụn nước nhỏ hoặc trợt da, nhanh vỡ để lại vảy vàng mật ong.', 'Vùng da xung quanh đỏ, sưng nhẹ.', 'Thường quanh mũi, miệng, tay, chân (vùng hở).', 'Ngứa nhẹ, có thể đau rát.'],
+    schoolContext: 'Lây qua tiếp xúc trực tiếp, dùng chung khăn, gối ngủ bán trú, đồ chơi, bàn ghế. Thời tiết nóng ẩm giao mùa là điều kiện thuận lợi. Trẻ gãi rồi chạm sang vùng khác gây lan.',
+    dangerSigns: ['Vết loét lan rộng nhanh dù đã vệ sinh.', 'Sốt cao, mệt mỏi, bỏ ăn.', 'Da sưng nóng đỏ rực, rất đau (viêm mô tế bào).', 'Hạch sưng đau ở cổ, nách.'],
+    safeActions: ['Rửa vết loét 2 lần/ngày bằng nước muối sinh lý hoặc xà phòng trung tính.', 'Dùng khăn giấy dùng một lần để thấm dịch.', 'Cắt ngắn móng tay trẻ để tránh gãi làm lan.', 'Nghỉ học đến khi vết loét khô hẳn hoặc đã dùng kháng sinh 24h.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
+    samplePrompt: 'Quan sát thấy vùng quanh miệng trẻ có các vết trợt đỏ đóng vảy vàng như mật ong.'
+  },
+  {
+    id: 'mun-7',
+    category: 'MỤN & DA LIỄU',
+    title: 'Zona thần kinh (Shingles – Herpes Zoster)',
+    shortDescription: 'Bệnh do virus Varicella-Zoster (cùng virus gây thủy đậu) tái hoạt động trong dây thần kinh cảm giác. Gặp ở người đã từng bị thủy đậu. Triệu chứng đặc trưng: đau rát một bên theo dải thần kinh, sau đó phát ban mụn nước.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/4/49/Zoster_neuroder18.jpg', caption: 'Zona: mụn nước tập trung theo dải thần kinh liên sườn, thường một bên thân mình.' }],
+    commonSigns: ['Đau rát, bỏng, ngứa một bên ngực/lưng/mặt theo dải thần kinh (1-3 ngày trước phát ban).', 'Phát ban đỏ sau đó hình thành mụn nước nhỏ tập trung theo dải.', 'Mụn nước vỡ, đóng vảy trong 7-10 ngày.', 'Có thể sốt nhẹ, mệt mỏi trước khi phát ban.'],
+    schoolContext: 'Học sinh chưa tiêm vaccine thủy đậu có nguy cơ lây virus Varicella. Sau khi khỏi thủy đậu, virus ẩn trong hạch thần kinh và có thể tái hoạt thành zona nhiều năm sau.',
+    dangerSigns: ['Zona ở mặt gần mắt (nguy cơ viêm giác mạc, mù lòa).', 'Zona lan rộng toàn thân (zona disseminate – dấu hiệu suy giảm miễn dịch).', 'Đau dữ dội không cải thiện sau vài tuần (đau thần kinh sau zona).', 'Trẻ suy giảm miễn dịch, sốt cao kèm zona.'],
+    safeActions: ['Đi khám ngay để được kê thuốc kháng virus (acyclovir).', 'Giữ vùng tổn thương sạch, khô, không che kín.', 'Mặc đồng phục rộng, không cọ xát vùng tổn thương.', 'Tránh tiếp xúc với trẻ chưa tiêm thủy đậu khi có mụn nước.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
+    samplePrompt: 'Học sinh lớp 9 đau rát một bên ngực, sau đó xuất hiện mụn nước tập trung theo dải ngang.'
+  },
+  {
+    id: 'mun-8',
+    category: 'MỤN & DA LIỄU',
+    title: 'Mày đay (Urticaria)',
+    shortDescription: 'Phản ứng dị ứng hệ thống biểu hiện bằng những mảng sẩn phù màu đỏ hoặc hồng, ngứa dữ dội, có thể kèm phù mạch (sưng môi, mí mắt, tay chân). Nguyên nhân đa dạng: thực phẩm, thuốc, côn trùng đốt, stress.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Urticaria_01.jpg', caption: 'Mày đay cấp: các sẩn phù màu đỏ hồng, nổi gồ trên mặt da, ngứa dữ dội, thay đổi hình dạng liên tục.' }],
+    commonSigns: ['Sẩn phù (wheal): mảng đỏ/hồng nổi gồ, ranh giới rõ, ngứa dữ dội.', 'Mỗi sẩn xuất hiện và biến mất trong <24h, để lại da bình thường.', 'Phù mạch: sưng môi, mí mắt, lưỡi, tay chân (nguy hiểm hơn).', 'Có thể kèm khó thở, tức ngực, chóng mặt (phản vệ).'],
+    schoolContext: 'Stress thi cử kích hoạt giải phóng histamine; thực phẩm trong căng tin trường (hải sản, đậu phộng); côn trùng trong sân trường; phấn hoa cây cảnh. Dị ứng thuốc (kháng sinh, giảm đau) có thể xảy ra ngay tại trường.',
+    dangerSigns: ['Khó thở, thở ồn, tức ngực (phản vệ – GỌI CẤP CỨU NGAY).', 'Phù mạch lan nhanh, đặc biệt ở mặt, cổ, họng.', 'Chóng mặt, mất ý thức, tim đập nhanh.', 'Mày đay kéo dài >6 tuần (mạn tính) hoặc tái phát liên tục.'],
+    safeActions: ['Loại bỏ tác nhân gây dị ứng ngay nếu xác định được.', 'Uống thuốc kháng histamine (cetirizine, loratadine) theo hướng dẫn.', 'Chườm mát giảm ngứa, không gãi.', 'Đi cấp cứu ngay nếu có dấu hiệu phản vệ.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
+    samplePrompt: 'Sau bữa trưa ở căng tin, học sinh xuất hiện nhiều mảng đỏ ngứa trên tay, có thể sưng môi.'
+  },
+  {
+    id: 'mun-9',
+    category: 'MỤN & DA LIỄU',
+    title: 'Eczema / Viêm da cơ địa (Atopic Dermatitis)',
+    shortDescription: 'Bệnh viêm da mạn tính do cơ địa dị ứng, thường xuất hiện từ nhỏ, diễn tiến từng đợt với triệu chứng đỏ, ngứa, khô da điển hình. Yếu tố di truyền mạnh, bùng phát bởi stress, thời tiết, thực phẩm.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/b/b8/Atopic_dermatitis.jpg', caption: 'Eczema ở trẻ: da đỏ, khô, bong tróc ở vùng khuỷu tay, đặc trưng của viêm da cơ địa.' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Atopic_dermatitis_child.jpg', caption: 'Viêm da cơ địa ở trẻ nhũ nhi: tổn thương ở má, trán với da đỏ ửng, khô, có vảy.' }],
+    commonSigns: ['Da khô, đỏ, ngứa dữ dội, đặc biệt về đêm và giao mùa.', 'Vị trí đặc trưng: khuỷu tay, đầu gối (trẻ lớn); má, trán (trẻ nhũ nhi).', 'Da dày, lichen hóa (da vằn vằn) do gãi mạn.', 'Tiền sử gia đình có hen, viêm mũi dị ứng, dị ứng thực phẩm.'],
+    schoolContext: 'Stress thi cử, thời tiết lạnh-khô, tiếp xúc hóa chất trong phòng thí nghiệm, phấn hoa cây cảnh trường học đều có thể làm bùng phát. Gãi trong lớp gây mất tập trung, ảnh hưởng học tập.',
+    dangerSigns: ['Tổn thương lan rộng toàn thân, da đỏ rực, ngứa không ngủ được.', 'Nhiễm trùng da thứ phát (mủ, vảy vàng, sốt).', 'Da bào mòn, chảy máu, có thể nhiễm Herpes simplex (eczema herpeticum – NGUY HIỂM).', 'Ảnh hưởng nặng tâm lý: tự ti, cô lập, trầm cảm.'],
+    safeActions: ['Dưỡng ẩm da ngay sau khi tắm (cream/ointment, không lotion).', 'Mặc đồ cotton rộng rãi, trán len, nylon tiếp xúc da.', 'Cắt móng ngắn, đeo găng tay cotton ban đêm nếu gãi khi ngủ.', 'Đi khám da liễu để được kê kem steroid, thuốc ức chế miễn dịch.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
+    samplePrompt: 'Trẻ 10 tuổi da khô, đỏ, ngứa nhiều ở khuỷu tay và đầu gối, đặc biệt tệ về đêm, hay tái phát giao mùa.'
+  },
+  {
+    id: 'mun-10',
+    category: 'MỤN & DA LIỄU',
+    title: 'Mụn cóc (Warts – Verruca Vulgaris)',
+    shortDescription: 'Bướu da lành tính do virus HPV (Human Papillomavirus) gây ra. Xâm nhập qua các vết xước nhỏ trên da. Phổ biến ở học sinh, đặc biệt ở tay, ngón tay, lòng bàn chân. Có thể tự khỏi sau vài tháng đến vài năm.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/Common_warts.jpg', caption: 'Mụn cóc thông thường ở ngón tay: bề mặt thô, sần, có các điểm đen nhỏ (mao mạch bị tắc).' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Plantar_wart.jpg', caption: 'Mụn cóc lòng bàn chân: bề mặt phẳng do bị đè nén, đau khi đi lại.' }],
+    commonSigns: ['Bướu sần cứng, bề mặt thô, thường màu da hoặc hơi nâu.', 'Có các điểm đen nhỏ trên bề mặt (mao mạch bị tắc – dấu hiệu phân biệt với chai).', 'Thường ở ngón tay, mu bàn tay, lòng bàn chân.', 'Mụn cóc phẳng (flat warts) cũng phổ biến ở tuổi học đường.'],
+    schoolContext: 'HPV lây qua tiếp xúc trực tiếp với tổn thương hoặc qua bề mặt nhiễm virus (bể bơi, phòng thay đồ). Học sinh thể thao (bóng rổ, cầu lông) dễ bị lây qua vết trầy trên tay.',
+    dangerSigns: ['Mụn cóc sưng, đau, có mủ (nhiễm trùng thứ phát).', 'Lan rộng nhiều vị trí, đặc biệt quanh móng (khó điều trị).', 'Mụn cóc ở mặt, bộ phận sinh dục cần được khám chuyên khoa.', 'Tự ý cắt, đốt không đúng cách gây lan rộng.'],
+    safeActions: ['Không tự ý cắt, bôi acid, hoặc đốt mụn cóc tại nhà.', 'Giữ da khô, rửa tay thường xuyên.', 'Không dùng chung khăn, vật dụng cá nhân tiếp xúc vùng có mụn cóc.', 'Đi khám da liễu: điều trị bằng nitơ lỏng (cryotherapy), acid salicylic, hoặc laser.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
+    samplePrompt: 'Học sinh lớp 6 có bướu nhỏ cứng, sần ở ngón tay, bề mặt thô, có điểm đen nhỏ.'
+  },
+  // ── BỆNH LÂY NHIỄM ──
   {
     id: 'tcm-1',
-    category: 'TRUYỀN NHIỄM',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'Tay-Chân-Miệng (HFMD)',
     shortDescription: 'Bệnh truyền nhiễm cấp tính do virus Enterovirus (Coxsackie A16, EV71). Lây qua đường tiêu hóa và tiếp xúc. Nguy cơ biến chứng thần kinh, tim mạch.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Hand_foot_and_mouth_disease_on_child_feet.jpg', caption: 'Các nốt phỏng nước đặc trưng của bệnh Tay-Chân-Miệng ở lòng bàn chân trẻ em.' }],
@@ -58,7 +164,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   },
   {
     id: 'tcm-2',
-    category: 'TRUYỀN NHIỄM',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'Sởi (Measles)',
     shortDescription: 'Bệnh truyền nhiễm qua đường hô hấp do virus Measles. Biểu hiện sốt cao, ho, phát ban đỏ toàn thân. Có thể gây biến chứng viêm tai, viêm phổi, viêm não.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Measles_rash_PHIL_4497_lores.jpg', caption: 'Ban đỏ đặc trưng của bệnh sởi lan tỏa toàn thân, thường bắt đầu sau tai và lan xuống.' }],
@@ -71,7 +177,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   },
   {
     id: 'tcm-3',
-    category: 'TRUYỀN NHIỄM',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'Thủy đậu (Chickenpox)',
     shortDescription: 'Bệnh do virus Varicella-Zoster, lây qua đường hô hấp và tiếp xúc. Biểu hiện mụn nước trên nền da đỏ, ngứa, sốt nhẹ. Có thể gây biến chứng viêm da nhiễm trùng, viêm phổi.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Chickenpox_blister-%28closeup%29.jpg', caption: 'Mụn nước chứa dịch trong đặc trưng của bệnh thủy đậu trên nền da đỏ.' }],
@@ -84,7 +190,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   },
   {
     id: 'tcm-4',
-    category: 'TRUYỀN NHIỄM',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'Rubella (Sởi Đức)',
     shortDescription: 'Bệnh do virus Rubella, lây qua đường hô hấp. Triệu chứng nhẹ: sốt, phát ban hồng, sưng hạch sau tai và gáy. Nguy hiểm nhất với phụ nữ mang thai.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/0/03/Rubella.jpg', caption: 'Ban hồng phẳng đặc trưng của bệnh Rubella trên da bụng.' }],
@@ -97,7 +203,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   },
   {
     id: 'tcm-5',
-    category: 'TRUYỀN NHIỄM',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'Quai bị (Mumps)',
     shortDescription: 'Bệnh do virus Paramyxovirus, lây qua đường hô hấp. Biểu hiện sưng đau tuyến nước bọt mang tai một hoặc hai bên, sốt, đau đầu.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/8/80/Mumps_PHIL_130_lores.jpg', caption: 'Sưng to vùng mang tai một bên đặc trưng của bệnh quai bị.' }],
@@ -110,7 +216,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   },
   {
     id: 'tcm-6',
-    category: 'TRUYỀN NHIỄM',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'Sốt xuất huyết (Dengue)',
     shortDescription: 'Bệnh do virus Dengue, lây qua muỗi Aedes aegypti đốt. Biểu hiện sốt cao đột ngột, đau đầu dữ dội, đau sau mắt, phát ban, đau cơ xương khớp. Có thể trở nặng thành sốc Dengue.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Dengue_rash_1.jpg', caption: 'Ban xuất huyết đặc trưng trên da trong bệnh sốt xuất huyết Dengue.' }],
@@ -123,7 +229,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   },
   {
     id: 'tcm-7',
-    category: 'TRUYỀN NHIỄM',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'COVID-19 (Corona)',
     shortDescription: 'Bệnh do virus SARS-CoV-2, lây qua đường hô hấp và tiếp xúc. Triệu chứng đa dạng từ không có triệu chứng đến viêm phổi nặng. Vẫn cần phòng ngừa trong môi trường học đường.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/2/21/SARS-CoV-2_virion_animation.gif', caption: 'Hình ảnh virus SARS-CoV-2 với các gai protein bề mặt đặc trưng.' }],
@@ -137,7 +243,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   // ── MẮT ──
   {
     id: 'mat-1',
-    category: 'MẮT',
+    category: 'SỨC KHỎE TÂM LÝ',
     title: 'Viêm kết mạc (Đau mắt đỏ)',
     shortDescription: 'Viêm lớp màng bao phủ lòng trắng mắt và mặt trong mi mắt. Do virus (Adenovirus) hoặc vi khuẩn. Rất dễ lây lan trong trường học qua tiếp xúc.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/3/30/Conjunctivitis_5174.jpg', caption: 'Lòng trắng mắt đỏ rực do viêm kết mạc - các mạch máu giãn nở rõ rệt.' }],
@@ -151,7 +257,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   // ── HÔ HẤP ──
   {
     id: 'hh-1',
-    category: 'HÔ HẤP',
+    category: 'BỆNH LÂY NHIỄM',
     title: 'Cúm (Influenza)',
     shortDescription: 'Bệnh hô hấp cấp do virus Influenza (A, B, C). Lây qua đường hô hấp, bùng phát theo mùa (mùa lạnh, giao mùa). Triệu chứng nặng hơn cảm thường, có thể gây biến chứng viêm phổi.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/H1N1_Influenza_Virus_Particles_%288411599236%29.jpg/250px-H1N1_Influenza_Virus_Particles_%288411599236%29.jpg', caption: 'PhParticle virus Influenza H1N1 qua kính hiển vi điện tử - có các gai protein bề mặt.' }],
@@ -176,10 +282,10 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     references: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }],
     samplePrompt: 'Trẻ nôn ói nhiều, tiêu chảy phân lỏng nhiều lần, sốt nhẹ, quấy khóc.'
   },
-  // ── KÝ SINH TRÙNG ──
+  // ── VỆ SINH ──
   {
     id: 'ks-1',
-    category: 'KÝ SINH TRÙNG',
+    category: 'VỆ SINH',
     title: 'Chấy rận (Head Lice)',
     shortDescription: 'Ký sinh trùng trên da đầu, lây qua tiếp xúc đầu - đầu hoặc dùng chung vật dụng cá nhân. Phổ biến ở trẻ mầm non và tiểu học. Gây ngứa dữ dội da đầu.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/Head_louse_%28251_27%29_Adult_and_egg%2C_from_a_human_host.jpg', caption: 'Chấy (bọ chét) trên tóc người - con trưởng thành và trứng (gàu) bám chặt vào sợi tóc.' }],
@@ -192,7 +298,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   },
   {
     id: 'ks-2',
-    category: 'KÝ SINH TRÙNG',
+    category: 'VỆ SINH',
     title: 'Sốt tinh hồng nhiệt (Scarlet Fever)',
     shortDescription: 'Bệnh do vi khuẩn Streptococcus nhóm A, lây qua đường hô hấp. Biểu hiện sốt cao, phát ban đỏ như giấy nhám, lưỡi dâu tây. Có thể gây biến chứng thận, tim nếu không điều trị.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/0/02/Scharlach.JPG', caption: 'Lưỡi dâu tây đặc trưng của bệnh sốt tinh hồng nhiệt - lưỡi đỏ bóng với các hạt nổi rõ.' }],
@@ -203,6 +309,60 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     references: [{ title: 'NHS Scarlet Fever', url: 'https://nhs.uk/conditions/scarlet-fever' }],
     samplePrompt: 'Trẻ sốt cao, đau họng, phát ban đỏ như giấy nhám toàn thân, lưỡi đỏ bóng.'
   }
+];
+
+// ── WEEKLY TRENDS DATA ──────────────────────────────────────
+const WEEKLY_TRENDS: WeeklyTrend[] = [
+  {
+    id: 'trend-1',
+    icon: '🌡️',
+    title: 'Giao mùa – Mụn dị ứng bùng phát',
+    description: 'Thời tiết giao mùa khiến 40% học sinh trường X gặp phát ban, mụn đỏ dị ứng. Xem ngay cách phòng tránh và xử lý tại nhà.',
+    category: 'MỤN & DA LIỄU',
+    alertLevel: 'hot',
+    relatedTopicId: 'mun-1',
+    relatedTopicTitle: 'Mụn trứng cá (Acne Vulgaris)',
+  },
+  {
+    id: 'trend-2',
+    icon: '🦟',
+    title: 'Muỗi Aedes hoành hành – Cảnh giác sốt xuất huyết',
+    description: 'Mùa mưa bắt đầu, số ca sốt xuất huyết nhập viện tăng 25%. Kiểm tra lớp học ngay: lọ hoa, vũng nước, vỏ lon đều là ổ muỗi.',
+    category: 'BỆNH LÂY NHIỄM',
+    alertLevel: 'warn',
+    relatedTopicId: 'tcm-6',
+    relatedTopicTitle: 'Sốt xuất huyết (Dengue)',
+  },
+  {
+    id: 'trend-3',
+    icon: '📱',
+    title: 'Học online tăng – Mỏi mắt ở học sinh',
+    description: 'Sau kỳ thi, thời gian nhìn màn hình tăng vọt. 1/3 học sinh THCS than phiền đau đầu, mờ mắt cuối ngày.',
+    category: 'BỆNH LÂY NHIỄM',
+    alertLevel: 'warn',
+    relatedTopicId: 'tl-1',
+    relatedTopicTitle: 'Cận thị & Mỏi mắt',
+  },
+  {
+    id: 'trend-4',
+    icon: '🍜',
+    title: 'Ký túc xá – Ngộ độc thực phẩm',
+    description: 'Trường nội trú phát hiện 12 ca đau bụng, tiêu chảy trong tuần. Nguồn thức ăn ngoài cổng trường là đối tượng nghi ngờ hàng đầu.',
+    category: 'TIÊU HÓA',
+    alertLevel: 'warn',
+    relatedTopicId: 'th-1',
+    relatedTopicTitle: 'Tiêu chảy nhiễm trùng (Rotavirus)',
+  },
+  {
+    id: 'trend-5',
+    icon: '💤',
+    title: 'Thi cử – Stress & Rối loạn giấc ngủ',
+    description: 'Giai đoạn thi học kỳ, phòng y tế ghi nhận nhiều học sinh đến vì đau đầu, mất ngủ, lo âu. Đây là tín hiệu cần quan tâm.',
+    category: 'SỨC KHỎE TÂM LÝ',
+    alertLevel: 'info',
+    relatedTopicId: 'tl-1',
+    relatedTopicTitle: 'Rối loạn giấc ngủ & Stress học tập',
+  },
 ];
 
 const App: React.FC = () => {
@@ -216,6 +376,19 @@ const App: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [aiResult, setAiResult] = useState<HealthCase | null>(null);
   const [showHeatmap, setShowHeatmap] = useState(false);
+  const [showDetailedHeatmap, setShowDetailedHeatmap] = useState(false);
+  const [heatmapViewMode, setHeatmapViewMode] = useState<'heatmap' | 'annotation'>('heatmap');
+
+  // Heatmap Analysis State
+  const [heatmapAnalysis, setHeatmapAnalysis] = useState<string | null>(null);
+  const [heatmapAnalyzing, setHeatmapAnalyzing] = useState(false);
+
+  // Segmentation Canvas State
+  const [showSegmentation, setShowSegmentation] = useState(false);
+  const [contourPoints, setContourPoints] = useState<{x: number, y: number}[]>([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const segmentationCanvasRef = useRef<HTMLCanvasElement>(null);
+  const [segmentationAdvice, setSegmentationAdvice] = useState<string | null>(null);
   
   // Find Care State
   const [mapMode, setMapMode] = useState<'idle' | 'hospital' | 'pharmacy'>('idle');
@@ -443,18 +616,148 @@ const App: React.FC = () => {
     return () => clearTimeout(t);
   }, [showHeatmap, aiResult]);
 
+  // ── Detailed Heatmap Modal Canvas ────────────────────────────
+  useEffect(() => {
+    if (!showDetailedHeatmap || !aiResult) return;
+
+    const drawDetailedHeatmap = () => {
+      const heatmapCanvas = document.getElementById('detailed-heatmap-canvas') as HTMLCanvasElement;
+      const annotationCanvas = document.getElementById('detailed-annotation-canvas') as HTMLCanvasElement;
+      const container = heatmapCanvas?.parentElement;
+      if (!heatmapCanvas || !container) return;
+
+      const img = container.querySelector('img');
+      if (!img) return;
+
+      const rect = img.getBoundingClientRect();
+      heatmapCanvas.width = rect.width;
+      heatmapCanvas.height = rect.height;
+      if (annotationCanvas) {
+        annotationCanvas.width = rect.width;
+        annotationCanvas.height = rect.height;
+      }
+
+      const heatmapCtx = heatmapCanvas.getContext('2d')!;
+      const annotationCtx = annotationCanvas?.getContext('2d')!;
+
+      // Always clear both canvases
+      heatmapCtx.clearRect(0, 0, heatmapCanvas.width, heatmapCanvas.height);
+      if (annotationCtx) annotationCtx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+
+      const annotations = aiResult.annotations || [];
+      const severityColors: Record<string, [number, number, number]> = {
+        high:   [220, 38,  38 ],
+        medium: [249, 115, 22 ],
+        low:    [234, 179, 8  ],
+      };
+
+      // Draw heatmap gradient overlay (only in heatmap mode)
+      if (heatmapViewMode === 'heatmap') {
+        if (annotations.length === 0) {
+          const cx = heatmapCanvas.width * 0.5;
+          const cy = heatmapCanvas.height * 0.5;
+          const radius = Math.min(heatmapCanvas.width, heatmapCanvas.height) * 0.4;
+          const grad = heatmapCtx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+          grad.addColorStop(0, 'rgba(220, 38, 38, 0.5)');
+          grad.addColorStop(0.4, 'rgba(249, 115, 22, 0.35)');
+          grad.addColorStop(0.7, 'rgba(234, 179, 8, 0.15)');
+          grad.addColorStop(1, 'rgba(59, 130, 246, 0)');
+          heatmapCtx.fillStyle = grad;
+          heatmapCtx.fillRect(0, 0, heatmapCanvas.width, heatmapCanvas.height);
+        } else {
+          annotations.forEach((ann: any) => {
+            const x = ann.x * heatmapCanvas.width;
+            const y = ann.y * heatmapCanvas.height;
+            const w = ann.w * heatmapCanvas.width;
+            const h = ann.h * heatmapCanvas.height;
+            const [r, g, b] = severityColors[ann.severity] || severityColors.medium;
+
+            const grad = heatmapCtx.createRadialGradient(x + w/2, y + h/2, 0, x + w/2, y + h/2, Math.max(w, h) * 0.8);
+            grad.addColorStop(0, `rgba(${r},${g},${b},0.6)`);
+            grad.addColorStop(0.5, `rgba(${r},${g},${b},0.35)`);
+            grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+            heatmapCtx.fillStyle = grad;
+            heatmapCtx.fillRect(x - w*0.4, y - h*0.4, w*1.8, h*1.8);
+
+            heatmapCtx.strokeStyle = `rgba(${r},${g},${b},0.9)`;
+            heatmapCtx.lineWidth = ann.severity === 'high' ? 3 : 2;
+            heatmapCtx.setLineDash([8, 4]);
+            heatmapCtx.strokeRect(x, y, w, h);
+            heatmapCtx.setLineDash([]);
+
+            const labelText = ann.label;
+            heatmapCtx.font = 'bold 12px sans-serif';
+            const textMetrics = heatmapCtx.measureText(labelText);
+            const padX = 8;
+            const labelW = textMetrics.width + padX * 2;
+            const labelH = 22;
+
+            heatmapCtx.fillStyle = `rgba(${r},${g},${b},0.95)`;
+            heatmapCtx.beginPath();
+            heatmapCtx.roundRect(x, y - labelH - 6, labelW, labelH, 6);
+            heatmapCtx.fill();
+
+            heatmapCtx.fillStyle = '#fff';
+            heatmapCtx.fillText(labelText, x + padX, y - 10);
+          });
+        }
+      }
+
+      // Draw annotation boxes (only in annotation mode) - style like in the image
+      if (heatmapViewMode === 'annotation' && annotationCtx) {
+        if (annotations.length === 0) {
+          // Default annotation area
+          const x = annotationCanvas.width * 0.3;
+          const y = annotationCanvas.height * 0.3;
+          const w = annotationCanvas.width * 0.4;
+          const h = annotationCanvas.height * 0.4;
+
+          annotationCtx.strokeStyle = 'rgba(220, 38, 38, 0.9)';
+          annotationCtx.lineWidth = 3;
+          annotationCtx.strokeRect(x, y, w, h);
+
+          // Y marker
+          annotationCtx.fillStyle = 'rgba(220, 38, 38, 0.9)';
+          annotationCtx.font = 'bold 16px sans-serif';
+          annotationCtx.fillText('Y', x + w/2 - 6, y + h/2 + 6);
+        } else {
+          annotations.forEach((ann: any, idx: number) => {
+            const x = ann.x * annotationCanvas.width;
+            const y = ann.y * annotationCanvas.height;
+            const w = ann.w * annotationCanvas.width;
+            const h = ann.h * annotationCanvas.height;
+            const [r, g, b] = severityColors[ann.severity] || severityColors.medium;
+
+            // Draw box with solid border
+            annotationCtx.strokeStyle = `rgba(${r},${g},${b},0.9)`;
+            annotationCtx.lineWidth = 3;
+            annotationCtx.strokeRect(x, y, w, h);
+
+            // Y marker centered in box
+            annotationCtx.fillStyle = `rgba(${r},${g},${b},0.9)`;
+            annotationCtx.font = 'bold 18px sans-serif';
+            annotationCtx.fillText('Y', x + w/2 - 6, y + h/2 + 6);
+          });
+        }
+      }
+    };
+
+    const t = setTimeout(drawDetailedHeatmap, 200);
+    return () => clearTimeout(t);
+  }, [showDetailedHeatmap, aiResult, heatmapViewMode]);
+
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
   const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; hover: string; chip: string }> = {
-    'DA LIÊU':        { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-600', hover: 'hover:bg-red-50 hover:shadow-red-100', chip: 'bg-red-500 text-white' },
-    'TRUYỀN NHIỄM':   { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600', hover: 'hover:bg-orange-50 hover:shadow-orange-100', chip: 'bg-orange-500 text-white' },
-    'MẮT':            { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-600', hover: 'hover:bg-blue-50 hover:shadow-blue-100', chip: 'bg-blue-500 text-white' },
-    'HÔ HẤP':        { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-600', hover: 'hover:bg-cyan-50 hover:shadow-cyan-100', chip: 'bg-cyan-500 text-white' },
-    'TIÊU HÓA':      { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-600', hover: 'hover:bg-green-50 hover:shadow-green-100', chip: 'bg-green-500 text-white' },
-    'KÝ SINH TRÙNG': { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-600', hover: 'hover:bg-purple-50 hover:shadow-purple-100', chip: 'bg-purple-500 text-white' },
+    'MỤN & DA LIỄU':    { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-600', hover: 'hover:bg-red-50 hover:shadow-red-100', chip: 'bg-red-500 text-white' },
+    'BỆNH LÂY NHIỄM':   { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600', hover: 'hover:bg-orange-50 hover:shadow-orange-100', chip: 'bg-orange-500 text-white' },
+    'THỊ LỰC':           { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-600', hover: 'hover:bg-violet-50 hover:shadow-violet-100', chip: 'bg-violet-500 text-white' },
+    'SỨC KHỎE TÂM LÝ':  { bg: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-600', hover: 'hover:bg-pink-50 hover:shadow-pink-100', chip: 'bg-pink-500 text-white' },
+    'TIÊU HÓA':          { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-600', hover: 'hover:bg-green-50 hover:shadow-green-100', chip: 'bg-green-500 text-white' },
+    'VỆ SINH':           { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-600', hover: 'hover:bg-cyan-50 hover:shadow-cyan-100', chip: 'bg-cyan-500 text-white' },
   };
 
-  const allCategories = ['DA LIÊU', 'TRUYỀN NHIỄM', 'MẮT', 'HÔ HẤP', 'TIÊU HÓA', 'KÝ SINH TRÙNG'];
+  const allCategories = ['MỤN & DA LIỄU', 'BỆNH LÂY NHIỄM', 'THỊ LỰC', 'SỨC KHỎE TÂM LÝ', 'TIÊU HÓA', 'VỆ SINH'];
 
   const filteredHealbook = useMemo(() => {
     return HEALBOOK_DATA.filter(t => {
@@ -493,13 +796,40 @@ const App: React.FC = () => {
 
   const API_BASE = import.meta.env.VITE_API_PROXY_URL || '';
 
+  // Retry helper with exponential backoff
+  const fetchWithRetry = async (
+    url: string,
+    options: RequestInit,
+    retries = 3,
+    baseDelayMs = 2000
+  ): Promise<Response> => {
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      const response = await fetch(url, options);
+
+      if (response.status !== 429) {
+        return response; // Only retry on rate limit
+      }
+
+      if (attempt === retries) {
+        return response; // Return last response to let caller handle it
+      }
+
+      // Exponential backoff: 2s, 4s, 8s
+      const delay = baseDelayMs * Math.pow(2, attempt);
+      console.log(`⚠️ Rate limited. Retrying in ${delay / 1000}s... (attempt ${attempt + 1}/${retries})`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+    // Never reached, but satisfies TypeScript
+    throw new Error('Max retries exceeded');
+  };
+
   const callAI = async () => {
     if (!inputText && !selectedImage) return;
     setLoading(true);
     setAiResult(null);
     setShowHeatmap(false);
     try {
-      const response = await fetch(`${API_BASE}/api/scan`, {
+      const response = await fetchWithRetry(`${API_BASE}/api/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -535,7 +865,7 @@ const App: React.FC = () => {
         content: m.content,
       }));
 
-      const response = await fetch(`${API_BASE}/api/chat`, {
+      const response = await fetchWithRetry(`${API_BASE}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [...historyMessages, { role: 'user', content: text }] }),
@@ -559,6 +889,331 @@ const App: React.FC = () => {
       setChatLoading(false);
     }
   };
+
+  // ── Heatmap Analysis ─────────────────────────────────────────
+  const analyzeHeatmap = async () => {
+    if (!selectedImage || !aiResult) return;
+    setHeatmapAnalyzing(true);
+    setHeatmapAnalysis(null);
+    try {
+      const response = await fetchWithRetry(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [{
+            role: 'user',
+            content: `Bạn là bác sĩ chuyên khoa Da liễu Việt Nam. Hãy phân tích hình ảnh heatmap vùng tổn thương.
+
+THÔNG TIN BỆNH NHÂN:
+- Chẩn đoán sơ bộ: ${aiResult.title}
+- Danh mục: ${aiResult.category}
+- Mức độ urgency: ${aiResult.urgency}
+
+VÙNG TỔN THƯƠNG TRÊN HEATMAP:
+${aiResult.annotations?.map((a, i) => `${i+1}. ${a.label} (mức độ: ${a.severity === 'high' ? 'NGHIÊM TRỌNG' : a.severity === 'medium' ? 'TRUNG BÌNH' : 'NHẸ'})`).join('\n') || 'Không có thông tin vùng tổn thương cụ thể'}
+
+YÊU CẦU:
+1. Đưa ra lời khuyên chi tiết khi SOI HEATMAP vào vùng tổn thương
+2. Giải thích ý nghĩa của màu sắc heatmap (đỏ = nguy hiểm, vàng = cảnh báo, xanh = bình thường)
+3. Đề xuất cách theo dõi tại nhà
+4. Cảnh báo dấu hiệu cần đi khám ngay
+5. Lời khuyên về dinh dưỡng và sinh hoạt
+
+Trả lời ngắn gọn, súc tích, dễ hiểu cho phụ huynh học sinh.`
+          }]
+        }),
+      });
+      const data = await response.json();
+      setHeatmapAnalysis(data.reply || 'Không thể phân tích heatmap. Vui lòng thử lại.');
+    } catch (e) {
+      console.error('Heatmap analysis error:', e);
+      setHeatmapAnalysis('Lỗi kết nối. Vui lòng thử lại.');
+    } finally {
+      setHeatmapAnalyzing(false);
+    }
+  };
+
+  // ── Segmentation Canvas Drawing ──────────────────────────────
+  const drawSegmentation = () => {
+    const canvas = segmentationCanvasRef.current;
+    const container = imageContainerRef.current;
+    if (!canvas || !container || !selectedImage) return;
+
+    const rect = container.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    const ctx = canvas.getContext('2d')!;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (contourPoints.length < 2) return;
+
+    // Draw filled contour
+    ctx.beginPath();
+    ctx.moveTo(contourPoints[0].x, contourPoints[0].y);
+    for (let i = 1; i < contourPoints.length; i++) {
+      ctx.lineTo(contourPoints[i].x, contourPoints[i].y);
+    }
+    ctx.closePath();
+
+    // Fill with semi-transparent overlay
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+    ctx.fill();
+
+    // Draw contour line
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw points
+    contourPoints.forEach((p, i) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = i === 0 ? '#22c55e' : '#ef4444';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+  };
+
+  const handleSegmentationMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = segmentationCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setIsDrawing(true);
+    setContourPoints([{ x, y }]);
+    setSegmentationAdvice(null);
+  };
+
+  const handleSegmentationMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = segmentationCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setContourPoints(prev => [...prev, { x, y }]);
+    drawSegmentation();
+  };
+
+  const handleSegmentationMouseUp = () => {
+    if (isDrawing && contourPoints.length > 5) {
+      analyzeContour();
+    }
+    setIsDrawing(false);
+  };
+
+  const clearContour = () => {
+    setContourPoints([]);
+    setSegmentationAdvice(null);
+    drawSegmentation();
+  };
+
+  const analyzeContour = async () => {
+    if (contourPoints.length < 5) return;
+    setHeatmapAnalyzing(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [{
+            role: 'user',
+            content: `Bạn là bác sĩ da liễu Việt Nam. Phân tích vùng tổn thương được vẽ contour trên ảnh.
+
+THÔNG TIN:
+- Số điểm contour: ${contourPoints.length} điểm
+- Kích thước vùng: Đã xác định khoảng ${contourPoints.length * 10} điểm ảnh
+- Chẩn đoán sơ bộ: ${aiResult?.title || 'Chưa xác định'}
+- Danh mục: ${aiResult?.category || 'Chưa xác định'}
+
+YÊU CẦU phân tích vùng contour:
+1. Đánh giá đặc điểm vùng tổn thương (màu sắc, kích thước, hình dạng)
+2. Mức độ nghiêm trọng của vùng được khoanh
+3. So sánh với các bệnh lý trong môi trường học đường
+4. Lời khuyên cụ thể cho phụ huynh
+5. Hành động cần thiết ngay
+
+Trả lời súc tích, 3-5 bullet points.`
+          }]
+        }),
+      });
+      const data = await response.json();
+      setSegmentationAdvice(data.reply || 'Không thể phân tích vùng contour.');
+    } catch (e) {
+      console.error('Contour analysis error:', e);
+      setSegmentationAdvice('Lỗi kết nối.');
+    } finally {
+      setHeatmapAnalyzing(false);
+    }
+  };
+
+  // ── Export Report ────────────────────────────────────────────
+  const exportReport = async (format: 'pdf' | 'image') => {
+    const resultPanel = document.getElementById('ai-result-panel');
+    if (!resultPanel || !selectedImage) {
+      alert('Không có dữ liệu để xuất.');
+      return;
+    }
+
+    try {
+      // Create composite image with image + heatmap overlay
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d')!;
+      const container = imageContainerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+
+      // Draw base image
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = selectedImage;
+      });
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      // Draw heatmap overlay if visible
+      if (showHeatmap && aiResult?.annotations?.length) {
+        ctx.globalAlpha = 0.5;
+        aiResult.annotations.forEach((ann: any) => {
+          const x = ann.x * canvas.width;
+          const y = ann.y * canvas.height;
+          const w = ann.w * canvas.width;
+          const h = ann.h * canvas.height;
+          const colors: Record<string, string> = {
+            high: 'rgba(220, 38, 38, 0.6)',
+            medium: 'rgba(249, 115, 22, 0.5)',
+            low: 'rgba(234, 179, 8, 0.4)'
+          };
+          ctx.fillStyle = colors[ann.severity] || colors.medium;
+          ctx.fillRect(x, y, w, h);
+          ctx.strokeStyle = colors[ann.severity] || colors.medium;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(x, y, w, h);
+        });
+        ctx.globalAlpha = 1;
+      }
+
+      // Draw contour if exists
+      if (contourPoints.length > 2) {
+        ctx.beginPath();
+        ctx.moveTo(contourPoints[0].x, contourPoints[0].y);
+        for (let i = 1; i < contourPoints.length; i++) {
+          ctx.lineTo(contourPoints[i].x, contourPoints[i].y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+        ctx.fill();
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 4]);
+        ctx.stroke();
+      }
+
+      if (format === 'image') {
+        // Download as PNG
+        const link = document.createElement('a');
+        link.download = `eduhealth-report-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } else {
+        // Export as simple PDF using canvas + text
+        const pdfCanvas = document.createElement('canvas');
+        const pdfCtx = pdfCanvas.getContext('2d')!;
+        const reportWidth = 800;
+        const reportHeight = 1200;
+        pdfCanvas.width = reportWidth;
+        pdfCanvas.height = reportHeight;
+
+        // Background
+        pdfCtx.fillStyle = '#ffffff';
+        pdfCtx.fillRect(0, 0, reportWidth, reportHeight);
+
+        // Header
+        pdfCtx.fillStyle = '#1e40af';
+        pdfCtx.fillRect(0, 0, reportWidth, 80);
+        pdfCtx.fillStyle = '#ffffff';
+        pdfCtx.font = 'bold 24px sans-serif';
+        pdfCtx.fillText('EduHealth AI - Báo Cáo Sàng Lọc', 30, 50);
+
+        // Image
+        const imgY = 100;
+        const imgH = 400;
+        pdfCtx.drawImage(canvas, 30, imgY, reportWidth - 60, imgH);
+
+        // Diagnosis info
+        let yPos = imgY + imgH + 30;
+        pdfCtx.fillStyle = '#1e293b';
+        pdfCtx.font = 'bold 18px sans-serif';
+        pdfCtx.fillText(`Chẩn đoán: ${aiResult?.title || 'N/A'}`, 30, yPos);
+        yPos += 30;
+
+        pdfCtx.font = 'bold 14px sans-serif';
+        pdfCtx.fillStyle = '#dc2626';
+        pdfCtx.fillText(`Mức độ: ${aiResult?.urgency || 'N/A'}`, 30, yPos);
+        yPos += 40;
+
+        // Annotations
+        if (aiResult?.annotations?.length) {
+          pdfCtx.font = 'bold 14px sans-serif';
+          pdfCtx.fillStyle = '#1e293b';
+          pdfCtx.fillText('Vùng tổn thương được phát hiện:', 30, yPos);
+          yPos += 25;
+          aiResult.annotations.forEach((ann: any, i: number) => {
+            pdfCtx.font = '12px sans-serif';
+            pdfCtx.fillStyle = '#475569';
+            pdfCtx.fillText(`${i+1}. ${ann.label} - Mức: ${ann.severity}`, 50, yPos);
+            yPos += 20;
+          });
+        }
+
+        // Advice
+        if (aiResult?.safetyAdvice?.length) {
+          yPos += 20;
+          pdfCtx.font = 'bold 14px sans-serif';
+          pdfCtx.fillStyle = '#1e293b';
+          pdfCtx.fillText('Khuyến nghị:', 30, yPos);
+          yPos += 25;
+          aiResult.safetyAdvice.forEach((advice: string, i: number) => {
+            pdfCtx.font = '12px sans-serif';
+            pdfCtx.fillStyle = '#475569';
+            pdfCtx.fillText(`• ${advice}`, 50, yPos);
+            yPos += 20;
+          });
+        }
+
+        // Footer
+        pdfCtx.fillStyle = '#94a3b8';
+        pdfCtx.font = '10px sans-serif';
+        pdfCtx.fillText(`Generated by EduHealth AI - ${new Date().toLocaleDateString('vi-VN')}`, 30, reportHeight - 30);
+
+        // Download PDF
+        const link = document.createElement('a');
+        link.download = `eduhealth-report-${Date.now()}.png`;
+        link.href = pdfCanvas.toDataURL('image/png');
+        link.click();
+      }
+    } catch (e) {
+      console.error('Export error:', e);
+      alert('Lỗi khi xuất báo cáo. Vui lòng thử lại.');
+    }
+  };
+
+  // Redraw segmentation when points change
+  useEffect(() => {
+    if (showSegmentation && contourPoints.length > 0) {
+      drawSegmentation();
+    }
+  }, [showSegmentation, contourPoints]);
 
 
   return (
@@ -708,10 +1363,62 @@ const App: React.FC = () => {
               </p>
             </div>
 
+            {/* ── WEEKLY TRENDS BANNER ── */}
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp size={18} className="text-orange-500" />
+                <span className="text-xs font-black uppercase tracking-widest text-orange-500">Xu hướng sức khỏe học đường tuần này</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {WEEKLY_TRENDS.map((trend) => {
+                  const alertBg: Record<string, string> = {
+                    hot: 'bg-red-50 border-red-200 hover:border-red-400',
+                    warn: 'bg-orange-50 border-orange-200 hover:border-orange-400',
+                    info: 'bg-blue-50 border-blue-200 hover:border-blue-400',
+                  };
+                  const alertDot: Record<string, string> = {
+                    hot: 'bg-red-500',
+                    warn: 'bg-orange-500',
+                    info: 'bg-blue-500',
+                  };
+                  const alertBadge: Record<string, string> = {
+                    hot: 'bg-red-500 text-white',
+                    warn: 'bg-orange-500 text-white',
+                    info: 'bg-blue-500 text-white',
+                  };
+                  return (
+                    <div
+                      key={trend.id}
+                      onClick={() => {
+                        const topic = HEALBOOK_DATA.find(t => t.id === trend.relatedTopicId);
+                        if (topic) handleOpenDetail(topic);
+                      }}
+                      className={`cursor-pointer rounded-2xl p-5 border-2 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl ${alertBg[trend.alertLevel]}`}
+                    >
+                      {/* Header row */}
+                      <div className="flex items-start gap-3 mb-3">
+                        <span className="text-2xl leading-none shrink-0">{trend.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`inline-block w-2 h-2 rounded-full ${alertDot[trend.alertLevel]} animate-pulse`} />
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${alertBadge[trend.alertLevel]}`}>
+                              {trend.alertLevel === 'hot' ? '🔥 Nóng' : trend.alertLevel === 'warn' ? '⚠️ Cảnh báo' : 'ℹ️ Thông tin'}
+                            </span>
+                          </div>
+                          <h4 className="font-black text-slate-800 text-sm leading-tight">{trend.title}</h4>
+                        </div>
+                      </div>
+                      <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">{trend.description}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Search bar */}
             <div className="relative mb-8 group">
-              <div className="absolute inset-0 bg-blue-100 rounded-[2.5rem] blur-2xl opacity-0 group-focus-within:opacity-40 transition-opacity" />
-              <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
+              <div className="absolute inset-0 bg-blue-100 rounded-[2.5rem] blur-2xl opacity-0 group-focus-within:opacity-40 transition-opacity pointer-events-none" />
+              <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={24} />
               <input
                 type="text"
                 placeholder="Tìm bệnh lý, dấu hiệu hoặc cách xử trí..."
@@ -719,11 +1426,6 @@ const App: React.FC = () => {
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.currentTarget.blur();
-                  }
                 }}
               />
             </div>
@@ -872,11 +1574,22 @@ const App: React.FC = () => {
                             />
                           )}
 
+                          {/* Segmentation Canvas for drawing contours */}
+                          <canvas
+                            ref={segmentationCanvasRef}
+                            className={`absolute inset-0 w-full h-full rounded-[1.8rem] ${showSegmentation ? 'cursor-crosshair' : 'pointer-events-none'}`}
+                            style={{ objectFit: 'cover' }}
+                            onMouseDown={showSegmentation ? handleSegmentationMouseDown : undefined}
+                            onMouseMove={showSegmentation ? handleSegmentationMouseMove : undefined}
+                            onMouseUp={showSegmentation ? handleSegmentationMouseUp : undefined}
+                            onMouseLeave={showSegmentation ? handleSegmentationMouseUp : undefined}
+                          />
+
                           {/* Annotation legend */}
                           {showHeatmap && aiResult && aiResult.annotations && aiResult.annotations.length > 0 && (
                             <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-slate-100 space-y-1.5 z-10">
-                              {aiResult.annotations.map((ann, i) => (
-                                <div key={i} className="flex items-center gap-2 text-[10px] font-bold">
+                              {aiResult.annotations.map((ann) => (
+                                <div key={ann.label} className="flex items-center gap-2 text-[10px] font-bold">
                                   <span className={`w-3 h-3 rounded-sm ${
                                     ann.severity === 'high' ? 'bg-red-500' : ann.severity === 'medium' ? 'bg-orange-400' : 'bg-yellow-400'
                                   }`} />
@@ -886,8 +1599,121 @@ const App: React.FC = () => {
                             </div>
                           )}
 
+                          {/* Heatmap Analysis Result */}
+                          {heatmapAnalysis && (
+                            <div className="absolute top-4 left-4 right-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white p-4 rounded-2xl shadow-xl z-20 max-h-48 overflow-y-auto">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Layers size={16} />
+                                <span className="font-black text-xs uppercase">Phân tích Heatmap</span>
+                              </div>
+                              <p className="text-xs leading-relaxed whitespace-pre-wrap">{heatmapAnalysis}</p>
+                              <button onClick={() => setHeatmapAnalysis(null)} className="mt-2 text-white/80 hover:text-white text-[10px]">
+                                Đóng
+                              </button>
+                            </div>
+                          )}
+
+                          {/* Segmentation Advice */}
+                          {segmentationAdvice && (
+                            <div className="absolute top-4 left-4 right-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-2xl shadow-xl z-20 max-h-48 overflow-y-auto">
+                              <div className="flex items-center gap-2 mb-2">
+                                <PenTool size={16} />
+                                <span className="font-black text-xs uppercase">Phân tích vùng Contour</span>
+                              </div>
+                              <p className="text-xs leading-relaxed whitespace-pre-wrap">{segmentationAdvice}</p>
+                              <button onClick={() => setSegmentationAdvice(null)} className="mt-2 text-white/80 hover:text-white text-[10px]">
+                                Đóng
+                              </button>
+                            </div>
+                          )}
+
+                          {/* Tool buttons bar */}
+                          {selectedImage && (
+                            <div className="absolute bottom-4 right-4 flex gap-2 z-10">
+                              {/* Toggle Heatmap */}
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setShowHeatmap(!showHeatmap); }}
+                                className={`p-3 rounded-xl shadow-lg transition-all ${showHeatmap ? 'bg-blue-600 text-white' : 'bg-white/90 text-blue-600 hover:bg-white'}`}
+                                title="Bật/Tắt Heatmap"
+                              >
+                                <Layers size={20} />
+                              </button>
+
+                              {/* Analyze Heatmap */}
+                              {aiResult && (
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); analyzeHeatmap(); }}
+                                  disabled={heatmapAnalyzing}
+                                  className="p-3 rounded-xl shadow-lg bg-gradient-to-r from-blue-600 to-teal-600 text-white hover:shadow-xl transition-all disabled:opacity-50"
+                                  title="Phân tích Heatmap"
+                                >
+                                  {heatmapAnalyzing ? <Loader2 size={20} className="animate-spin" /> : <Eye size={20} />}
+                                </button>
+                              )}
+
+                              {/* Segmentation Mode */}
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setShowSegmentation(!showSegmentation); }}
+                                className={`p-3 rounded-xl shadow-lg transition-all ${showSegmentation ? 'bg-purple-600 text-white' : 'bg-white/90 text-purple-600 hover:bg-white'}`}
+                                title="Chế độ vẽ Contour"
+                              >
+                                <PenTool size={20} />
+                              </button>
+
+                              {/* Clear Contour */}
+                              {contourPoints.length > 0 && (
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); clearContour(); }}
+                                  className="p-3 rounded-xl shadow-lg bg-white/90 text-red-600 hover:bg-white transition-all"
+                                  title="Xóa Contour"
+                                >
+                                  <Trash2 size={20} />
+                                </button>
+                              )}
+
+                              {/* Export Report */}
+                              {aiResult && (
+                                <div className="relative group/export">
+                                  <button
+                                    className="p-3 rounded-xl shadow-lg bg-white/90 text-green-600 hover:bg-white transition-all"
+                                    title="Xuất Report"
+                                  >
+                                    <Download size={20} />
+                                  </button>
+                                  <div className="absolute bottom-full right-0 mb-2 hidden group-hover/export:block">
+                                    <div className="bg-white rounded-xl shadow-xl p-2 space-y-1 min-w-[140px]">
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); exportReport('image'); }}
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-lg"
+                                      >
+                                        <ImageIcon size={14} /> Xuất hình ảnh PNG
+                                      </button>
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); exportReport('pdf'); }}
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-lg"
+                                      >
+                                        <FileText size={14} /> Xuất PDF Report
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Segmentation instructions */}
+                          {showSegmentation && (
+                            <div className="absolute top-4 right-4 bg-purple-600/90 text-white px-4 py-2 rounded-xl text-xs font-bold z-10">
+                              <span className="flex items-center gap-2">
+                                <PenTool size={14} />
+                                Đang ở chế độ vẽ contour - Click và kéo để khoanh vùng
+                              </span>
+                            </div>
+                          )}
+
+                          {/* Hover overlay buttons */}
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                             <button onClick={(e) => {e.stopPropagation(); setSelectedImage(null); setAiResult(null); setShowHeatmap(false);}} className="bg-white/90 p-4 rounded-full text-red-600 hover:bg-white shadow-lg"><X size={24}/></button>
+                             <button onClick={(e) => {e.stopPropagation(); setSelectedImage(null); setAiResult(null); setShowHeatmap(false); setShowSegmentation(false); setHeatmapAnalysis(null); setSegmentationAdvice(null); setContourPoints([]);}} className="bg-white/90 p-4 rounded-full text-red-600 hover:bg-white shadow-lg"><X size={24}/></button>
                              <button onClick={(e) => {e.stopPropagation(); fileInputRef.current?.click();}} className="bg-white/90 p-4 rounded-full text-blue-600 hover:bg-white shadow-lg"><RefreshCcw size={24}/></button>
                           </div>
                         </div>
@@ -905,7 +1731,15 @@ const App: React.FC = () => {
                       const file = e.target.files?.[0];
                       if (file) {
                         const reader = new FileReader();
-                        reader.onloadend = () => { setSelectedImage(reader.result as string); setAiResult(null); };
+                        reader.onloadend = () => {
+                          setSelectedImage(reader.result as string);
+                          setAiResult(null);
+                          setShowHeatmap(false);
+                          setShowSegmentation(false);
+                          setHeatmapAnalysis(null);
+                          setSegmentationAdvice(null);
+                          setContourPoints([]);
+                        };
                         reader.readAsDataURL(file);
                       }
                     }} />
@@ -950,17 +1784,28 @@ const App: React.FC = () => {
                             <span className="text-xs font-black uppercase tracking-widest">{aiResult.urgency}</span>
                           </div>
                           {aiResult.annotations && aiResult.annotations.length > 0 && (
-                            <button
-                              onClick={() => setShowHeatmap(!showHeatmap)}
-                              className={`ml-auto px-5 py-2.5 rounded-xl text-xs font-black uppercase transition-all shadow-lg ${
-                                showHeatmap ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50'
-                              }`}
-                            >
-                              <span className="flex items-center gap-2">
-                                <Eye size={14} />
-                                {showHeatmap ? 'Ẩn vùng tổn thương' : 'Xem vùng tổn thương'}
-                              </span>
-                            </button>
+                            <div className="flex gap-2 ml-auto flex-wrap">
+                              <button
+                                onClick={() => setShowHeatmap(!showHeatmap)}
+                                className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase transition-all shadow-lg ${
+                                  showHeatmap ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2">
+                                  <Eye size={14} />
+                                  {showHeatmap ? 'Ẩn vùng tổn thương' : 'Xem vùng tổn thương'}
+                                </span>
+                              </button>
+                              <button
+                                onClick={() => setShowDetailedHeatmap(true)}
+                                className="px-5 py-2.5 rounded-xl text-xs font-black uppercase transition-all shadow-lg bg-gradient-to-r from-rose-500 to-orange-500 text-white hover:shadow-xl"
+                              >
+                                <span className="flex items-center gap-2">
+                                  <Layers size={14} />
+                                  Xem chi tiết bản đồ nhiệt
+                                </span>
+                              </button>
+                            </div>
                           )}
                         </div>
 
@@ -1364,6 +2209,116 @@ const App: React.FC = () => {
           </button>
         </div>
       </nav>
+
+      {/* Detailed Heatmap Modal */}
+      {showDetailedHeatmap && selectedImage && aiResult && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="bg-white rounded-[2rem] w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-rose-500 to-orange-500 text-white p-6 flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-black">Heatmap giải thích</h3>
+                <p className="text-white/80 text-xs mt-1">Vùng màu đỏ cam là nơi AI tập trung phân tích</p>
+              </div>
+              <button
+                onClick={() => setShowDetailedHeatmap(false)}
+                className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Warning */}
+            <div className="bg-red-50 border-b border-red-100 p-4">
+              <p className="text-red-700 text-xs font-medium leading-relaxed">
+                <span className="font-black">Lưu ý quan trọng:</span> Derm4 là chỉ số nhầm lẫn trong việc chẩn đoán. Vui lòng tham khảo ý kiến bác sĩ để có chẩn đoán chính xác. Với bản có chuyển mới về Da. Hãy kiểm tra tất cả các trạng thái bệnh bằng các biện pháp y khoa chuẩn. Derm4 chỉ có khả năng hỗ trợ để đoán tương đối chính xác.
+              </p>
+            </div>
+
+            {/* View Mode Tabs */}
+            <div className="flex border-b border-slate-100">
+              <button
+                onClick={() => setHeatmapViewMode('heatmap')}
+                className={`flex-1 py-4 px-6 text-sm font-black uppercase tracking-widest transition-all ${
+                  heatmapViewMode === 'heatmap'
+                    ? 'text-rose-600 border-b-2 border-rose-600 bg-rose-50/50'
+                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                Heatmap
+              </button>
+              <button
+                onClick={() => setHeatmapViewMode('annotation')}
+                className={`flex-1 py-4 px-6 text-sm font-black uppercase tracking-widest transition-all ${
+                  heatmapViewMode === 'annotation'
+                    ? 'text-rose-600 border-b-2 border-rose-600 bg-rose-50/50'
+                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                Xem vùng tổn thương
+              </button>
+            </div>
+
+            {/* Heatmap Image */}
+            <div className="relative p-4">
+              <div className="relative rounded-2xl overflow-hidden bg-slate-100">
+                <img
+                  src={selectedImage}
+                  alt="Heatmap analysis"
+                  className="w-full aspect-square object-cover"
+                />
+                {/* Heatmap overlay canvas */}
+                <canvas
+                  id="detailed-heatmap-canvas"
+                  className="absolute inset-0 w-full h-full pointer-events-none"
+                  style={{ objectFit: 'cover' }}
+                />
+                {/* Annotation overlay canvas (only shown in annotation mode) */}
+                <canvas
+                  id="detailed-annotation-canvas"
+                  className="absolute inset-0 w-full h-full pointer-events-none"
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+
+              {/* Heatmap legend */}
+              <div className="mt-4 flex items-center justify-center gap-6">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded bg-red-500" />
+                  <span className="text-xs font-medium text-slate-600">Nghiêm trọng cao</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded bg-orange-400" />
+                  <span className="text-xs font-medium text-slate-600">Nghiêm trọng trung bình</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded bg-yellow-400" />
+                  <span className="text-xs font-medium text-slate-600">Nghiêm trọng thấp</span>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div className="mt-4 p-4 bg-slate-50 rounded-xl">
+                <p className="text-xs text-slate-500 font-medium text-center leading-relaxed">
+                  {heatmapViewMode === 'heatmap'
+                    ? 'Heatmap hiển thị các vùng mà mô AI tập trung để đưa ra dự đoán. Dữ liệu này chỉ để tham khảo bởi bác sĩ chuyên khoa quyết định y khoa.'
+                    : 'Các hộp màu đỏ cam hiển thị vùng tổn thương được AI đánh dấu. Vùng nổi bật càng rõ, mức độ quyết định càng cao.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t border-slate-100">
+              <button
+                onClick={() => setShowDetailedHeatmap(false)}
+                className="w-full py-4 bg-slate-100 hover:bg-slate-200 rounded-2xl text-slate-700 font-black text-sm uppercase tracking-widest transition-colors"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
