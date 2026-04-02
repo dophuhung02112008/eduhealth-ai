@@ -11,7 +11,7 @@ export interface EducationalImage {
 }
 
 export type HealbookCategory =
-  | 'MỤN & DA LIỄU' | 'BỆNH LÂY NHIỄM' | 'THỊ LỰC' | 'SỨC KHỎE TÂM LÝ' | 'TIÊU HÓA' | 'VỆ SINH';
+  | 'MỤN & DA LIỄU' | 'BỆNH LÂY NHIỄM' | 'SỨC KHỎE TÂM LÝ' | 'VỆ SINH';
 
 export interface HealbookTopic {
   id: string;

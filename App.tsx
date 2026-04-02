@@ -16,6 +16,7 @@ import { UrgencyLevel, HealthCase, HealbookTopic, UserRole, ChatMessage, WeeklyT
 // Declare Leaflet globally since it's loaded via script tag
 declare var L: any;
 
+
 const HEALBOOK_DATA: HealbookTopic[] = [
   // ── MỤN & DA LIỄU ──
   {
@@ -35,7 +36,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     id: 'mun-2',
     category: 'MỤN & DA LIỄU',
     title: 'Viêm da dị ứng tiếp xúc (Contact Dermatitis)',
-    shortDescription: 'Phản ứng viêm da do tiếp xúc trực tiếp với chất gây dị ứng hoặc kích ứng. Phổ biến khi giao mùa, tiếp xúc hóa chất trong phòng thí nghiệm, hoặc dị ứng kim loại (nijel trong đồng hồ, khuyên tai).',
+    shortDescription: 'Phản ứng viêm da do tiếp xúc trực tiếp với chất gây dị ứng hoặc kích ứng. Phổ biến khi giao mùa, tiếp xúc hóa chất trong phòng thí nghiệm, hoặc dị ứng kim loại (nikel trong đồng hồ, khuyên tai).',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Allergic_contact_dermatitis_on_neck.jpg', caption: 'Viêm da dị ứng dạng ban đỏ, phồng rộp trên cổ do tiếp xúc với hóa chất.' }],
     commonSigns: ['Da đỏ, sưng, ngứa dữ dội tại vùng tiếp xúc.', 'Phồng rộp (vesicle), nổi mụn nước nhỏ.', 'Da khô, bong tróc, có thể chảy dịch.', 'Giới hạn rõ vùng tổn thương theo hình dạng chất tiếp xúc.'],
     schoolContext: 'Tiếp xúc hóa chất trong phòng thí nghiệm, nhựa cây (cây cảnh trong sân trường), keo xịt tóc, dung dịch tẩy rửa. Giao mùa lạnh-ẩm làm da khô, dễ kích ứng hơn.',
@@ -49,7 +50,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     category: 'MỤN & DA LIỄU',
     title: 'Nấm da (Tinea / Dermatophytosis)',
     shortDescription: 'Nhiễm nấm bề mặt da, tóc, móng do các loài Dermatophytes. Có thể xuất hiện ở thân, bẹn, da đầu, chân (bàn chân vận động viên). Lây qua tiếp xúc trực tiếp hoặc qua vật dụng chung.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Tinea_capitis.jpg', caption: 'Nấm da đầu: tổn thương tròn, vảy trắng, rụng tóc từng mảng đặc trưng.' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Tinea_corporis_on_infant.jpg', caption: 'Nấm thân: tổn thương hình tròn với rìa đỏ cao, giữa lành da bình thường.' }],
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Tinea_corporis_on_infant.jpg', caption: 'Nấm thân: tổn thương hình tròn với rìa đỏ cao, giữa lành da bình thường - dạng đồng tâm đặc trưng.' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Tinea_capitis.jpg', caption: 'Nấm da đầu: tổn thương tròn, vảy trắng, rụng tóc từng mảng đặc trưng.' }],
     commonSigns: ['Tổn thương hình tròn, vòng tròn đồng tâm (rìa đỏ cao, giữa lành).', 'Vảy trắng, bong tróc ở rìa tổn thương.', 'Ngứa dữ dội, có thể rụng tóc từng mảng (nấm da đầu).', 'Móng dày, đổi màu vàng, giòn, dễ gãy (nấm móng).'],
     schoolContext: 'Lây qua dùng chung khăn tắm, ga giường, đồ thể thao trong phòng tập gym của trường, lớp bơi. Trẻ bán trú dùng chung gối, mũ, lược có nguy cơ cao.',
     dangerSigns: ['Tổn thương lan rộng khắp cơ thể.', 'Nấm móng lan rộng, móng biến dạng nặng.', 'Có mủ, sưng đỏ quanh tổn thương (nhiễm trùng thứ phát).', 'Trẻ sốt kèm theo.'],
@@ -75,7 +76,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     category: 'MỤN & DA LIỄU',
     title: 'Viêm nang lông (Folliculitis)',
     shortDescription: 'Viêm nhiễm ở lỗ chân lông do vi khuẩn (thường là tụ cầu), nấm hoặc viêm do cọ xát. Gặp nhiều ở vùng da có nhiều mồ hôi, ma sát (cổ, vai, lưng, đùi).',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/d/d8/Folliculitis.jpg', caption: 'Viêm nang lông: các nốt đỏ nhỏ có mụn mủ ở trung tâm, xung quanh lỗ chân lông.' }],
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/d/d8/Folliculitis.jpg', caption: 'Viêm nang lông: các nốt đỏ có mụn mủ ở trung tâm, xung quanh lỗ chân lông.' }],
     commonSigns: ['Nốt đỏ nhỏ hoặc mụn mủ quanh lỗ chân lông.', 'Ngứa, rát, đau nhẹ tại vùng tổn thương.', 'Thường xuất hiện ở cổ, vai, lưng, đùi, mặt.', 'Có thể hình thành nhọt (có mủ lớn, đau).'],
     schoolContext: 'Thể thao, đổ mồ hôi nhiều, mặc đồng phục bó sát, tập gym chung. Lông mọc ở vùng ma sát (lưng ghế) hoặc sau khi cạo râu/lông ở học sinh lớp lớn.',
     dangerSigns: ['Nhọt to, sưng nóng đỏ, đau dữ dội.', 'Viêm lan rộng, có nhiều nhọt liên tiếp (viêm nang lông deep).', 'Sốt, hạch sưng đau gần vùng tổn thương.', 'Để lại thâm, sẹo sau lành.'],
@@ -99,7 +100,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   {
     id: 'mun-7',
     category: 'MỤN & DA LIỄU',
-    title: 'Zona thần kinh (Shingles – Herpes Zoster)',
+    title: 'Zona thần kinh (Shingles - Herpes Zoster)',
     shortDescription: 'Bệnh do virus Varicella-Zoster (cùng virus gây thủy đậu) tái hoạt động trong dây thần kinh cảm giác. Gặp ở người đã từng bị thủy đậu. Triệu chứng đặc trưng: đau rát một bên theo dải thần kinh, sau đó phát ban mụn nước.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/4/49/Zoster_neuroder18.jpg', caption: 'Zona: mụn nước tập trung theo dải thần kinh liên sườn, thường một bên thân mình.' }],
     commonSigns: ['Đau rát, bỏng, ngứa một bên ngực/lưng/mặt theo dải thần kinh (1-3 ngày trước phát ban).', 'Phát ban đỏ sau đó hình thành mụn nước nhỏ tập trung theo dải.', 'Mụn nước vỡ, đóng vảy trong 7-10 ngày.', 'Có thể sốt nhẹ, mệt mỏi trước khi phát ban.'],
@@ -125,7 +126,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   {
     id: 'mun-9',
     category: 'MỤN & DA LIỄU',
-    title: 'Eczema / Viêm da cơ địa (Atopic Dermatitis)',
+    title: 'Viêm da cơ địa (Eczema / Atopic Dermatitis)',
     shortDescription: 'Bệnh viêm da mạn tính do cơ địa dị ứng, thường xuất hiện từ nhỏ, diễn tiến từng đợt với triệu chứng đỏ, ngứa, khô da điển hình. Yếu tố di truyền mạnh, bùng phát bởi stress, thời tiết, thực phẩm.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/b/b8/Atopic_dermatitis.jpg', caption: 'Eczema ở trẻ: da đỏ, khô, bong tróc ở vùng khuỷu tay, đặc trưng của viêm da cơ địa.' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Atopic_dermatitis_child.jpg', caption: 'Viêm da cơ địa ở trẻ nhũ nhi: tổn thương ở má, trán với da đỏ ửng, khô, có vảy.' }],
     commonSigns: ['Da khô, đỏ, ngứa dữ dội, đặc biệt về đêm và giao mùa.', 'Vị trí đặc trưng: khuỷu tay, đầu gối (trẻ lớn); má, trán (trẻ nhũ nhi).', 'Da dày, lichen hóa (da vằn vằn) do gãi mạn.', 'Tiền sử gia đình có hen, viêm mũi dị ứng, dị ứng thực phẩm.'],
@@ -138,7 +139,7 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   {
     id: 'mun-10',
     category: 'MỤN & DA LIỄU',
-    title: 'Mụn cóc (Warts – Verruca Vulgaris)',
+    title: 'Mụn cóc (Warts - Verruca Vulgaris)',
     shortDescription: 'Bướu da lành tính do virus HPV (Human Papillomavirus) gây ra. Xâm nhập qua các vết xước nhỏ trên da. Phổ biến ở học sinh, đặc biệt ở tay, ngón tay, lòng bàn chân. Có thể tự khỏi sau vài tháng đến vài năm.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/Common_warts.jpg', caption: 'Mụn cóc thông thường ở ngón tay: bề mặt thô, sần, có các điểm đen nhỏ (mao mạch bị tắc).' }, { url: 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Plantar_wart.jpg', caption: 'Mụn cóc lòng bàn chân: bề mặt phẳng do bị đè nén, đau khi đi lại.' }],
     commonSigns: ['Bướu sần cứng, bề mặt thô, thường màu da hoặc hơi nâu.', 'Có các điểm đen nhỏ trên bề mặt (mao mạch bị tắc – dấu hiệu phân biệt với chai).', 'Thường ở ngón tay, mu bàn tay, lòng bàn chân.', 'Mụn cóc phẳng (flat warts) cũng phổ biến ở tuổi học đường.'],
@@ -165,19 +166,6 @@ const HEALBOOK_DATA: HealbookTopic[] = [
   {
     id: 'tcm-2',
     category: 'BỆNH LÂY NHIỄM',
-    title: 'Sởi (Measles)',
-    shortDescription: 'Bệnh truyền nhiễm qua đường hô hấp do virus Measles. Biểu hiện sốt cao, ho, phát ban đỏ toàn thân. Có thể gây biến chứng viêm tai, viêm phổi, viêm não.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Measles_rash_PHIL_4497_lores.jpg', caption: 'Ban đỏ đặc trưng của bệnh sởi lan tỏa toàn thân, thường bắt đầu sau tai và lan xuống.' }],
-    commonSigns: ['Sốt cao dần, ho, chảy nước mũi, đỏ mắt.', 'Xuất hiện ban đỏ lan tỏa từ sau tai xuống mặt, thân, tay chân.', 'Trong miệng có đốm trắng (hạt Koplik) ở niêm mạc má.', 'Trẻ mệt mỏi, biếng ăn, có thể tiêu chảy.'],
-    schoolContext: 'Lây qua giọt bắn đường hô hấp khi ho, hắt hơi. Rất dễ lây trong lớp học, đặc biệt khi chưa tiêm vaccine. Một trẻ bệnh có thể lây cho 12-18 trẻ khác.',
-    dangerSigns: ['Sốt rất cao >40°C, co giật.', 'Khó thở, thở nhanh, tím tái.', 'Phát ban không đều, xuất huyết dưới da.', 'Trẻ lừ đừ, không nhận ra người thân.'],
-    safeActions: ['Đưa trẻ đi khám ngay, cách ly tại nhà.', 'Hạ sốt bằng paracetamol theo liều.', 'Cho uống nhiều nước, ăn thức ăn mềm.', 'Giữ vệ sinh mũi, miệng, mắt cho trẻ.'],
-    references: [{ title: 'Bộ Y tế VN', url: 'https://moh.gov.vn' }],
-    samplePrompt: 'Trẻ sốt cao, ho, phát ban đỏ lan từ tai xuống toàn thân.'
-  },
-  {
-    id: 'tcm-3',
-    category: 'BỆNH LÂY NHIỄM',
     title: 'Thủy đậu (Chickenpox)',
     shortDescription: 'Bệnh do virus Varicella-Zoster, lây qua đường hô hấp và tiếp xúc. Biểu hiện mụn nước trên nền da đỏ, ngứa, sốt nhẹ. Có thể gây biến chứng viêm da nhiễm trùng, viêm phổi.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Chickenpox_blister-%28closeup%29.jpg', caption: 'Mụn nước chứa dịch trong đặc trưng của bệnh thủy đậu trên nền da đỏ.' }],
@@ -189,62 +177,22 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     samplePrompt: 'Trẻ sốt nhẹ, có nhiều mụn nước trong ở mặt và thân.'
   },
   {
+    id: 'tcm-3',
+    category: 'BỆNH LÂY NHIỄM',
+    title: 'Cúm (Influenza)',
+    shortDescription: 'Bệnh hô hấp cấp do virus Influenza (A, B, C). Lây qua đường hô hấp, bùng phát theo mùa (mùa lạnh, giao mùa). Triệu chứng nặng hơn cảm thường, có thể gây biến chứng viêm phổi.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/H1N1_Influenza_Virus_Particles_%288411599236%29.jpg/250px-H1N1_Influenza_Virus_Particles_%288411599236%29.jpg', caption: 'Virus Influenza H1N1 qua kính hiển vi điện tử - có các gai protein bề mặt.' }],
+    commonSigns: ['Sốt cao đột ngột 39-40°C, run rẩy, ớn lạnh.', 'Đau đầu dữ dội, đau cơ toàn thân.', 'Ho dữ dội, đau ngực khi ho.', 'Mệt mỏi nặng, nằm liệt giường 3-5 ngày.'],
+    schoolContext: 'Lây rất nhanh qua giọt bắn khi ho, hắt hơi, nói chuyện. Học sinh có thể lây cho nhau trong lớp học thông thoáng kém. Vaccine cúm hàng năm giúp giảm nguy cơ 40-60%.',
+    dangerSigns: ['Khó thở, thở nhanh, thở gấp.', 'Sốt không hạ hoặc sốt lại sau 3-4 ngày.', 'Đau ngực dữ dội, ho ra máu.', 'Lú lẫn, không tỉnh táo, co giật.'],
+    safeActions: ['Cách ly trẻ tại nhà khi có triệu chứng.', 'Hạ sốt bằng paracetamol, uống nhiều nước.', 'Nghỉ ngơi đầy đủ, ăn thức ăn dễ tiêu.', 'Đeo khẩu trang khi chăm sóc trẻ.'],
+    references: [{ title: 'WHO Influenza', url: 'https://who.int/influenza' }],
+    samplePrompt: 'Trẻ sốt cao đột ngột, đau đầu dữ dội, ho, đau cơ, mệt liệt giường.'
+  },
+  {
     id: 'tcm-4',
     category: 'BỆNH LÂY NHIỄM',
-    title: 'Rubella (Sởi Đức)',
-    shortDescription: 'Bệnh do virus Rubella, lây qua đường hô hấp. Triệu chứng nhẹ: sốt, phát ban hồng, sưng hạch sau tai và gáy. Nguy hiểm nhất với phụ nữ mang thai.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/0/03/Rubella.jpg', caption: 'Ban hồng phẳng đặc trưng của bệnh Rubella trên da bụng.' }],
-    commonSigns: ['Sốt nhẹ thoáng qua hoặc không sốt.', 'Phát ban hồng nhạt, phẳng, lan từ mặt xuống thân và tay chân.', 'Sưng đau hạch sau tai, gáy, sau cổ.', 'Đau khớp nhẹ, đặc biệt ở người lớn.'],
-    schoolContext: 'Lây qua giọt bắn đường hô hấp. Dễ bùng phát thành dịch trong trường học, nhất là ở các trường nội trú. Trẻ bệnh lây lan từ 1 ngày trước đến 7 ngày sau phát ban.',
-    dangerSigns: ['Phát ban kéo dài trên 3 ngày hoặc lan rộng.', 'Sưng hạch rất to, đau nhức dữ dội.', 'Đau khớp dữ dội, sưng khớp.', 'Trẻ sốt cao kèm đau đầu nặng.'],
-    safeActions: ['Cách ly trẻ tại nhà 7 ngày sau phát ban.', 'Nghỉ ngơi, uống nhiều nước.', 'Hạ sốt bằng paracetamol nếu cần.', 'Không dùng aspirin cho trẻ (nguy cơ hội chứng Reye).'],
-    references: [{ title: 'WHO Rubella', url: 'https://who.int' }],
-    samplePrompt: 'Trẻ phát ban hồng nhạt lan từ mặt xuống thân, sưng hạch sau tai.'
-  },
-  {
-    id: 'tcm-5',
-    category: 'BỆNH LÂY NHIỄM',
-    title: 'Quai bị (Mumps)',
-    shortDescription: 'Bệnh do virus Paramyxovirus, lây qua đường hô hấp. Biểu hiện sưng đau tuyến nước bọt mang tai một hoặc hai bên, sốt, đau đầu.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/8/80/Mumps_PHIL_130_lores.jpg', caption: 'Sưng to vùng mang tai một bên đặc trưng của bệnh quai bị.' }],
-    commonSigns: ['Sốt nhẹ đến vừa, đau đầu, mệt mỏi.', 'Sưng đau tuyến mang tai một hoặc hai bên.', 'Đau khi nhai, nuốt, đặc biệt khi ăn chua.', 'Da trên tuyến mang tai căng bóng, đỏ nhẹ.'],
-    schoolContext: 'Lây qua giọt bắn khi ho, hắt hơi, nói chuyện. Virus có trong nước bọt từ vài ngày trước đến vài ngày sau khi sưng tuyến. Một lớp học có thể bị lây nhiễm chéo nếu không cách ly.',
-    dangerSigns: ['Sưng to dữ dội, da đỏ bóng, đau không chịu được.', 'Sốt cao liên tục kèm đau bụng (viêm tụy).', 'Đau đầu dữ dội, cứng cổ, nôn (có thể viêm màng não).', 'Sưng kèm đau vùng bụng dưới (có thể viêm tinh hoàn ở bé trai).'],
-    safeActions: ['Cách ly trẻ tại nhà ít nhất 9 ngày sau sưng tuyến.', 'Ăn thức ăn lỏng, mềm, không chua, không cay.', 'Chườm ấm vùng tuyến mang tai.', 'Theo dõi biến chứng, đưa trẻ khám nếu sốt cao hoặc đau bụng.'],
-    references: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }],
-    samplePrompt: 'Trẻ sưng to vùng mang tai hai bên, đau khi nhai.'
-  },
-  {
-    id: 'tcm-6',
-    category: 'BỆNH LÂY NHIỄM',
-    title: 'Sốt xuất huyết (Dengue)',
-    shortDescription: 'Bệnh do virus Dengue, lây qua muỗi Aedes aegypti đốt. Biểu hiện sốt cao đột ngột, đau đầu dữ dội, đau sau mắt, phát ban, đau cơ xương khớp. Có thể trở nặng thành sốc Dengue.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Dengue_rash_1.jpg', caption: 'Ban xuất huyết đặc trưng trên da trong bệnh sốt xuất huyết Dengue.' }],
-    commonSigns: ['Sốt cao đột ngột 39-40°C, đau đầu dữ dội.', 'Đau sau mắt (retro-orbital pain).', 'Đau cơ, đau xương, đau khớp toàn thân.', 'Phát ban đỏ hoặc xuất huyết da, có thể chảy máu chân răng.'],
-    schoolContext: 'Muỗi Aedes đốt ban ngày, sinh sống trong các vũng nước đọng quanh trường học (lọ hoa, máng nước, vỏ lon, lốp xe...). Học sinh có thể mang virus đến trường dù chưa phát bệnh rõ ràng.',
-    dangerSigns: ['Sốt cao không hạ hoặc sốt lại sau 2-3 ngày.', 'Nôn ói dữ dội, đau bụng liên tục.', 'Chảy máu cam, chảy máu chân răng, kinh nguyệt kéo dài.', 'Da lạnh, môi tái, tiểu ít hoặc không có tiểu.'],
-    safeActions: ['Cho trẻ uống nhiều nước, oresol, nước trái cây.', 'Hạ sốt bằng paracetamol (KHÔNG dùng aspirin/ibuprofen).', 'Theo dõi số lượng nước tiểu, dấu hiệu xuất huyết.', 'Đưa trẻ đi khám ngay khi có dấu hiệu nặng.'],
-    references: [{ title: 'WHO Dengue', url: 'https://who.int/health-topics/dengue' }],
-    samplePrompt: 'Trẻ sốt cao đột ngột, đau đầu dữ dội, đau sau mắt, nổi ban đỏ trên da.'
-  },
-  {
-    id: 'tcm-7',
-    category: 'BỆNH LÂY NHIỄM',
-    title: 'COVID-19 (Corona)',
-    shortDescription: 'Bệnh do virus SARS-CoV-2, lây qua đường hô hấp và tiếp xúc. Triệu chứng đa dạng từ không có triệu chứng đến viêm phổi nặng. Vẫn cần phòng ngừa trong môi trường học đường.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/2/21/SARS-CoV-2_virion_animation.gif', caption: 'Hình ảnh virus SARS-CoV-2 với các gai protein bề mặt đặc trưng.' }],
-    commonSigns: ['Sốt hoặc ớn lạnh, ho (hoặc ho khan).', 'Đau họng, nghẹt mũi hoặc chảy mũi.', 'Mệt mỏi, đau đầu, đau cơ toàn thân.', 'Mất vị giác hoặc khứu giác đột ngột.'],
-    schoolContext: 'Lây qua giọt bắn khi ho, hắt hơi, nói chuyện và tiếp xúc gần. Trong lớp học thông thoáng kém, nguy cơ lây chéo cao. Học sinh có thể mang virus dù không triệu chứng.',
-    dangerSigns: ['Khó thở, thở nhanh, thở gấp.', 'Đau hoặc tức ngực dai dẳng.', 'Lú lẫn, không tỉnh táo, môi/da tím tái.', 'Sốt cao liên tục không hạ dù thuốc.'],
-    safeActions: ['Trẻ có triệu chứng cần nghỉ học và xét nghiệm.', 'Đeo khẩu trang khi có triệu chứng ho, hắt hơi.', 'Rửa tay thường xuyên bằng xà phòng.', 'Thông thoáng phòng học, giữ khoảng cách khi có dịch.'],
-    references: [{ title: 'WHO COVID-19', url: 'https://who.int/covid-19' }],
-    samplePrompt: 'Trẻ sốt, ho, đau họng, mệt mỏi và mất vị giác đột ngột.'
-  },
-  // ── MẮT ──
-  {
-    id: 'mat-1',
-    category: 'SỨC KHỎE TÂM LÝ',
-    title: 'Viêm kết mạc (Đau mắt đỏ)',
+    title: 'Đau mắt đỏ (Viêm kết mạc - Conjunctivitis)',
     shortDescription: 'Viêm lớp màng bao phủ lòng trắng mắt và mặt trong mi mắt. Do virus (Adenovirus) hoặc vi khuẩn. Rất dễ lây lan trong trường học qua tiếp xúc.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/3/30/Conjunctivitis_5174.jpg', caption: 'Lòng trắng mắt đỏ rực do viêm kết mạc - các mạch máu giãn nở rõ rệt.' }],
     commonSigns: ['Lòng trắng mắt đỏ rực, đỏ tươi hoặc hồng.', 'Cảm giác cộm, rát như có cát trong mắt.', 'Ghèn (dử) mắt nhiều, trắng trong hoặc vàng xanh.', 'Chảy nước mắt, sưng mí mắt, nhạy cảm ánh sáng.'],
@@ -254,53 +202,39 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     references: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }],
     samplePrompt: 'Mắt bị đỏ rực, chảy nước mắt, có nhiều ghèn vàng dính mi.'
   },
-  // ── HÔ HẤP ──
+  // ── SỨC KHỎE TÂM LÝ ──
   {
-    id: 'hh-1',
-    category: 'BỆNH LÂY NHIỄM',
-    title: 'Cúm (Influenza)',
-    shortDescription: 'Bệnh hô hấp cấp do virus Influenza (A, B, C). Lây qua đường hô hấp, bùng phát theo mùa (mùa lạnh, giao mùa). Triệu chứng nặng hơn cảm thường, có thể gây biến chứng viêm phổi.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/H1N1_Influenza_Virus_Particles_%288411599236%29.jpg/250px-H1N1_Influenza_Virus_Particles_%288411599236%29.jpg', caption: 'PhParticle virus Influenza H1N1 qua kính hiển vi điện tử - có các gai protein bề mặt.' }],
-    commonSigns: ['Sốt cao đột ngột 39-40°C, run rẩy, ớn lạnh.', 'Đau đầu dữ dội, đau cơ toàn thân.', 'Ho dữ dội, đau ngực khi ho.', 'Mệt mỏi nặng, nằm liệt giường 3-5 ngày.'],
-    schoolContext: 'Lây rất nhanh qua giọt bắn khi ho, hắt hơi, nói chuyện. Học sinh có thể lây cho nhau trong lớp học thông thoáng kém. Vaccine cúm hàng năm giúp giảm nguy cơ 40-60%.',
-    dangerSigns: ['Khó thở, thở nhanh, thở gấp.', 'Sốt không hạ hoặc sốt lại sau 3-4 ngày.', 'Đau ngực dữ dội, ho ra máu.', 'Lú lẫn, không tỉnh táo, co giật.'],
-    safeActions: ['Cách ly trẻ tại nhà khi có triệu chứng.', 'Hạ sốt bằng paracetamol, uống nhiều nước.', 'Nghỉ ngơi đầy đủ, ăn thức ăn dễ tiêu.', 'Đeo khẩu trang khi chăm sóc trẻ.'],
-    references: [{ title: 'WHO Influenza', url: 'https://who.int/influenza' }],
-    samplePrompt: 'Trẻ sốt cao đột ngột, đau đầu dữ dội, ho, đau cơ, mệt liệt giường.'
+    id: 'tl-1',
+    category: 'SỨC KHỎE TÂM LÝ',
+    title: 'Stress học tập & Rối loạn giấc ngủ',
+    shortDescription: 'Tình trạng căng thẳng tâm lý do áp lực học tập (thi cử, bài tập nhiều), dẫn đến mất ngủ, lo âu, đau đầu, thay đổi cảm xúc. Rất phổ biến ở học sinh THCS và THPT, đặc biệt giai đoạn thi học kỳ.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/7/7f/Stress.jpg', caption: 'Biểu hiện stress: căng thẳng, mệt mỏi, khó tập trung do áp lực học tập.' }],
+    commonSigns: ['Mất ngủ hoặc ngủ không sâu giấc, thức dậy mệt.', 'Đau đầu, đau bụng không rõ nguyên nhân thực thể.', 'Lo âu, bồn chồn, khó tập trung trong học tập.', 'Thay đổi cảm xúc: dễ khóc, cáu gắt, cô lập.'],
+    schoolContext: 'Áp lực thi cử, điểm số, kỳ vọng từ gia đình, bài tập về nhà quá nhiều. Học sinh lớp cuối (lớp 9, lớp 12) đặc biệt dễ bị stress nặng. Giao mùa thi (cuối học kỳ) là thời điểm cao điểm.',
+    dangerSigns: ['Không ngủ được nhiều ngày liên tiếp.', 'Có ý nghĩ tự làm đau bản thân hoặc muốn chấm dứt cuộc sống.', 'Hoảng sợ tột độ, cơn hoảng panic.', 'Bỏ ăn, bỏ học, cô lập hoàn toàn.'],
+    safeActions: ['Tạo không gian để trẻ chia sẻ, lắng nghe KHÔNG phán xét.', 'Sắp xếp thời gian biểu học tập và nghỉ ngơi hợp lý.', 'Khuyến khích vận động nhẹ: đi bộ, yoga, thể thao.', 'Đưa trẻ gặp chuyên gia tâm lý học đường nếu kéo dài trên 2 tuần.'],
+    references: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }],
+    samplePrompt: 'Học sinh lớp 11 gần thi học kỳ: mất ngủ, đau đầu, bỏ ăn, không muốn đi học.'
   },
-  // ── TIÊU HÓA ──
   {
-    id: 'th-1',
-    category: 'TIÊU HÓA',
-    title: 'Tiêu chảy nhiễm trùng (Rotavirus)',
-    shortDescription: 'Tiêu chảy cấp do virus Rotavirus, phổ biến nhất ở trẻ dưới 5 tuổi. Lây qua đường phân - miệng (fecal-oral). Biểu hiện nôn ói, tiêu chảy nhiều lần, sốt. Nguy cơ mất nước cao.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Rotavirus.jpg', caption: 'Virus Rotavirus hình bánh xe đặc trưng - nguyên nhân phổ biến nhất của tiêu chảy cấp ở trẻ em.' }],
-    commonSigns: ['Nôn ói dữ dội trước, sau đó tiêu chảy.', 'Phân lỏng, nhiều nước, có thể có nhầy, bọt.', 'Sốt nhẹ đến vừa (38-39°C).', 'Trẻ quấy khóc, biếng ăn, mệt lả.'],
-    schoolContext: 'Lây qua đường phân - miệng: trẻ không rửa tay sau khi đi vệ sinh, dùng chung đồ chơi, khăn. Rotavirus tồn tại lâu trên bề mặt. Rất dễ bùng phát thành dịch trong trường mầm non.',
-    dangerSigns: ['Tiêu chảy trên 10 lần/ngày, phân có máu.', 'Mắt trũng, khóc không có nước mắt, da nhăn.', 'Bé bỏ bú, bỏ uống, lừ đừ.', 'Sốt cao không hạ, co giật do mất nước.'],
-    safeActions: ['Cho bú sữa mẹ hoặc oresol liên tục để bù nước.', 'Cho ăn thức ăn dễ tiêu: cháo, soup, nước hoa quả.', 'Rửa tay kỹ bằng xà phòng sau mỗi lần thay tã, đi vệ sinh.', 'Đưa trẻ khám ngay nếu có dấu hiệu mất nước nặng.'],
+    id: 'tl-2',
+    category: 'SỨC KHỎE TÂM LÝ',
+    title: 'Thay đổi nội tiết tuổi dậy thì',
+    shortDescription: 'Giai đoạn chuyển tiếp sinh lý từ trẻ em sang người lớn, đánh dấu bởi sự thay đổi hormone nội tiết mạnh mẽ. Ở nữ bắt đầu 8-13 tuổi, ở nam 9-14 tuổi. Gây ra nhiều thay đổi về thể chất và tâm lý.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Teenager-isolated-on-white.jpg/440px-Teenager-isolated-on-white.jpg', caption: 'Thanh thiếu niên tuổi dậy thì - giai đoạn thay đổi mạnh mẽ về thể chất và tâm lý.' }],
+    commonSigns: ['Phát triển chiều cao nhanh, thay đổi hình dạng cơ thể.', 'Nổi mụn trứng cá (do tăng hormone androgen).', 'Thay đổi cảm xúc thất thường, dễ kích động.', 'Bắt đầu có kinh nguyệt (nữ), tăng ham muốn tình dục (nam/nữ).'],
+    schoolContext: 'Học sinh cảm thấy tự ti về ngoại hình thay đổi, so sánh với bạn bè. Áp lực từ mạng xã hội (Instagram, TikTok) làm trầm trọng thêm lo âu ngoại hình. Cần giáo dục sức khỏe sinh sản phù hợp lứa tuổi.',
+    dangerSigns: ['Rối loạn ăn uống: nhịn ăn, ăn quá nhiều để kiểm soát cân nặng.', 'Tự ti quá mức dẫn đến trầm cảm, cô lập.', 'Hành vi tự hại: cắt tay, tổn thương bản thân.', 'Quan hệ tình dục sớm không an toàn.'],
+    safeActions: ['Giáo dục kiến thức dậy thì phù hợp lứa tuổi cho cả phụ huynh và học sinh.', 'Khuyến khích cha mẹ trò chuyện cởi mở với con về thay đổi cơ thể.', 'Hướng dẫn vệ sinh cá nhân: rửa mặt, chăm sóc da, vệ sinh lúc kinh nguyệt.', 'Đưa trẻ đi khám nếu dậy thì quá sớm hoặc quá muộn.'],
     references: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }],
-    samplePrompt: 'Trẻ nôn ói nhiều, tiêu chảy phân lỏng nhiều lần, sốt nhẹ, quấy khóc.'
+    samplePrompt: 'Học sinh nữ lớp 6 bắt đầu có kinh nguyệt, nổi nhiều mụn, tự ti về ngoại hình.'
   },
   // ── VỆ SINH ──
   {
-    id: 'ks-1',
-    category: 'VỆ SINH',
-    title: 'Chấy rận (Head Lice)',
-    shortDescription: 'Ký sinh trùng trên da đầu, lây qua tiếp xúc đầu - đầu hoặc dùng chung vật dụng cá nhân. Phổ biến ở trẻ mầm non và tiểu học. Gây ngứa dữ dội da đầu.',
-    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/Head_louse_%28251_27%29_Adult_and_egg%2C_from_a_human_host.jpg', caption: 'Chấy (bọ chét) trên tóc người - con trưởng thành và trứng (gàu) bám chặt vào sợi tóc.' }],
-    commonSigns: ['Ngứa da đầu dữ dội, nhất là sau tai và gáy.', 'Có thể nhìn thấy chấy (con nhỏ màu xám) bò trên tóc.', 'Trứng chấy (gàu) bám chặt vào gần chân tóc.', 'Da đầu có thể có vết trầy do gãi, sưng đỏ.'],
-    schoolContext: 'Lây qua tiếp xúc trực tiếp đầu - đầu khi chơi, ôm nhau, hoặc dùng chung lược, khăn, mũ, gối. Rất phổ biến trong các trường mầm non, tiểu học. Không phản ánh vệ sinh kém.',
-    dangerSigns: ['Ngứa rất dữ dội không ngủ được.', 'Có vết trầy sâu, chảy máu, có mủ trên da đầu.', 'Sưng hạch ở cổ, sau tai.', 'Da đầu bị nhiễm trùng lan rộng.'],
-    safeActions: ['Dùng thuốc trị chấy theo chỉ định (permethrin 1%).', 'Gội đầu bằng dầu gội trị chấy, lặp lại sau 7 ngày.', 'Dùng lược chấy chải kỹ tóc ướt hàng ngày.', 'Giặt khăn, ga giường, mũ bằng nước sôi.'],
-    references: [{ title: 'CDC Head Lice', url: 'https://cdc.gov/parasites/lice/head' }],
-    samplePrompt: 'Trẻ ngứa da đầu dữ dội, nhất là sau tai, có thấy những con nhỏ bò trên tóc.'
-  },
-  {
-    id: 'ks-2',
+    id: 'vs-1',
     category: 'VỆ SINH',
     title: 'Sốt tinh hồng nhiệt (Scarlet Fever)',
-    shortDescription: 'Bệnh do vi khuẩn Streptococcus nhóm A, lây qua đường hô hấp. Biểu hiện sốt cao, phát ban đỏ như giấy nhám, lưỡi dâu tây. Có thể gây biến chứng thận, tim nếu không điều trị.',
+    shortDescription: 'Bệnh do vi khuẩn Streptococcus nhóm A, lây qua đường hô hấp. Biểu hiện sốt cao, phát ban đỏ như giấy nhám, lưỡi dâu tây. Có thể gây biến chứng thận, tim nếu không điều trị kịp thời.',
     educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/0/02/Scharlach.JPG', caption: 'Lưỡi dâu tây đặc trưng của bệnh sốt tinh hồng nhiệt - lưỡi đỏ bóng với các hạt nổi rõ.' }],
     commonSigns: ['Sốt cao đột ngột, đau họng, amidan sưng đỏ có mủ.', 'Phát ban đỏ như giấy nhám trên toàn thân.', 'Lưỡi đỏ bóng, các hạt lưỡi nổi rõ (lưỡi dâu tây).', 'Da mặt đỏ nhưng vùng quanh miệng trắng (tam sắc).'],
     schoolContext: 'Lây qua giọt bắn đường hô hấp khi ho, hắt hơi, nói chuyện. Vi khuẩn Streptococcus tồn tại trong mũi họng trẻ bệnh từ vài ngày trước đến vài tuần sau khi khỏi.',
@@ -308,9 +242,21 @@ const HEALBOOK_DATA: HealbookTopic[] = [
     safeActions: ['Đưa trẻ khám để được kê kháng sinh (penicillin/amoxicillin).', 'Uống kháng sinh đủ liệu trình 10 ngày.', 'Nghỉ học ít nhất 24h sau khi hết sốt và đang dùng kháng sinh.', 'Hạ sốt, uống nhiều nước, ăn đồ mềm.'],
     references: [{ title: 'NHS Scarlet Fever', url: 'https://nhs.uk/conditions/scarlet-fever' }],
     samplePrompt: 'Trẻ sốt cao, đau họng, phát ban đỏ như giấy nhám toàn thân, lưỡi đỏ bóng.'
+  },
+  {
+    id: 'vs-2',
+    category: 'VỆ SINH',
+    title: 'Nhiễm khuẩn da (Bacterial Skin Infection)',
+    shortDescription: 'Nhiễm trùng da do vi khuẩn (thường là tụ cầu và liên cầu), biểu hiện từ viêm nang lông đơn giản đến viêm mô tế bào nặng. Phổ biến khi da bị tổn thương (gãi, trầy, vết cắn côn trùng) và vệ sinh kém.',
+    educationalImages: [{ url: 'https://upload.wikimedia.org/wikipedia/commons/8/80/Cellulitis_leg.jpg', caption: 'Viêm mô tế bào: da sưng đỏ nóng, lan rộng nhanh trên chân - cần điều trị kháng sinh.' }],
+    commonSigns: ['Da đỏ, sưng, nóng, đau tại vùng tổn thương.', 'Có thể có mủ, vết trợt, vết loét.', 'Sốt, hạch sưng đau gần vùng nhiễm trùng.', 'Lan nhanh trong vài giờ nếu không điều trị.'],
+    schoolContext: 'Trẻ bị trầy da khi chơi thể thao, ngã trong sân trường, hoặc bị côn trùng đốt rồi gãi nhiễm trùng. Điều kiện vệ sinh kém trong ký túc xá, nhà ở tập thể là yếu tố nguy cơ.',
+    dangerSigns: ['Da đỏ sưng lan nhanh, kèm sốt cao.', 'Mủ tích tụ thành áp xe (nhọt), cần rạch mủ.', 'Nhiễm trùng lan vào máu (nhiễm trùng huyết) – DẤU HIỆU CẤP CỨU.', 'Hạch sưng to, đau nhức dữ dội.'],
+    safeActions: ['Rửa sạch vùng da bị tổn thương bằng nước và xà phòng.', 'Thoa kem kháng sinh (mupirocin) nếu có nhẹ.', 'Giữ sạch và khô, không băng kín quá lâu.', 'Đi khám ngay nếu có sốt, lan rộng nhanh.'],
+    references: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }],
+    samplePrompt: 'Học sinh bị trầy da khi chơi thể thao, vết trầy sưng đỏ, có mủ vàng, đau.'
   }
-];
-
+]; 
 // ── WEEKLY TRENDS DATA ──────────────────────────────────────
 const WEEKLY_TRENDS: WeeklyTrend[] = [
   {
@@ -330,38 +276,38 @@ const WEEKLY_TRENDS: WeeklyTrend[] = [
     description: 'Mùa mưa bắt đầu, số ca sốt xuất huyết nhập viện tăng 25%. Kiểm tra lớp học ngay: lọ hoa, vũng nước, vỏ lon đều là ổ muỗi.',
     category: 'BỆNH LÂY NHIỄM',
     alertLevel: 'warn',
-    relatedTopicId: 'tcm-6',
-    relatedTopicTitle: 'Sốt xuất huyết (Dengue)',
+    relatedTopicId: 'tcm-3',
+    relatedTopicTitle: 'Cúm (Influenza)',
   },
   {
     id: 'trend-3',
     icon: '📱',
-    title: 'Học online tăng – Mỏi mắt ở học sinh',
-    description: 'Sau kỳ thi, thời gian nhìn màn hình tăng vọt. 1/3 học sinh THCS than phiền đau đầu, mờ mắt cuối ngày.',
-    category: 'BỆNH LÂY NHIỄM',
+    title: 'Mùa thi – Stress học tập bùng phát',
+    description: 'Giai đoạn thi học kỳ, phòng y tế ghi nhận nhiều học sinh đến vì đau đầu, mất ngủ, lo âu. Đây là tín hiệu cần quan tâm.',
+    category: 'SỨC KHỎE TÂM LÝ',
     alertLevel: 'warn',
     relatedTopicId: 'tl-1',
-    relatedTopicTitle: 'Cận thị & Mỏi mắt',
+    relatedTopicTitle: 'Stress học tập & Rối loạn giấc ngủ',
   },
   {
     id: 'trend-4',
-    icon: '🍜',
-    title: 'Ký túc xá – Ngộ độc thực phẩm',
-    description: 'Trường nội trú phát hiện 12 ca đau bụng, tiêu chảy trong tuần. Nguồn thức ăn ngoài cổng trường là đối tượng nghi ngờ hàng đầu.',
-    category: 'TIÊU HÓA',
+    icon: '🧴',
+    title: 'Bướu nước bùng phát ở học sinh',
+    description: 'Nhiều trường ghi nhận ca mụn cóc (warts) lây lan qua bể bơi, phòng thay đồ. Hướng dẫn học sinh không dùng chung đồ bơi.',
+    category: 'MỤN & DA LIỄU',
     alertLevel: 'warn',
-    relatedTopicId: 'th-1',
-    relatedTopicTitle: 'Tiêu chảy nhiễm trùng (Rotavirus)',
+    relatedTopicId: 'mun-10',
+    relatedTopicTitle: 'Mụn cóc (Warts)',
   },
   {
     id: 'trend-5',
-    icon: '💤',
-    title: 'Thi cử – Stress & Rối loạn giấc ngủ',
-    description: 'Giai đoạn thi học kỳ, phòng y tế ghi nhận nhiều học sinh đến vì đau đầu, mất ngủ, lo âu. Đây là tín hiệu cần quan tâm.',
-    category: 'SỨC KHỎE TÂM LÝ',
+    icon: '🧼',
+    title: 'Cách rửa mặt đúng cho học sinh tuổi dậy thì',
+    description: 'Sai lầm phổ biến: rửa mặt bằng xà phòng tắm, dùng khăn bông chung, nặn mụn. Gây viêm nhiễm và sẹo lâu dài. Xem ngay hướng dẫn đúng cách.',
+    category: 'MỤN & DA LIỄU',
     alertLevel: 'info',
-    relatedTopicId: 'tl-1',
-    relatedTopicTitle: 'Rối loạn giấc ngủ & Stress học tập',
+    relatedTopicId: 'mun-1',
+    relatedTopicTitle: 'Mụn trứng cá (Acne Vulgaris)',
   },
 ];
 
@@ -751,13 +697,11 @@ const App: React.FC = () => {
   const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; hover: string; chip: string }> = {
     'MỤN & DA LIỄU':    { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-600', hover: 'hover:bg-red-50 hover:shadow-red-100', chip: 'bg-red-500 text-white' },
     'BỆNH LÂY NHIỄM':   { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600', hover: 'hover:bg-orange-50 hover:shadow-orange-100', chip: 'bg-orange-500 text-white' },
-    'THỊ LỰC':           { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-600', hover: 'hover:bg-violet-50 hover:shadow-violet-100', chip: 'bg-violet-500 text-white' },
     'SỨC KHỎE TÂM LÝ':  { bg: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-600', hover: 'hover:bg-pink-50 hover:shadow-pink-100', chip: 'bg-pink-500 text-white' },
-    'TIÊU HÓA':          { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-600', hover: 'hover:bg-green-50 hover:shadow-green-100', chip: 'bg-green-500 text-white' },
     'VỆ SINH':           { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-600', hover: 'hover:bg-cyan-50 hover:shadow-cyan-100', chip: 'bg-cyan-500 text-white' },
   };
 
-  const allCategories = ['MỤN & DA LIỄU', 'BỆNH LÂY NHIỄM', 'THỊ LỰC', 'SỨC KHỎE TÂM LÝ', 'TIÊU HÓA', 'VỆ SINH'];
+  const allCategories = ['MỤN & DA LIỄU', 'BỆNH LÂY NHIỄM', 'SỨC KHỎE TÂM LÝ', 'VỆ SINH'];
 
   const filteredHealbook = useMemo(() => {
     return HEALBOOK_DATA.filter(t => {
@@ -1356,7 +1300,7 @@ Trả lời súc tích, 3-5 bullet points.`
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="mb-8 space-y-4">
               <h2 className="text-4xl font-black text-slate-800 tracking-tight flex items-center gap-4">
-                <Activity className="text-blue-600" size={32} /> Thư viện EduHealth
+                <Activity className="text-blue-600" size={32} /> Bản tin sức khỏe học đường
               </h2>
               <p className="text-slate-500 text-base max-w-3xl font-medium leading-relaxed">
                 Bách khoa toàn thư thu nhỏ dành cho học sinh và phụ huynh. Cung cấp thông tin chuẩn xác về các dấu hiệu, cách phòng tránh lây lan trong môi trường học tập.
@@ -1367,7 +1311,7 @@ Trả lời súc tích, 3-5 bullet points.`
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp size={18} className="text-orange-500" />
-                <span className="text-xs font-black uppercase tracking-widest text-orange-500">Xu hướng sức khỏe học đường tuần này</span>
+                <span className="text-xs font-black uppercase tracking-widest text-orange-500">Bản tin sức khỏe học đường</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {WEEKLY_TRENDS.map((trend) => {
