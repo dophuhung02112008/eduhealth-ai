@@ -72,3 +72,39 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
 }
+
+// ── HOẠT ĐỘNG TABS ──────────────────────────────────────────────
+export type PostType = 'video' | 'article' | 'infographic';
+
+export type AuthorRole = 'Cán bộ y tế' | 'Giáo viên';
+
+export interface Reaction {
+  type: 'like' | 'love' | 'wow' | 'care' | 'fire';
+  count: number;
+  reacted: boolean; // current user has reacted
+}
+
+export interface Comment {
+  id: string;
+  authorName: string;
+  authorRole: AuthorRole | 'Học sinh' | 'Phụ huynh' | 'Khách';
+  content: string;
+  createdAt: string; // ISO string
+  avatarColor: string;
+}
+
+export interface ActivityPost {
+  id: string;
+  type: PostType;
+  title: string;
+  description: string;
+  content: string; // video URL, article text, or image URL
+  thumbnailUrl?: string; // for videos
+  authorName: string;
+  authorRole: AuthorRole;
+  createdAt: string; // ISO string
+  views: number;
+  reactions: Reaction[];
+  comments: Comment[];
+  tags: string[];
+}

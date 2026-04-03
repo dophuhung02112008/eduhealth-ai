@@ -9,9 +9,14 @@ import {
   ExternalLink, ShieldCheck, School, ChevronLeft,
   Users, Activity, Zap, Eye, Pill, Map as MapIcon,
   PenTool, Download, Image as ImageIcon, Layers, Trash2, Circle,
-  Flame, Bell, TrendingUp, Clock
+  Flame, Bell, TrendingUp, Clock,
+  Video, PlayCircle, MessageCircle, ThumbsUp,
+  Heart, Flame as FlameIcon, Star, BookmarkPlus,
+  Lock, Eye as EyeIcon, Plus, SendHorizontal,
+  XCircle, Check, ChevronDown, Globe, FileText as FileTextIcon,
+  Image as ImageIconAlt, UserCheck, Sparkles
 } from 'lucide-react';
-import { UrgencyLevel, HealthCase, HealbookTopic, UserRole, ChatMessage, WeeklyTrend } from './types';
+import { UrgencyLevel, HealthCase, HealbookTopic, UserRole, ChatMessage, WeeklyTrend, ActivityPost, AuthorRole, PostType } from './types';
 
 // Declare Leaflet globally since it's loaded via script tag
 declare var L: any;
@@ -321,8 +326,572 @@ const WEEKLY_TRENDS: WeeklyTrend[] = [
   },
 ];
 
+// ════════════════════════════════════════════════════════════
+// POST CARD COMPONENT
+// ════════════════════════════════════════════════════════════
+const REACTION_CONFIG = [
+  { type: 'like', emoji: '👍', label: 'Thích', color: 'hover:bg-blue-50 hover:text-blue-600' },
+  { type: 'love', emoji: '❤️', label: 'Yêu thích', color: 'hover:bg-red-50 hover:text-red-600' },
+  { type: 'wow',  emoji: '😮', label: 'Wow',  color: 'hover:bg-yellow-50 hover:text-yellow-600' },
+  { type: 'care', emoji: '🤗', label: 'Quan tâm', color: 'hover:bg-pink-50 hover:text-pink-600' },
+  { type: 'fire', emoji: '🔥', label: 'Hot', color: 'hover:bg-orange-50 hover:text-orange-600' },
+];
+
+function formatTimeAgo(isoString: string): string {
+  const now = Date.now();
+  const diff = now - new Date(isoString).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'Vừa xong';
+  if (m < 60) return `${m} phút trước`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h} giờ trước`;
+  const d = Math.floor(h / 24);
+  if (d < 30) return `${d} ngày trước`;
+  return new Date(isoString).toLocaleDateString('vi-VN');
+}
+
+function getTypeBadge(type: string) {
+  const map: Record<string, { bg: string; text: string; icon: string }> = {
+    video:        { bg: 'bg-red-100', text: 'text-red-600', icon: '🎬' },
+    article:      { bg: 'bg-blue-100', text: 'text-blue-600', icon: '📝' },
+    infographic:  { bg: 'bg-orange-100', text: 'text-orange-600', icon: '🖼️' },
+  };
+  return map[type] || map.article;
+}
+
+const PostCard: React.FC<{ post: ActivityPost; onOpen: () => void }> = ({ post, onOpen }) => {
+  const typeInfo = getTypeBadge(post.type);
+  const totalReactions = post.reactions.reduce((s, r) => s + r.count, 0);
+
+  return (
+    <div
+      onClick={onOpen}
+      className="bg-white rounded-3xl border border-slate-100 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer group overflow-hidden hover:-translate-y-1"
+    >
+      {/* Thumbnail */}
+      <div className="relative h-44 overflow-hidden bg-slate-100">
+        {post.type === 'video' ? (
+          post.thumbnailUrl ? (
+            <img src={post.thumbnailUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900">
+              <PlayCircle size={56} className="text-white/80" />
+            </div>
+          )
+        ) : post.thumbnailUrl ? (
+          <img src={post.thumbnailUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
+            {post.type === 'article' ? <FileTextIcon size={48} className="text-purple-400" /> : <ImageIconAlt size={48} className="text-orange-400" />}
+          </div>
+        )}
+        {post.type === 'video' && (
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 shadow-xl">
+              <PlayCircle size={32} className="text-rose-600" />
+            </div>
+          </div>
+        )}
+        <div className={`absolute top-3 left-3 ${typeInfo.bg} ${typeInfo.text} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5`}>
+          <span>{typeInfo.icon}</span>{post.type === 'video' ? 'Video' : post.type === 'article' ? 'Bài viết' : 'Infographic'}
+        </div>
+        {post.type === 'video' && (
+          <div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-0.5 rounded-md text-[10px] font-bold">
+            ▶ Xem video
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="p-5 space-y-3">
+        <div className="flex items-center gap-2">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-black shrink-0 ${
+            post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'
+          }`}>
+            {post.authorName[0]?.toUpperCase()}
+          </div>
+          <div>
+            <p className="text-xs font-black text-slate-700 leading-tight">{post.authorName}</p>
+            <p className={`text-[10px] font-medium leading-tight ${post.authorRole === 'Cán bộ y tế' ? 'text-blue-500' : 'text-purple-500'}`}>{post.authorRole}</p>
+          </div>
+          <div className="ml-auto text-[10px] text-slate-400 font-medium">{formatTimeAgo(post.createdAt)}</div>
+        </div>
+        <h3 className="text-sm font-black text-slate-800 leading-snug line-clamp-2 group-hover:text-rose-600 transition-colors">{post.title}</h3>
+        {post.description && (
+          <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{post.description}</p>
+        )}
+        {post.tags && post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {post.tags.slice(0, 3).map((tag, i) => (
+              <span key={i} className="bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full text-[10px] font-medium">#{tag}</span>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center gap-4 pt-2 border-t border-slate-100">
+          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+            <Eye size={13} />{post.views}
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+            <MessageCircle size={13} />{post.comments?.length || 0}
+          </div>
+          {totalReactions > 0 && (
+            <div className="flex items-center gap-1">
+              <span className="text-sm">{REACTION_CONFIG.find(r => r.type === post.reactions.find(pr => pr.count > 0)?.type)?.emoji}</span>
+              <span className="text-xs text-slate-400">{totalReactions}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ════════════════════════════════════════════════════════════
+// POST DETAIL MODAL
+// ════════════════════════════════════════════════════════════
+const PostDetailModal: React.FC<{ post: ActivityPost; onClose: () => void }> = ({ post, onClose }) => {
+  const [localPost, setLocalPost] = useState(post);
+  const [commentText, setCommentText] = useState('');
+  const [commentName, setCommentName] = useState('');
+  const [commentRole, setCommentRole] = useState<'Học sinh' | 'Phụ huynh' | 'Khách'>('Khách');
+  const [submittingComment, setSubmittingComment] = useState(false);
+  const [showAllComments, setShowAllComments] = useState(false);
+  const [showReactionBar, setShowReactionBar] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/activity/' + post.id + '/view', { method: 'POST' }).catch(() => {});
+  }, [post.id]);
+
+  const handleReact = async (reactionType: string) => {
+    try {
+      const res = await fetch('/api/activity/' + post.id + '/react', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reactionType }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLocalPost(prev => ({ ...prev, reactions: data.reactions }));
+        setShowReactionBar(false);
+      }
+    } catch {}
+  };
+
+  const handleComment = async () => {
+    if (!commentText.trim() || !commentName.trim()) return;
+    setSubmittingComment(true);
+    try {
+      const res = await fetch('/api/activity/' + post.id + '/comment', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authorName: commentName.trim(), authorRole: commentRole, content: commentText.trim() }),
+      });
+      if (res.ok) {
+        const newComment = await res.json();
+        setLocalPost(prev => ({ ...prev, comments: [...prev.comments, newComment] }));
+        setCommentText('');
+      }
+    } catch {}
+    setSubmittingComment(false);
+  };
+
+  const totalReactions = localPost.reactions.reduce((s, r) => s + r.count, 0);
+  const typeInfo = getTypeBadge(localPost.type);
+  const comments = showAllComments ? localPost.comments : localPost.comments.slice(-3);
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-end sm:items-center justify-center p-0 sm:p-6 animate-in fade-in duration-300">
+      <div className="bg-white w-full sm:max-w-2xl sm:rounded-[2rem] rounded-t-[2rem] max-h-[92vh] overflow-hidden shadow-2xl flex flex-col animate-in slide-in-from-bottom-4 duration-400">
+
+        {/* Header */}
+        <div className={`relative bg-gradient-to-r ${localPost.type === 'video' ? 'from-slate-800 to-slate-900' : localPost.type === 'article' ? 'from-blue-600 to-indigo-600' : 'from-orange-500 to-pink-500'} p-6 text-white shrink-0`}>
+          <button onClick={onClose} className="absolute top-4 right-4 bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors">
+            <X size={18} />
+          </button>
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`${typeInfo.bg} ${typeInfo.text} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1`}>
+              <span>{typeInfo.icon}</span>{localPost.type === 'video' ? 'Video' : localPost.type === 'article' ? 'Bài viết' : 'Infographic'}
+            </span>
+          </div>
+          <h2 className="text-xl font-black leading-tight pr-10">{localPost.title}</h2>
+          <div className="flex items-center gap-2 mt-2 opacity-80 text-sm">
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black ${
+              post.authorRole === 'Cán bộ y tế' ? 'bg-blue-400' : 'bg-purple-400'
+            }`}>{localPost.authorName[0]?.toUpperCase()}</div>
+            <span className="font-medium text-sm">{localPost.authorName}</span>
+            <span className="opacity-60">·</span>
+            <span className="text-xs opacity-70">{formatTimeAgo(localPost.createdAt)}</span>
+          </div>
+        </div>
+
+        {/* Scrollable body */}
+        <div className="overflow-y-auto flex-1 p-6 space-y-6">
+
+          {/* Media */}
+          {localPost.type === 'video' ? (
+            <div className="relative aspect-video bg-slate-900 rounded-2xl overflow-hidden">
+              <video src={localPost.content} controls className="w-full h-full object-contain" poster={localPost.thumbnailUrl} />
+            </div>
+          ) : localPost.type === 'infographic' && localPost.content ? (
+            <div className="rounded-2xl overflow-hidden shadow-lg">
+              <img src={localPost.content} alt={localPost.title} className="w-full" />
+            </div>
+          ) : null}
+
+          {localPost.description && (
+            <p className="text-slate-600 text-sm leading-relaxed">{localPost.description}</p>
+          )}
+
+          {localPost.type === 'article' && localPost.content && (
+            <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">{localPost.content}</p>
+          )}
+
+          {localPost.tags && localPost.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {localPost.tags.map((tag, i) => (
+                <span key={i} className="bg-purple-50 text-purple-600 px-3 py-1 rounded-full text-xs font-medium">#{tag}</span>
+              ))}
+            </div>
+          )}
+
+          {/* Reactions & Stats */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {localPost.reactions.filter(r => r.count > 0).slice(0, 3).map(r => {
+                const cfg = REACTION_CONFIG.find(c => c.type === r.type);
+                return (
+                  <div key={r.type} className="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-full">
+                    <span>{cfg?.emoji}</span><span className="text-xs font-bold text-slate-600">{r.count}</span>
+                  </div>
+                );
+              })}
+              {totalReactions > 0 && <span className="text-xs text-slate-400">{totalReactions} cảm xúc</span>}
+            </div>
+            <div className="flex items-center gap-3 text-xs text-slate-400">
+              <span className="flex items-center gap-1"><Eye size={13} />{localPost.views} lượt xem</span>
+              <span className="flex items-center gap-1"><MessageCircle size={13} />{localPost.comments.length} bình luận</span>
+            </div>
+          </div>
+
+          {/* Reaction Bar */}
+          <div className="relative flex items-center gap-1 bg-slate-50 rounded-2xl p-2 border border-slate-100">
+            {REACTION_CONFIG.map(r => (
+              <button
+                key={r.type}
+                onClick={() => handleReact(r.type)}
+                className={`flex items-center gap-1 px-3 py-2 rounded-xl text-sm transition-all ${r.color}`}
+                title={r.label}
+              >
+                <span className="text-lg">{r.emoji}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Comments */}
+          <div className="space-y-4">
+            <h4 className="font-black text-slate-700 text-sm flex items-center gap-2">
+              <MessageCircle size={16} className="text-rose-500" />
+              Bình luận ({localPost.comments.length})
+            </h4>
+
+            <div className="bg-slate-50 rounded-2xl p-4 space-y-3 border border-slate-100">
+              <div className="flex gap-2">
+                <input
+                  value={commentName}
+                  onChange={e => setCommentName(e.target.value)}
+                  placeholder="Tên của bạn..."
+                  className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-rose-400 transition-colors"
+                />
+                <select
+                  value={commentRole}
+                  onChange={e => setCommentRole(e.target.value as any)}
+                  className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none text-slate-600"
+                >
+                  <option>Khách</option>
+                  <option>Học sinh</option>
+                  <option>Phụ huynh</option>
+                </select>
+              </div>
+              <div className="flex gap-2">
+                <textarea
+                  value={commentText}
+                  onChange={e => setCommentText(e.target.value)}
+                  placeholder="Viết bình luận góp ý..."
+                  rows={2}
+                  className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-rose-400 transition-colors resize-none"
+                />
+                <button
+                  onClick={handleComment}
+                  disabled={!commentText.trim() || !commentName.trim() || submittingComment}
+                  className="bg-gradient-to-r from-rose-500 to-purple-500 text-white px-4 rounded-xl hover:shadow-lg disabled:opacity-50 transition-all self-end flex items-center gap-1 text-sm font-black"
+                >
+                  {submittingComment ? <Loader2 size={16} className="animate-spin" /> : <SendHorizontal size={16} />}
+                </button>
+              </div>
+            </div>
+
+            {comments.length > 0 ? (
+              <div className="space-y-3">
+                {comments.map(c => (
+                  <div key={c.id} className="flex gap-3 p-3 rounded-2xl bg-white border border-slate-100 shadow-sm">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-black shrink-0" style={{ backgroundColor: c.avatarColor }}>
+                      {c.authorName[0]?.toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-black text-slate-700">{c.authorName}</span>
+                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                          c.authorRole === 'Cán bộ y tế' ? 'bg-blue-100 text-blue-600' :
+                          c.authorRole === 'Giáo viên' ? 'bg-purple-100 text-purple-600' :
+                          'bg-slate-100 text-slate-500'
+                        }`}>{c.authorRole}</span>
+                        <span className="text-[10px] text-slate-400 ml-auto">{formatTimeAgo(c.createdAt)}</span>
+                      </div>
+                      <p className="text-sm text-slate-600 leading-relaxed">{c.content}</p>
+                    </div>
+                  </div>
+                ))}
+                {localPost.comments.length > 3 && (
+                  <button
+                    onClick={() => setShowAllComments(!showAllComments)}
+                    className="text-xs font-black text-rose-500 hover:text-rose-600 ml-2"
+                  >
+                    {showAllComments ? 'Thu gọn' : `Xem tất cả ${localPost.comments.length} bình luận`}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <p className="text-center text-sm text-slate-400 py-6 opacity-50">Chưa có bình luận nào. Hãy là người đầu tiên! 💬</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ════════════════════════════════════════════════════════════
+// POST FORM MODAL
+// ════════════════════════════════════════════════════════════
+const PostFormModal: React.FC<{ onClose: () => void; onSuccess: (post: ActivityPost) => void }> = ({ onClose, onSuccess }) => {
+  const [step, setStep] = useState<'choose' | 'password' | 'name' | 'form'>('choose');
+  const [chosenRole, setChosenRole] = useState<AuthorRole | ''>('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [authorName, setAuthorName] = useState('');
+  const [postType, setPostType] = useState<PostType>('video');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [content, setContent] = useState('');
+  const [tags, setTags] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleRoleChoose = (role: AuthorRole) => { setChosenRole(role); setStep('password'); setPasswordError(''); };
+
+  const handlePasswordSubmit = () => {
+    const correctPwd = chosenRole === 'Cán bộ y tế' ? '02112008' : '19122008';
+    if (password === correctPwd) { setStep('name'); setPasswordError(''); }
+    else { setPasswordError('❌ Mật khẩu không đúng. Vui lòng thử lại.'); }
+  };
+
+  const handleNameSubmit = () => { if (authorName.trim().length >= 2) setStep('form'); };
+
+  const handleSubmit = async () => {
+    if (!title.trim() || !content.trim()) { setError('Tiêu đề và nội dung bắt buộc.'); return; }
+    setSubmitting(true); setError('');
+    try {
+      const res = await fetch('/api/activity', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: postType, title: title.trim(), description: description.trim(),
+          content: content.trim(), authorName: authorName.trim(), authorRole: chosenRole,
+          tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+        }),
+      });
+      if (res.ok) { const newPost = await res.json(); onSuccess(newPost); }
+      else { const data = await res.json(); setError(data.error || 'Lỗi khi đăng bài.'); }
+    } catch { setError('Không thể kết nối server. Hãy thử lại.'); }
+    setSubmitting(false);
+  };
+
+  const roleColor = chosenRole === 'Cán bộ y tế' ? 'from-blue-600 to-cyan-500' : 'from-purple-600 to-pink-500';
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 animate-in fade-in duration-300">
+      <div className="bg-white w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className={`bg-gradient-to-r ${step === 'form' ? roleColor : 'from-rose-500 to-purple-500'} p-6 text-white relative`}>
+          <button onClick={onClose} className="absolute top-4 right-4 bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors">
+            <X size={18} />
+          </button>
+          <div className="flex items-center gap-3">
+            {step !== 'choose' && (
+              <button onClick={() => {
+                if (step === 'form') setStep('name');
+                else if (step === 'name') setStep('password');
+                else { setStep('choose'); setChosenRole(''); }
+              }} className="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors">
+                <ChevronLeft size={18} />
+              </button>
+            )}
+            <div>
+              <h3 className="text-xl font-black">
+                {step === 'choose' && '📝 Đăng bài mới'}
+                {step === 'password' && '🔐 Xác thực'}
+                {step === 'name' && '✍️ Tên của bạn'}
+                {step === 'form' && (chosenRole === 'Cán bộ y tế' ? '🩺' : '👩‍🏫') + ' Đăng bài'}
+              </h3>
+              <p className="text-white/70 text-xs mt-0.5">
+                {step === 'choose' && 'Chọn vai trò để tiếp tục'}
+                {step === 'password' && `Mật khẩu dành cho ${chosenRole}`}
+                {step === 'name' && 'Nhập tên hiển thị của bạn'}
+                {step === 'form' && 'Điền thông tin bài đăng'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6 space-y-5">
+          {step === 'choose' && (
+            <div className="space-y-4">
+              <p className="text-sm text-slate-500 font-medium">Bạn đăng bài với tư cách:</p>
+              <div className="grid grid-cols-2 gap-4">
+                <button onClick={() => handleRoleChoose('Cán bộ y tế')}
+                  className="group p-6 rounded-2xl border-2 border-blue-200 hover:border-blue-500 bg-blue-50 hover:bg-blue-100 transition-all text-center space-y-3 hover:shadow-lg hover:scale-105">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto text-4xl shadow-lg group-hover:scale-110 transition-transform">🩺</div>
+                  <div><p className="font-black text-blue-700 text-sm">Cán bộ y tế</p><p className="text-xs text-blue-400 mt-1">YTế | Bác sĩ | Y tá</p></div>
+                </button>
+                <button onClick={() => handleRoleChoose('Giáo viên')}
+                  className="group p-6 rounded-2xl border-2 border-purple-200 hover:border-purple-500 bg-purple-50 hover:bg-purple-100 transition-all text-center space-y-3 hover:shadow-lg hover:scale-105">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto text-4xl shadow-lg group-hover:scale-110 transition-transform">👩‍🏫</div>
+                  <div><p className="font-black text-purple-700 text-sm">Giáo viên</p><p className="text-xs text-purple-400 mt-1">Giáo viên | CTV</p></div>
+                </button>
+              </div>
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-700 text-center font-medium">
+                🔒 Mật khẩu sẽ được yêu cầu sau bước này
+              </div>
+            </div>
+          )}
+
+          {step === 'password' && (
+            <div className="space-y-4 text-center">
+              <div className="text-6xl">{chosenRole === 'Cán bộ y tế' ? '🩺' : '👩‍🏫'}</div>
+              <p className="text-sm text-slate-500">Nhập mật khẩu dành cho <strong className="text-slate-700">{chosenRole}</strong></p>
+              <input type="password" value={password}
+                onChange={e => { setPassword(e.target.value); setPasswordError(''); }}
+                onKeyDown={e => e.key === 'Enter' && handlePasswordSubmit()}
+                placeholder="••••••••"
+                className="w-full text-center text-2xl tracking-[0.5em] font-black border-2 border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-rose-400 transition-colors"
+                autoFocus />
+              {passwordError && (
+                <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600 font-medium">{passwordError}</div>
+              )}
+              <button onClick={handlePasswordSubmit}
+                className="w-full bg-gradient-to-r from-rose-500 to-purple-500 text-white font-black py-4 rounded-2xl hover:shadow-xl transition-all active:scale-95">
+                Xác nhận →
+              </button>
+              <p className="text-xs text-slate-400">Bạn không có mật khẩu? Liên hệ quản trị viên.</p>
+            </div>
+          )}
+
+          {step === 'name' && (
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="text-5xl mb-3">✅</div>
+                <p className="font-black text-slate-800 text-lg">Xác thực thành công!</p>
+                <p className="text-sm text-slate-500 mt-1">Nhập tên hiển thị của bạn</p>
+              </div>
+              <input type="text" value={authorName}
+                onChange={e => setAuthorName(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleNameSubmit()}
+                placeholder="VD: Nguyễn Văn A"
+                className="w-full border-2 border-slate-200 rounded-2xl px-5 py-4 text-base font-medium focus:outline-none focus:border-rose-400 transition-colors"
+                autoFocus maxLength={50} />
+              <button onClick={handleNameSubmit} disabled={authorName.trim().length < 2}
+                className="w-full bg-gradient-to-r from-rose-500 to-purple-500 text-white font-black py-4 rounded-2xl hover:shadow-xl transition-all active:scale-95 disabled:opacity-50">
+                Tiếp tục →
+              </button>
+            </div>
+          )}
+
+          {step === 'form' && (
+            <div className="space-y-4">
+              <div className={`flex items-center gap-2 bg-gradient-to-r ${roleColor} text-white px-4 py-2 rounded-2xl text-sm font-medium w-fit`}>
+                <span>{chosenRole === 'Cán bộ y tế' ? '🩺' : '👩‍🏫'}</span>
+                <span>{authorName}</span>
+                <span className="opacity-60">·</span>
+                <span className="opacity-80 text-xs">{chosenRole}</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {([
+                  { type: 'video' as PostType, emoji: '🎬', label: 'Video', color: 'bg-red-50 border-red-200 text-red-600' },
+                  { type: 'article' as PostType, emoji: '📝', label: 'Bài viết', color: 'bg-blue-50 border-blue-200 text-blue-600' },
+                  { type: 'infographic' as PostType, emoji: '🖼️', label: 'Infographic', color: 'bg-orange-50 border-orange-200 text-orange-600' },
+                ]).map(t => (
+                  <button key={t.type} onClick={() => setPostType(t.type)}
+                    className={`p-3 rounded-xl border-2 text-center text-xs font-black transition-all ${postType === t.type ? `${t.color} border-current shadow-sm` : 'border-slate-100 text-slate-400 hover:border-slate-200'}`}>
+                    <div className="text-2xl mb-1">{t.emoji}</div>{t.label}
+                  </button>
+                ))}
+              </div>
+
+              <input type="text" value={title} onChange={e => setTitle(e.target.value)}
+                placeholder="Tiêu đề bài đăng..."
+                className="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-rose-400 transition-colors" maxLength={120} />
+
+              <textarea value={description} onChange={e => setDescription(e.target.value)}
+                placeholder="Mô tả ngắn (hiển thị trên card)..."
+                rows={2}
+                className="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-rose-400 transition-colors resize-none" maxLength={300} />
+
+              {postType === 'video' && (
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider">Link Video (YouTube / MP4)</label>
+                  <input type="url" value={content} onChange={e => setContent(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=... hoặc link video"
+                    className="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-rose-400 transition-colors" />
+                  <p className="text-[11px] text-slate-400">Dán link YouTube hoặc video MP4. Video sẽ được nhúng tự động.</p>
+                </div>
+              )}
+              {postType === 'article' && (
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider">Nội dung bài viết</label>
+                  <textarea value={content} onChange={e => setContent(e.target.value)}
+                    placeholder="Viết nội dung bài viết tại đây..."
+                    rows={8}
+                    className="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-rose-400 transition-colors resize-none" />
+                </div>
+              )}
+              {postType === 'infographic' && (
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider">Link Ảnh Infographic</label>
+                  <input type="url" value={content} onChange={e => setContent(e.target.value)}
+                    placeholder="https://...jpg hoặc .png"
+                    className="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-rose-400 transition-colors" />
+                </div>
+              )}
+
+              <input type="text" value={tags} onChange={e => setTags(e.target.value)}
+                placeholder="Tags (cách nhau bởi dấu phẩy): phòng chống, dinh dưỡng..."
+                className="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-rose-400 transition-colors" />
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600 font-medium">{error}</div>
+              )}
+
+              <button onClick={handleSubmit} disabled={submitting || !title.trim() || !content.trim()}
+                className="w-full bg-gradient-to-r from-rose-500 to-purple-500 text-white font-black py-4 rounded-2xl hover:shadow-xl transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2">
+                {submitting ? <><Loader2 size={18} className="animate-spin" /> Đang đăng...</> : <><Sparkles size={18} /> Đăng bài ngay</>}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'healbook' | 'aiscan' | 'findcare'>('healbook');
+  const [activeTab, setActiveTab] = useState<'healbook' | 'aiscan' | 'findcare' | 'activity'>('healbook');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTopic, setSelectedTopic] = useState<HealbookTopic | null>(null);
   
@@ -359,9 +928,42 @@ const App: React.FC = () => {
   const [chatLoading, setChatLoading] = useState(false);
   const [chatInput, setChatInput] = useState('');
 
+  // ── HOẠT ĐỘNG State ────────────────────────────────────────
+  const [activityPosts, setActivityPosts] = useState<ActivityPost[]>([]);
+  const [activityLoading, setActivityLoading] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<ActivityPost | null>(null);
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [showPostForm, setShowPostForm] = useState(false);
+  const [postFormData, setPostFormData] = useState({ title: '', description: '', content: '', tags: '' });
+  const [postType, setPostType] = useState<PostType>('video');
+  const [postAuthorName, setPostAuthorName] = useState('');
+  const [postAuthorRole, setPostAuthorRole] = useState<AuthorRole | ''>('');
+  const [postPassword, setPostPassword] = useState('');
+  const [postPasswordError, setPostPasswordError] = useState('');
+  const [postSubmitting, setPostSubmitting] = useState(false);
+  const [postAuthorStep, setPostAuthorStep] = useState<'choose' | 'password' | 'name' | 'form'>('choose');
+  const [commentInput, setCommentInput] = useState('');
+  const [commentAuthorName, setCommentAuthorName] = useState('');
+  const [commentAuthorRole, setCommentAuthorRole] = useState<'Học sinh' | 'Phụ huynh' | 'Khách'>('Khách');
+  const [commentSubmitting, setCommentSubmitting] = useState(false);
+  const [filterType, setFilterType] = useState<PostType | 'all'>('all');
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const heatmapCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
+
+  // ── Fetch Activity Posts ──────────────────────────────────
+  useEffect(() => {
+    if (activeTab !== 'activity') return;
+    setActivityLoading(true);
+    fetch('/api/activity')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setActivityPosts(data);
+      })
+      .catch(() => {})
+      .finally(() => setActivityLoading(false));
+  }, [activeTab]);
 
   // Initialize and handle Leaflet Map
   useEffect(() => {
@@ -1284,7 +1886,7 @@ Trả lời súc tích, 3-5 bullet points.`
       <main className="max-w-5xl mx-auto px-4 py-6">
         {/* TAB SWITCHER */}
         <div className="flex gap-4 overflow-x-auto pb-8 no-scrollbar">
-          {(['healbook', 'aiscan', 'findcare'] as const).map(tab => (
+          {(['healbook', 'aiscan', 'findcare', 'activity'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => {
@@ -1293,14 +1895,17 @@ Trả lời súc tích, 3-5 bullet points.`
               }}
               className={`flex items-center gap-4 px-8 py-5 rounded-3xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap shadow-lg border-2 ${
                 activeTab === tab
-                  ? 'bg-blue-600 text-white border-blue-700 shadow-blue-200 scale-105'
+                  ? tab === 'activity'
+                    ? 'bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white border-rose-400 shadow-rose-200 scale-105'
+                    : 'bg-blue-600 text-white border-blue-700 shadow-blue-200 scale-105'
                   : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50 hover:border-blue-300 hover:shadow-blue-100'
               }`}
             >
               {tab === 'healbook' && <BookOpen size={20} />}
               {tab === 'aiscan' && <Zap size={20} />}
               {tab === 'findcare' && <MapPin size={20} />}
-              {tab === 'healbook' ? 'Thư viện' : tab === 'aiscan' ? 'AI Sàng lọc' : 'Cơ sở Y tế'}
+              {tab === 'activity' && <Sparkles size={20} />}
+              {tab === 'healbook' ? 'Thư viện' : tab === 'aiscan' ? 'AI Sàng lọc' : tab === 'findcare' ? 'Cơ sở Y tế' : 'Hoạt động'}
             </button>
           ))}
         </div>
@@ -1860,7 +2465,98 @@ Trả lời súc tích, 3-5 bullet points.`
           </div>
         )}
 
-        {/* TAB: FIND CARE (MAPS) */}
+        {/* ══════════════════════════════════════════════════════════
+            TAB: HOẠT ĐỘNG
+        ══════════════════════════════════════════════════════════ */}
+        {activeTab === 'activity' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 max-w-4xl mx-auto pb-32 space-y-8">
+
+            {/* Hero Banner */}
+            <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-pink-500 via-rose-500 to-purple-600 p-10 text-white">
+              <div className="absolute -right-8 -top-8 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+              <div className="absolute right-12 bottom-4 text-8xl opacity-20">🎬</div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest">
+                    🎉 Kho video giáo dục
+                  </div>
+                </div>
+                <h2 className="text-3xl font-black mb-2">Hoạt động sức khỏe</h2>
+                <p className="text-white/80 text-sm font-medium max-w-md leading-relaxed">
+                  Video phòng chống bệnh, bài giảng sức khỏe từ cán bộ y tế và giáo viên. Cảm ơn ý kiến đóng góp để chúng tôi cải thiện!
+                </p>
+              </div>
+            </div>
+
+            {/* Filter Pills */}
+            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+              {([
+                { key: 'all', label: 'Tất cả', emoji: '🎯', color: 'bg-slate-100 text-slate-600 border-slate-200' },
+                { key: 'video', label: 'Video', emoji: '🎬', color: 'bg-red-50 text-red-600 border-red-200' },
+                { key: 'article', label: 'Bài viết', emoji: '📝', color: 'bg-blue-50 text-blue-600 border-blue-200' },
+                { key: 'infographic', label: 'Infographic', emoji: '🖼️', color: 'bg-orange-50 text-orange-600 border-orange-200' },
+              ] as const).map(f => (
+                <button
+                  key={f.key}
+                  onClick={() => setFilterType(f.key)}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider whitespace-nowrap border-2 transition-all ${filterType === f.key ? 'bg-purple-600 text-white border-purple-700 shadow-lg shadow-purple-200 scale-105' : `border-transparent ${f.color} hover:scale-105`}`}
+                >
+                  <span>{f.emoji}</span>{f.label}
+                </button>
+              ))}
+            </div>
+
+            {/* POST FORM TRIGGER */}
+            <div className="flex justify-end">
+              <button
+                onClick={() => { setShowPostForm(true); setPostAuthorStep('choose'); setPostPassword(''); setPostAuthorName(''); setPostAuthorRole(''); setPostFormData({ title:'', description:'', content:'', tags:'' }); }}
+                className="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-4 rounded-2xl font-black text-sm shadow-xl shadow-pink-200 hover:shadow-2xl hover:scale-105 transition-all active:scale-95"
+              >
+                <Plus size={20} /> Đăng bài mới
+              </button>
+            </div>
+
+            {/* Post Grid */}
+            {activityLoading ? (
+              <div className="flex justify-center py-20">
+                <div className="animate-spin w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full" />
+              </div>
+            ) : (
+              <>
+                {activityPosts.filter(p => filterType === 'all' || p.type === filterType).length === 0 ? (
+                  <div className="text-center py-20 space-y-4 opacity-50">
+                    <div className="text-6xl">📭</div>
+                    <p className="text-lg font-black text-slate-400">Chưa có bài đăng nào</p>
+                    <p className="text-sm text-slate-300">Hãy là người đầu tiên đăng bài video!</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {activityPosts
+                      .filter(p => filterType === 'all' || p.type === filterType)
+                      .map(post => <PostCard key={post.id} post={post} onOpen={() => setSelectedPost(post)} />)}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* POST DETAIL MODAL */}
+        {selectedPost && (
+          <PostDetailModal post={selectedPost} onClose={() => setSelectedPost(null)} />
+        )}
+
+        {/* POST FORM MODAL */}
+        {showPostForm && (
+          <PostFormModal
+            onClose={() => setShowPostForm(false)}
+            onSuccess={(newPost) => { setActivityPosts(prev => [newPost, ...prev]); setShowPostForm(false); }}
+          />
+        )}
+
+        {/* ══════════════════════════════════════════════════════════
+            TAB: FIND CARE (MAPS)
+        ══════════════════════════════════════════════════════════ */}
         {activeTab === 'findcare' && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 max-w-4xl mx-auto space-y-10">
             <div className="text-center space-y-4">
@@ -2146,20 +2842,26 @@ Trả lời súc tích, 3-5 bullet points.`
       )}
 
       {/* FOOTER NAV */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-200 px-8 py-4 z-50">
-        <div className="max-w-md mx-auto flex justify-between items-center">
-          <button onClick={() => {setActiveTab('healbook'); setSelectedTopic(null);}} className={`flex flex-col items-center gap-1.5 p-2 transition-all ${activeTab === 'healbook' ? 'text-indigo-600 scale-110' : 'text-slate-300 hover:text-slate-400'}`}>
-            <BookOpen size={22} className={activeTab === 'healbook' ? 'fill-indigo-50' : ''} />
-            <span className="text-[9px] font-black uppercase tracking-widest">Thư viện</span>
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-200 px-6 py-4 z-50">
+        <div className="max-w-md mx-auto flex justify-between items-end">
+          <button onClick={() => {setActiveTab('healbook'); setSelectedTopic(null);}} className={`flex flex-col items-center gap-1 p-2 transition-all ${activeTab === 'healbook' ? 'text-indigo-600 scale-110' : 'text-slate-300 hover:text-slate-400'}`}>
+            <BookOpen size={20} className={activeTab === 'healbook' ? 'fill-indigo-50' : ''} />
+            <span className="text-[8px] font-black uppercase tracking-widest">Thư viện</span>
           </button>
-          <div className="w-16 h-16 bg-white rounded-full -mt-12 shadow-xl border border-slate-100 flex items-center justify-center">
-             <button onClick={() => {setActiveTab('aiscan'); setSelectedTopic(null);}} className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${activeTab === 'aiscan' ? 'bg-indigo-600 text-white rotate-0 shadow-lg shadow-indigo-200' : 'bg-slate-100 text-slate-400 rotate-12'}`}>
-               <Zap size={24} />
+          <button onClick={() => {setActiveTab('activity'); setSelectedTopic(null);}} className={`flex flex-col items-center gap-1 p-2 transition-all ${activeTab === 'activity' ? 'text-rose-500 scale-110' : 'text-slate-300 hover:text-slate-400'}`}>
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${activeTab === 'activity' ? 'bg-gradient-to-br from-pink-100 to-purple-100 shadow-lg shadow-rose-200' : 'bg-slate-100'}`}>
+              <Sparkles size={18} className={activeTab === 'activity' ? 'text-rose-500' : ''} />
+            </div>
+            <span className="text-[8px] font-black uppercase tracking-widest">Hoạt động</span>
+          </button>
+          <div className="w-14 h-14 bg-white rounded-full -mt-10 shadow-xl border border-slate-100 flex items-center justify-center">
+             <button onClick={() => {setActiveTab('aiscan'); setSelectedTopic(null);}} className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all ${activeTab === 'aiscan' ? 'bg-indigo-600 text-white rotate-0 shadow-lg shadow-indigo-200' : 'bg-slate-100 text-slate-400 rotate-12'}`}>
+               <Zap size={22} />
              </button>
           </div>
-          <button onClick={() => {setActiveTab('findcare'); setSelectedTopic(null);}} className={`flex flex-col items-center gap-1.5 p-2 transition-all ${activeTab === 'findcare' ? 'text-indigo-600 scale-110' : 'text-slate-300 hover:text-slate-400'}`}>
-            <MapPin size={22} className={activeTab === 'findcare' ? 'fill-indigo-50' : ''} />
-            <span className="text-[9px] font-black uppercase tracking-widest">Vị trí</span>
+          <button onClick={() => {setActiveTab('findcare'); setSelectedTopic(null);}} className={`flex flex-col items-center gap-1 p-2 transition-all ${activeTab === 'findcare' ? 'text-indigo-600 scale-110' : 'text-slate-300 hover:text-slate-400'}`}>
+            <MapPin size={20} className={activeTab === 'findcare' ? 'fill-indigo-50' : ''} />
+            <span className="text-[8px] font-black uppercase tracking-widest">Cơ sở Y tế</span>
           </button>
         </div>
       </nav>
