@@ -620,6 +620,21 @@ const App: React.FC = () => {
   const [newsOpen, setNewsOpen] = useState(true);
   const [newsFilter, setNewsFilter] = useState<string | null>(null);
   const [showAllNews, setShowAllNews] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Floating background elements (medical icons)
+  const floatingIcons = ['💊', '💉', '🩺', '🫀', '🧠', '🩻', '💊', '🩹', '🧬', '🦠', '🫁', '💜', '🩶', '🫧'];
+  const [floatingEls] = useState(() =>
+    [...Array(18)].map((_, i) => ({
+      id: i,
+      icon: floatingIcons[i % floatingIcons.length],
+      left: `${Math.random() * 95}%`,
+      size: `${1.2 + Math.random() * 2}rem`,
+      duration: `${8 + Math.random() * 12}s`,
+      delay: `${Math.random() * 8}s`,
+      opacity: 0.08 + Math.random() * 0.12,
+    }))
+  );
 
   // Filtered + sorted news (useMemo returns the array directly)
   const filteredNews = useCallback(() => {
@@ -686,45 +701,87 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className={`min-h-screen relative overflow-hidden transition-colors duration-700 ${darkMode ? 'bg-slate-900' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'}`}>
+
+      {/* ═══ FLOATING BACKGROUND ICONS ═══ */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {floatingEls.map((el: any) => (
+          <div
+            key={el.id}
+            className="absolute animate-float"
+            style={{
+              left: el.left,
+              top: `${Math.random() * 100}%`,
+              fontSize: el.size,
+              opacity: el.opacity,
+              animationDuration: el.duration,
+              animationDelay: el.delay,
+              filter: darkMode ? 'brightness(0.5)' : 'none',
+            }}
+          >
+            {el.icon}
+          </div>
+        ))}
+
+        {/* Animated gradient orbs */}
+        <div className={`absolute -top-40 -left-40 w-96 h-96 rounded-full blur-3xl animate-pulse ${darkMode ? 'bg-blue-900/20' : 'bg-blue-400/20'}`} />
+        <div className={`absolute top-1/2 -right-40 w-80 h-80 rounded-full blur-3xl animate-pulse ${darkMode ? 'bg-purple-900/20' : 'bg-pink-400/20'}`} style={{ animationDelay: '2s' }} />
+        <div className={`absolute -bottom-40 left-1/3 w-72 h-72 rounded-full blur-3xl animate-pulse ${darkMode ? 'bg-rose-900/20' : 'bg-purple-400/20'}`} style={{ animationDelay: '4s' }} />
+      </div>
+
       {/* HEADER */}
-      <header className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white sticky top-0 z-50 shadow-lg">
+      <header className={`backdrop-blur-md sticky top-0 z-50 shadow-xl transition-all duration-500 ${darkMode ? 'bg-slate-900/80 text-white border-b border-slate-700' : 'bg-white/80 text-white border-b border-white/20'}`}>
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm"><HeartPulse size={24} /></div>
-            <div><h1 className="font-black text-lg leading-tight">EduHealth AI</h1><p className="text-white/70 text-[10px]">Trợ lý sức khỏe học đường</p></div>
+            <div className="w-10 h-10 bg-gradient-to-br from-rose-500 via-pink-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg animate-pulse">
+              <HeartPulse size={24} className="text-white" />
+            </div>
+            <div>
+              <h1 className={`font-black text-lg leading-tight ${darkMode ? 'text-white' : ''}`}>EduHealth AI</h1>
+              <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-white/70'}`}>Trợ lý sức khỏe học đường</p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
-            <div className="bg-green-500 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1"><CheckCircle size={12} />Sẵn sàng</div>
+            {/* Dark/Light Toggle */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-all duration-500 hover:scale-110 active:scale-95 ${darkMode ? 'bg-slate-800 text-yellow-400 hover:bg-slate-700' : 'bg-white/20 text-white hover:bg-white/30'}`}
+              title={darkMode ? 'Chế độ sáng' : 'Chế độ tối'}
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+            <div className="bg-green-500 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+              <CheckCircle size={12} />Sẵn sàng
+            </div>
           </div>
         </div>
       </header>
 
       {/* SEARCH + NAV */}
-      <div className="bg-white/80 backdrop-blur-md sticky top-[60px] z-40 shadow-sm border-b border-slate-100">
+      <div className={`backdrop-blur-md sticky top-[60px] z-40 shadow-sm transition-all duration-500 ${darkMode ? 'bg-slate-900/80 border-b border-slate-700' : 'bg-white/80 border-b border-slate-100'}`}>
         <div className="max-w-6xl mx-auto px-4 py-3 space-y-3">
           {/* SEARCH */}
           <div className="relative">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search size={18} className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`} />
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Tìm kiếm bệnh, triệu chứng..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-rose-400 transition-colors" />
+              className={`w-full pl-10 pr-4 py-2.5 rounded-xl border focus:outline-none focus:border-rose-400 transition-colors ${darkMode ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-800'}`} />
           </div>
           {/* NAV TABS */}
           <div className="flex gap-1 overflow-x-auto pb-1">
             <button onClick={() => { setTab('library'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'library' ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-100'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'library' ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
               <BookOpen size={18} />Cẩm nang thư viện{selectedCat && ` › ${selectedCat}`}
             </button>
             <button onClick={() => { setTab('aiscan'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'aiscan' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-100'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'aiscan' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
               <Zap size={18} />AI Sàng lọc
             </button>
             <button onClick={() => { setTab('news'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'news' ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-100'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'news' ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
               <Newspaper size={18} />Bản tin
             </button>
             <button onClick={() => { setTab('findcare'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'findcare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-100'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'findcare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
               <MapPin size={18} />Cơ sở y tế
             </button>
           </div>
@@ -732,7 +789,7 @@ const App: React.FC = () => {
       </div>
 
       {/* CONTENT */}
-      <main className="max-w-6xl mx-auto px-4 py-6">
+      <main className={`max-w-6xl mx-auto px-4 py-6 relative z-10 ${darkMode ? 'text-white' : ''}`}>
 
         {/* ══ LIBRARY – HOME (no category selected) ══ */}
         {tab === 'library' && !selectedCat && !selectedDisease && (
@@ -744,10 +801,13 @@ const App: React.FC = () => {
               <div
                 onClick={() => setNewsOpen(!newsOpen)}
                 className="bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500 rounded-2xl p-5 text-white cursor-pointer relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01]"
+                style={{ boxShadow: '0 0 30px rgba(244, 63, 94, 0.4), 0 0 60px rgba(244, 63, 94, 0.2)' }}
               >
                 {/* Animated background blobs */}
                 <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse" />
                 <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-lg animate-pulse" style={{ animationDelay: '1s' }} />
+                {/* Extra glow ring */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-white/20 animate-pulse" />
 
                 <div className="relative flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -934,7 +994,8 @@ const App: React.FC = () => {
 
             {/* Hero + Category Dropdown */}
             <div className="relative">
-              <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-xl">
+              <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-xl"
+                style={{ boxShadow: '0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(168, 85, 247, 0.2)' }}>
                 {/* Animated particles */}
                 <div className="absolute inset-0 overflow-hidden">
                   {[...Array(6)].map((_, i) => (
@@ -972,7 +1033,7 @@ const App: React.FC = () => {
               <div className="mt-4" ref={dropdownRef}>
                 <button
                   onClick={() => setCatOpen(!catOpen)}
-                  className="w-full bg-white border-2 border-slate-200 rounded-2xl p-4 flex items-center justify-between hover:border-rose-400 hover:shadow-xl transition-all duration-300 group active:scale-[0.99]"
+                  className={`w-full border-2 rounded-2xl p-4 flex items-center justify-between hover:shadow-xl transition-all duration-300 group active:scale-[0.99] ${darkMode ? 'bg-slate-800 border-slate-600 hover:border-rose-400' : 'bg-white border-slate-200 hover:border-rose-400'}`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
