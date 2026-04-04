@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   HeartPulse, BookOpen, Camera, MapPin, AlertTriangle, CheckCircle,
   Upload, Send, Loader2, ChevronRight, X, Search, ChevronDown,
@@ -8,7 +8,8 @@ import {
   Video, PlayCircle, MessageCircle, Sparkles, Plus,
   MessageSquare, ShieldCheck, Bell, TrendingUp, Clock,
   Heart, Star, Newspaper, UserPlus, LogIn, Info,
-  Activity as ActivityIcon
+  Activity as ActivityIcon, Calendar, ThumbsUp, Filter,
+  Clock3, ArrowUp, TrendingDown, User, Users, RefreshCw
 } from 'lucide-react';
 import { ActivityPost, PostType, AuthorRole } from './types';
 
@@ -616,11 +617,24 @@ const App: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [detailPost, setDetailPost] = useState<ActivityPost | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [newsOpen, setNewsOpen] = useState(true);
+  const [newsFilter, setNewsFilter] = useState<string | null>(null);
+  const [showAllNews, setShowAllNews] = useState(false);
+
+  // Filtered + sorted news (useMemo returns the array directly)
+  const filteredNews = useCallback(() => {
+    let result = [...posts];
+    if (newsFilter) result = result.filter((p: any) => p.type === newsFilter);
+    return result.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [posts, newsFilter]);
 
   useEffect(() => {
-    if (tab === 'news') {
+    // Fetch news whenever library tab is active
+    if (tab === 'library' || tab === 'news') {
       setLoadingPosts(true);
-      fetch(`${API_BASE}/api/activity`).then(r => r.json()).then(d => { if (Array.isArray(d)) setPosts(d); }).finally(() => setLoadingPosts(false));
+      fetch(`${API_BASE}/api/activity`).then(r => r.json()).then(d => {
+        if (Array.isArray(d)) setPosts(d);
+      }).catch(() => {}).finally(() => setLoadingPosts(false));
     }
   }, [tab]);
 
@@ -723,14 +737,234 @@ const App: React.FC = () => {
         {/* ══ LIBRARY – HOME (no category selected) ══ */}
         {tab === 'library' && !selectedCat && !selectedDisease && (
           <div className="space-y-6 animate-in fade-in duration-300">
+
+            {/* ═══ NEWS FEED SECTION (Realtime, at the top) ═══ */}
+            <div className="space-y-3">
+              {/* News Section Header */}
+              <div
+                onClick={() => setNewsOpen(!newsOpen)}
+                className="bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500 rounded-2xl p-5 text-white cursor-pointer relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01]"
+              >
+                {/* Animated background blobs */}
+                <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse" />
+                <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-lg animate-pulse" style={{ animationDelay: '1s' }} />
+
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+                        <Newspaper size={28} className="text-white" />
+                        {posts.length > 0 && (
+                          <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-black animate-bounce shadow-lg">
+                            {posts.length > 9 ? '9+' : posts.length}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-black flex items-center gap-2">
+                        📣 Bản tin học đường
+                        <span className="bg-white/20 backdrop-blur-sm text-xs px-2 py-0.5 rounded-full font-medium animate-pulse">
+                          LIVE
+                        </span>
+                      </h2>
+                      <p className="text-white/80 text-sm mt-0.5 flex items-center gap-1">
+                        <Clock3 size={12} />
+                        Cập nhật theo thời gian thực · {posts.length} bài viết
+                        {loadingPosts && <span className="ml-1 flex items-center gap-1"><RefreshCw size={10} className="animate-spin" /> đang tải...</span>}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setShowForm(true); }}
+                      className="bg-white text-rose-600 px-4 py-2 rounded-xl font-bold text-sm hover:shadow-xl transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
+                    >
+                      <Plus size={16} />Đăng bài
+                    </button>
+                    <div className={`w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-transform duration-300 ${newsOpen ? 'rotate-180' : ''}`}>
+                      <ChevronDown size={20} className="text-white" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Category Filter Pills */}
+                {newsOpen && (
+                  <div className="mt-4 flex flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => setNewsFilter(null)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105 ${!newsFilter ? 'bg-white text-rose-600 shadow-lg' : 'bg-white/20 text-white hover:bg-white/30'}`}
+                    >
+                      🎬 Tất cả ({posts.length})
+                    </button>
+                    {(['video', 'article', 'infographic'] as PostType[]).map((type) => {
+                      const count = posts.filter(p => p.type === type).length;
+                      return count > 0 && (
+                        <button
+                          key={type}
+                          onClick={() => setNewsFilter(newsFilter === type ? null : type)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105 ${newsFilter === type ? 'bg-white text-rose-600 shadow-lg' : 'bg-white/20 text-white hover:bg-white/30'}`}
+                        >
+                          {type === 'video' ? '🎬' : type === 'article' ? '📝' : '🖼️'} {type === 'video' ? 'Video' : type === 'article' ? 'Bài viết' : 'Infographic'} ({count})
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* News Posts Accordion / List */}
+              {newsOpen && (
+                <div className="space-y-3">
+                  {loadingPosts ? (
+                    <div className="flex justify-center py-10">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-12 h-12 border-4 border-rose-500 border-t-transparent rounded-full animate-spin" />
+                        <p className="text-slate-400 text-sm font-medium animate-pulse">Đang tải bản tin...</p>
+                      </div>
+                    </div>
+                  ) : filteredNews.length === 0 ? (
+                    <div className="text-center py-10 bg-white rounded-2xl shadow-lg border border-slate-100">
+                      <div className="text-5xl mb-3">📭</div>
+                      <p className="font-bold text-slate-400">Chưa có bài đăng nào</p>
+                      <p className="text-xs text-slate-400 mt-1">Giáo viên và cán bộ y tế có thể đăng bài</p>
+                    </div>
+                  ) : (
+                    filteredNews.map((post: any, idx: number) => (
+                      <div
+                        key={post.id}
+                        onClick={() => setDetailPost(post)}
+                        className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:border-rose-200 cursor-pointer group hover:-translate-y-1 animate-in slide-in-from-bottom duration-400"
+                        style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
+                      >
+                        <div className="flex items-stretch">
+                          {/* Thumbnail */}
+                          <div className="w-32 sm:w-40 shrink-0 relative overflow-hidden bg-slate-100">
+                            {post.type === 'video' && getYouTubeEmbedUrl(post.content) ? (
+                              <>
+                                <img
+                                  src={`https://img.youtube.com/vi/${post.content.match(/youtu\.be\/([^?]+)/)?.[1] || ''}/mqdefault.jpg`}
+                                  alt=""
+                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                  onError={(e: any) => e.target.style.display = 'none'}
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                  <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                                    <PlayCircle size={22} className="text-rose-600 ml-0.5" />
+                                  </div>
+                                </div>
+                              </>
+                            ) : post.type === 'infographic' && post.content ? (
+                              <img src={post.content} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                                <FileText size={28} className="text-purple-300" />
+                              </div>
+                            )}
+                            {/* Type badge */}
+                            <div className={`absolute top-2 left-2 ${post.type === 'video' ? 'bg-red-500' : post.type === 'article' ? 'bg-blue-500' : 'bg-orange-500'} text-white px-2 py-0.5 rounded-full text-[9px] font-bold uppercase shadow`}>
+                              {post.type === 'video' ? '🎬 Video' : post.type === 'article' ? '📝 Bài viết' : '🖼️ Infographic'}
+                            </div>
+                          </div>
+
+                          {/* Content */}
+                          <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
+                            <div>
+                              <h3 className="font-bold text-slate-800 group-hover:text-rose-500 transition-colors line-clamp-2 leading-snug text-sm sm:text-base">
+                                {post.title}
+                              </h3>
+                              {post.description && (
+                                <p className="text-xs text-slate-500 mt-1 line-clamp-2">{post.description}</p>
+                              )}
+                            </div>
+                            <div className="flex items-center justify-between mt-3">
+                              <div className="flex items-center gap-2">
+                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 ${post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
+                                  {post.authorName[0]?.toUpperCase()}
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="text-xs font-bold text-slate-700 truncate">{post.authorName}</p>
+                                  <p className={`text-[10px] ${post.authorRole === 'Cán bộ y tế' ? 'text-blue-500' : 'text-purple-500'}`}>{post.authorRole}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3 text-[10px] text-slate-400 shrink-0 ml-2">
+                                <span className="flex items-center gap-0.5"><Eye size={11} />{post.views}</span>
+                                <span className="flex items-center gap-0.5"><MessageCircle size={11} />{post.comments?.length || 0}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 mt-2">
+                              <span className="text-[10px] text-slate-400 flex items-center gap-0.5"><Clock3 size={10} />{formatTimeAgo(post.createdAt)}</span>
+                              {post.tags?.slice(0, 2).map((tag: string) => (
+                                <span key={tag} className="text-[9px] bg-rose-50 text-rose-400 px-1.5 py-0.5 rounded-full font-medium">#{tag}</span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+
+                  {/* Show More / Less */}
+                  {filteredNews.length > 3 && (
+                    <button
+                      onClick={() => setShowAllNews(!showAllNews)}
+                      className="w-full py-3 text-sm font-bold text-rose-500 hover:text-rose-600 transition-colors flex items-center justify-center gap-2 bg-white rounded-xl shadow border border-rose-100 hover:shadow-md"
+                    >
+                      {showAllNews ? (
+                        <><ChevronDown size={16} />Thu gọn</>
+                      ) : (
+                        <><ChevronRight size={16} />Xem thêm {filteredNews.length - 3} bài viết</>
+                      )}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Divider with animation */}
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+              <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                <BookOpen size={14} />
+                <span>Cẩm nang thư viện học đường</span>
+                <BookOpen size={14} />
+              </div>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+            </div>
+
             {/* Hero + Category Dropdown */}
             <div className="relative">
-              <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-6 text-white relative overflow-hidden">
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20"><School size={160} /></div>
+              <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-xl">
+                {/* Animated particles */}
+                <div className="absolute inset-0 overflow-hidden">
+                  {[...Array(6)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 bg-white/20 rounded-full animate-float"
+                      style={{
+                        left: `${15 + i * 15}%`,
+                        top: `${20 + (i % 3) * 25}%`,
+                        animationDuration: `${3 + i * 0.7}s`,
+                        animationDelay: `${i * 0.5}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-15"><School size={160} /></div>
                 <div className="relative">
-                  <h2 className="text-2xl font-black mb-2">📚 Cẩm nang thư viện học đường</h2>
-                  <p className="text-white/80 max-w-xl">Thông tin y khoa cập nhật giúp học sinh và phụ huynh nhận biết, phòng ngừa và xử lý các vấn đề sức khỏe thường gặp trong môi trường học đường.</p>
-                  <p className="text-white/60 text-sm mt-1">{totalDiseases} bài viết · 4 danh mục</p>
+                  <h2 className="text-2xl font-black mb-2 flex items-center gap-2">
+                    <span className="animate-bounce inline-block" style={{ animationDuration: '2s' }}>📚</span>
+                    Cẩm nang thư viện học đường
+                  </h2>
+                  <p className="text-white/80 max-w-xl text-sm">Thông tin y khoa cập nhật giúp học sinh và phụ huynh nhận biết, phòng ngừa và xử lý các vấn đề sức khỏe thường gặp trong môi trường học đường.</p>
+                  <p className="text-white/60 text-xs mt-2 flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                      🏥 {totalDiseases} bài viết
+                    </span>
+                    <span className="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                      📂 4 danh mục
+                    </span>
+                  </p>
                 </div>
               </div>
 
@@ -738,10 +972,10 @@ const App: React.FC = () => {
               <div className="mt-4" ref={dropdownRef}>
                 <button
                   onClick={() => setCatOpen(!catOpen)}
-                  className="w-full bg-white border-2 border-slate-200 rounded-2xl p-4 flex items-center justify-between hover:border-rose-400 hover:shadow-lg transition-all duration-300 group"
+                  className="w-full bg-white border-2 border-slate-200 rounded-2xl p-4 flex items-center justify-between hover:border-rose-400 hover:shadow-xl transition-all duration-300 group active:scale-[0.99]"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl shadow-md">
+                    <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                       📋
                     </div>
                     <div className="text-left">
@@ -749,13 +983,18 @@ const App: React.FC = () => {
                       <p className="text-slate-400 text-sm">Chọn danh mục bệnh để xem chi tiết</p>
                     </div>
                   </div>
-                  <ChevronDown size={24} className={`text-slate-400 transition-transform duration-300 ${catOpen ? 'rotate-180' : ''}`} />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-400 font-medium hidden sm:block">4 danh mục</span>
+                    <div className={`w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center transition-all duration-300 ${catOpen ? 'rotate-180 bg-rose-100' : ''}`}>
+                      <ChevronDown size={22} className={`text-rose-500 transition-colors ${catOpen ? '' : ''}`} />
+                    </div>
+                  </div>
                 </button>
 
                 {/* Dropdown Menu */}
                 {catOpen && (
-                  <div className="mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 relative">
-                    {HEALTH_LIBRARY.map((cat: any) => (
+                  <div className="mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 relative animate-in slide-in-from-top-2 duration-200">
+                    {HEALTH_LIBRARY.map((cat: any, idx: number) => (
                       <button
                         key={cat.category}
                         onClick={() => {
@@ -763,16 +1002,17 @@ const App: React.FC = () => {
                           setCatOpen(false);
                           setSelectedDisease(null);
                         }}
-                        className={`w-full flex items-center gap-4 p-4 hover:bg-slate-50 transition-all duration-200 border-b border-slate-50 last:border-0 group`}
+                        className={`w-full flex items-center gap-4 p-4 hover:bg-slate-50 transition-all duration-200 border-b border-slate-50 last:border-0 group animate-in slide-in-from-left duration-200`}
+                        style={{ animationDelay: `${idx * 50}ms`, animationFillMode: 'both' }}
                       >
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${getCategoryIconBg(cat)}`}>
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${getCategoryIconBg(cat)} group-hover:scale-110 transition-transform duration-300`}>
                           {cat.icon}
                         </div>
                         <div className="flex-1 text-left">
                           <p className="font-bold text-slate-800 group-hover:text-rose-500 transition-colors">{cat.category}</p>
                           <p className="text-xs text-slate-400">{cat.diseases.length} bài viết</p>
                         </div>
-                        <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${getCategoryGradient(cat)} flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity`}>
+                        <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${getCategoryGradient(cat)} flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110`}>
                           →
                         </div>
                       </button>
@@ -785,16 +1025,19 @@ const App: React.FC = () => {
             {/* Category Cards Grid (when no search, show all) */}
             {!search && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {HEALTH_LIBRARY.map((cat: any) => (
+                {HEALTH_LIBRARY.map((cat: any, idx: number) => (
                   <button
                     key={cat.category}
                     onClick={() => { setSelectedCat(cat.category); setSelectedDisease(null); }}
-                    className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-1 text-left group`}
+                    className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-1 text-left group animate-in slide-in-from-bottom duration-400`}
+                    style={{ animationDelay: `${idx * 100}ms`, animationFillMode: 'both' }}
                   >
-                    <div className={`h-2 bg-gradient-to-r ${getCategoryGradient(cat)}`} />
+                    <div className={`h-2 bg-gradient-to-r ${getCategoryGradient(cat)} relative overflow-hidden`}>
+                      <div className="absolute inset-0 bg-white/20 animate-shimmer" />
+                    </div>
                     <div className="p-5">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-3xl ${getCategoryIconBg(cat)}`}>
+                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-3xl ${getCategoryIconBg(cat)} group-hover:scale-110 transition-transform duration-300 shadow-md`}>
                           {cat.icon}
                         </div>
                         <div>
@@ -804,10 +1047,13 @@ const App: React.FC = () => {
                       </div>
                       <div className="space-y-2">
                         {cat.diseases.map((d: any) => (
-                          <p key={d.id} className="text-sm text-slate-500 hover:text-rose-500 transition-colors truncate">
-                            • {d.name}
+                          <p key={d.id} className="text-sm text-slate-500 group-hover:text-rose-400 transition-colors truncate flex items-center gap-1">
+                            <span className="text-rose-300 shrink-0">•</span>{d.name}
                           </p>
                         ))}
+                      </div>
+                      <div className="mt-3 flex items-center gap-1 text-rose-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                        Xem tất cả <ChevronRight size={14} />
                       </div>
                     </div>
                   </button>
@@ -818,9 +1064,13 @@ const App: React.FC = () => {
             {/* Search Results */}
             {search && filteredLibrary.length > 0 && (
               <div className="space-y-4">
-                <p className="text-sm text-slate-500 font-medium">
-                  Tìm thấy {filteredLibrary.reduce((s: number, c: any) => s + c.diseases.length, 0)} kết quả cho "<span className="text-rose-500 font-bold">{search}</span>"
-                </p>
+                <div className="flex items-center gap-2 p-3 bg-rose-50 rounded-xl border border-rose-100">
+                  <Search size={16} className="text-rose-500 shrink-0" />
+                  <p className="text-sm text-slate-600 font-medium">
+                    Tìm thấy <span className="text-rose-500 font-bold">{filteredLibrary.reduce((s: number, c: any) => s + c.diseases.length, 0)}</span> kết quả cho "
+                    <span className="text-rose-500 font-bold">{search}</span>"
+                  </p>
+                </div>
                 {filteredLibrary.map((cat: any) => (
                   <div key={cat.category} className="space-y-3">
                     <h3 className="text-base font-black text-slate-700 flex items-center gap-2">
@@ -829,9 +1079,9 @@ const App: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                       {cat.diseases.map((d: any) => (
                         <div key={d.id} onClick={() => { setSelectedCat(cat.category); setSelectedDisease(d); }}
-                          className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer overflow-hidden border border-slate-100 group">
+                          className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden border border-slate-100 group hover:-translate-y-1">
                           <div className="aspect-video overflow-hidden">
-                            <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
+                            <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
                           </div>
                           <div className="p-3">
                             <h4 className="font-bold text-slate-800 text-sm group-hover:text-rose-500 transition-colors line-clamp-1">{d.name}</h4>
@@ -846,8 +1096,8 @@ const App: React.FC = () => {
             )}
 
             {search && filteredLibrary.length === 0 && (
-              <div className="text-center py-12 bg-white rounded-2xl shadow">
-                <p className="text-4xl mb-3">🔍</p>
+              <div className="text-center py-12 bg-white rounded-2xl shadow-lg border border-slate-100">
+                <div className="text-5xl mb-3">🔍</div>
                 <p className="font-bold text-slate-400">Không tìm thấy kết quả cho "{search}"</p>
                 <p className="text-sm text-slate-400 mt-1">Thử tìm với từ khóa khác</p>
               </div>
