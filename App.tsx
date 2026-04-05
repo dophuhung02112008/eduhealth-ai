@@ -339,10 +339,14 @@ const formatTimeAgo = (iso: string): string => {
 // ═══════════════════════════════════════════════════════════════
 // COMPONENTS
 // ═══════════════════════════════════════════════════════════════
-const PostCard: React.FC<{ post: ActivityPost; onOpen: () => void }> = ({ post, onOpen }) => {
+const PostCard: React.FC<{ post: ActivityPost; onOpen: () => void; darkMode?: boolean }> = ({ post, onOpen, darkMode = false }) => {
   const total = post.reactions.reduce((s, r) => s + r.count, 0);
+  const textPrimary = darkMode ? 'text-slate-100' : 'text-slate-800';
+  const textSecondary = darkMode ? 'text-slate-400' : 'text-slate-500';
+  const borderColor = darkMode ? 'border-slate-700' : 'border-slate-100';
+  const placeholderBg = darkMode ? 'from-slate-700 to-slate-800' : 'from-purple-100 to-pink-100';
   return (
-    <div onClick={onOpen} className="group cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden border border-slate-100">
+    <div onClick={onOpen} className={`group cursor-pointer rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100'}`}>
       <div className="relative aspect-video overflow-hidden">
         {post.type === 'video' && getYouTubeEmbedUrl(post.content) ? (
           <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
@@ -354,28 +358,28 @@ const PostCard: React.FC<{ post: ActivityPost; onOpen: () => void }> = ({ post, 
         ) : post.type === 'infographic' && post.content ? (
           <img src={post.content} alt={post.title} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
-            <FileText size={48} className="text-purple-300" />
+          <div className={`w-full h-full bg-gradient-to-br ${placeholderBg} flex items-center justify-center`}>
+            <FileText size={48} className={darkMode ? 'text-slate-500' : 'text-purple-300'} />
           </div>
         )}
         <div className={`absolute top-2 left-2 ${post.type === 'video' ? 'bg-red-100 text-red-600' : post.type === 'article' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'} px-2 py-0.5 rounded-full text-[10px] font-bold uppercase`}>
           {post.type === 'video' ? '🎬 Video' : post.type === 'article' ? '📝 Bài viết' : '🖼️ Infographic'}
         </div>
       </div>
-      <div className="p-4 space-y-2">
+      <div className={`p-4 space-y-2 ${darkMode ? 'bg-slate-800' : 'bg-white'}`}>
         <div className="flex items-center gap-2">
           <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold ${post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
             {post.authorName[0]?.toUpperCase()}
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-700">{post.authorName}</p>
-            <p className={`text-[10px] ${post.authorRole === 'Cán bộ y tế' ? 'text-blue-500' : 'text-purple-500'}`}>{post.authorRole}</p>
+            <p className={`text-xs font-bold ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{post.authorName}</p>
+            <p className={`text-[10px] ${post.authorRole === 'Cán bộ y tế' ? 'text-blue-400' : 'text-purple-400'}`}>{post.authorRole}</p>
           </div>
-          <span className="ml-auto text-[10px] text-slate-400">{formatTimeAgo(post.createdAt)}</span>
+          <span className={`ml-auto text-[10px] ${textSecondary}`}>{formatTimeAgo(post.createdAt)}</span>
         </div>
-        <h3 className="font-bold text-slate-800 line-clamp-2 group-hover:text-rose-500 transition-colors">{post.title}</h3>
-        {post.description && <p className="text-xs text-slate-500 line-clamp-2">{post.description}</p>}
-        <div className="flex items-center gap-3 pt-2 border-t border-slate-100 text-xs text-slate-400">
+        <h3 className={`font-bold line-clamp-2 group-hover:text-rose-400 transition-colors ${textPrimary}`}>{post.title}</h3>
+        {post.description && <p className={`text-xs ${textSecondary} line-clamp-2`}>{post.description}</p>}
+        <div className={`flex items-center gap-3 pt-2 border-t ${borderColor} text-xs ${textSecondary}`}>
           <span className="flex items-center gap-1"><Eye size={12} />{post.views}</span>
           <span className="flex items-center gap-1"><MessageCircle size={12} />{post.comments?.length || 0}</span>
           {total > 0 && <span>{post.reactions.find(r => r.count > 0)?.type && REACTION_CONFIG.find(r => r.type === post.reactions.find(pr => pr.count > 0)?.type)?.emoji} {total}</span>}
@@ -385,7 +389,7 @@ const PostCard: React.FC<{ post: ActivityPost; onOpen: () => void }> = ({ post, 
   );
 };
 
-const PostDetail: React.FC<{ post: ActivityPost; onClose: () => void }> = ({ post, onClose }) => {
+const PostDetail: React.FC<{ post: ActivityPost; onClose: () => void; darkMode?: boolean }> = ({ post, onClose, darkMode = false }) => {
   const [localPost, setLocalPost] = useState(post);
   const [cmtText, setCmtText] = useState('');
   const [cmtName, setCmtName] = useState('');
@@ -453,8 +457,8 @@ const PostDetail: React.FC<{ post: ActivityPost; onClose: () => void }> = ({ pos
           {post.type === 'infographic' && post.content && (
             <img src={post.content} alt="" className="w-full rounded-xl" />
           )}
-          {post.description && <p className="text-slate-600">{post.description}</p>}
-          {post.content && post.type === 'article' && <p className="text-slate-700 whitespace-pre-wrap">{post.content}</p>}
+          {post.description && <p className={`${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{post.description}</p>}
+          {post.content && post.type === 'article' && <p className={`whitespace-pre-wrap ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{post.content}</p>}
           <div className="flex gap-1 flex-wrap">
             {REACTION_CONFIG.map(r => (
               <button key={r.type} onClick={() => handleReact(r.type)}
@@ -501,7 +505,7 @@ const PostDetail: React.FC<{ post: ActivityPost; onClose: () => void }> = ({ pos
   );
 };
 
-const PostForm: React.FC<{ onClose: () => void; onSuccess: (p: ActivityPost) => void }> = ({ onClose, onSuccess }) => {
+const PostForm: React.FC<{ onClose: () => void; onSuccess: (p: ActivityPost) => void; darkMode?: boolean }> = ({ onClose, onSuccess, darkMode = false }) => {
   const [step, setStep] = useState<'role' | 'pwd' | 'name' | 'form'>('role');
   const [role, setRole] = useState('');
   const [pwd, setPwd] = useState('');
@@ -737,8 +741,8 @@ const App: React.FC = () => {
               <HeartPulse size={24} className="text-white" />
             </div>
             <div>
-              <h1 className={`font-black text-lg leading-tight ${darkMode ? 'text-white' : ''}`}>EduHealth AI</h1>
-              <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-white/70'}`}>Trợ lý sức khỏe học đường</p>
+              <h1 className="font-black text-lg leading-tight text-white">EduHealth AI</h1>
+              <p className="text-[10px] text-white/70">Trợ lý sức khỏe học đường</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -930,7 +934,7 @@ const App: React.FC = () => {
                           {/* Content */}
                           <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
                             <div>
-                              <h3 className="font-bold text-slate-800 group-hover:text-rose-500 transition-colors line-clamp-2 leading-snug text-sm sm:text-base">
+                              <h3 className={`font-bold group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
                                 {post.title}
                               </h3>
                               {post.description && (
@@ -1040,7 +1044,7 @@ const App: React.FC = () => {
                       📋
                     </div>
                     <div className="text-left">
-                      <p className="font-black text-slate-800 text-lg">Cẩm nang thư viện học đường</p>
+                      <p className={`font-black text-lg ${darkMode ? 'text-white' : 'text-slate-800'}`}>Cẩm nang thư viện học đường</p>
                       <p className="text-slate-400 text-sm">Chọn danh mục bệnh để xem chi tiết</p>
                     </div>
                   </div>
@@ -1070,8 +1074,8 @@ const App: React.FC = () => {
                           {cat.icon}
                         </div>
                         <div className="flex-1 text-left">
-                          <p className="font-bold text-slate-800 group-hover:text-rose-500 transition-colors">{cat.category}</p>
-                          <p className="text-xs text-slate-400">{cat.diseases.length} bài viết</p>
+                          <p className={`font-bold group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
+                          <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
                         </div>
                         <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${getCategoryGradient(cat)} flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110`}>
                           →
@@ -1102,14 +1106,14 @@ const App: React.FC = () => {
                           {cat.icon}
                         </div>
                         <div>
-                          <p className="font-black text-slate-800 text-base group-hover:text-rose-500 transition-colors">{cat.category}</p>
-                          <p className="text-xs text-slate-400">{cat.diseases.length} bài viết</p>
+                          <p className={`font-black text-base group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
+                          <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
                         </div>
                       </div>
                       <div className="space-y-2">
                         {cat.diseases.map((d: any) => (
-                          <p key={d.id} className="text-sm text-slate-500 group-hover:text-rose-400 transition-colors truncate flex items-center gap-1">
-                            <span className="text-rose-300 shrink-0">•</span>{d.name}
+                          <p key={d.id} className={`text-sm group-hover:text-rose-400 transition-colors truncate flex items-center gap-1 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
+                            <span className={`shrink-0 ${darkMode ? 'text-rose-400' : 'text-rose-300'}`}>•</span>{d.name}
                           </p>
                         ))}
                       </div>
@@ -1145,7 +1149,7 @@ const App: React.FC = () => {
                             <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
                           </div>
                           <div className="p-3">
-                            <h4 className="font-bold text-slate-800 text-sm group-hover:text-rose-500 transition-colors line-clamp-1">{d.name}</h4>
+                            <h4 className={`font-bold text-sm group-hover:text-rose-400 transition-colors line-clamp-1 ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{d.name}</h4>
                             <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{d.description}</p>
                           </div>
                         </div>
@@ -1197,7 +1201,7 @@ const App: React.FC = () => {
                     <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
                   </div>
                   <div className="p-4">
-                    <h4 className="font-bold text-slate-800 group-hover:text-rose-500 transition-colors">{d.name}</h4>
+                    <h4 className={`font-bold group-hover:text-rose-400 transition-colors ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{d.name}</h4>
                     <p className="text-xs text-slate-500 mt-1 line-clamp-2">{d.description}</p>
                     <div className="flex items-center gap-1 mt-2 text-rose-500 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                       Xem chi tiết <ChevronRight size={14} />
@@ -1229,7 +1233,7 @@ const App: React.FC = () => {
               </div>
               <div className="p-6 space-y-6">
                 <div>
-                  <h2 className="text-2xl font-black text-slate-800">{selectedDisease.name}</h2>
+                  <h2 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-slate-800'}`}>{selectedDisease.name}</h2>
                   {selectedDisease.otherNames && <p className="text-slate-400 text-sm italic">{selectedDisease.otherNames}</p>}
                 </div>
                 <div className="prose max-w-none">
@@ -1323,7 +1327,7 @@ const App: React.FC = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {posts.map(p => <PostCard key={p.id} post={p} onOpen={() => setDetailPost(p)} />)}
+                {posts.map(p => <PostCard key={p.id} post={p} onOpen={() => setDetailPost(p)} darkMode={darkMode} />)}
               </div>
             )}
           </div>
@@ -1339,12 +1343,12 @@ const App: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border-2 border-red-100 hover:border-red-300">
                 <div className="w-16 h-16 bg-red-100 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3"><Hospital size={32} /></div>
-                <p className="font-bold text-slate-800">Bệnh viện & Phòng khám</p>
+                <p className={`font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>Bệnh viện & Phòng khám</p>
                 <p className="text-xs text-slate-400 mt-1">Ưu tiên cấp cứu & chuyên khoa</p>
               </button>
               <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border-2 border-emerald-100 hover:border-emerald-300">
                 <div className="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-3"><ShoppingCart size={32} /></div>
-                <p className="font-bold text-slate-800">Nhà thuốc & Hiệu thuốc</p>
+                <p className={`font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>Nhà thuốc & Hiệu thuốc</p>
                 <p className="text-xs text-slate-400 mt-1">Vật tư y tế & Thuốc không kê đơn</p>
               </button>
             </div>
@@ -1353,8 +1357,8 @@ const App: React.FC = () => {
       </main>
 
       {/* MODALS */}
-      {detailPost && <PostDetail post={detailPost} onClose={() => setDetailPost(null)} />}
-      {showForm && <PostForm onClose={() => setShowForm(false)} onSuccess={p => { setPosts(prev => [p, ...prev]); setShowForm(false); }} />}
+      {detailPost && <PostDetail post={detailPost} onClose={() => setDetailPost(null)} darkMode={darkMode} />}
+      {showForm && <PostForm onClose={() => setShowForm(false)} onSuccess={p => { setPosts(prev => [p, ...prev]); setShowForm(false); }} darkMode={darkMode} />}
     </div>
   );
 };
