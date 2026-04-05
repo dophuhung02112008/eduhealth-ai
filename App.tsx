@@ -1076,12 +1076,17 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
         dangerSigns: Array.isArray(data.dangerSigns) ? data.dangerSigns : [],
         safetyAdvice: Array.isArray(data.safetyAdvice) ? data.safetyAdvice : [],
         confidence: data.confidence || 'low',
-        confidence_score: data.confidence_score || 0,
-        confidence_note: data.confidence_note || '',
+        confidence_score: typeof data.confidence_score === 'number' ? data.confidence_score : (data.confidence === 'high' ? 8 : data.confidence === 'moderate' ? 6 : 3),
+        confidence_note: data.confidence_note || 'Dữ liệu hạn chế, cần thêm thông tin để tăng độ chắc chắn.',
         severity: data.severity || 'moderate',
-        image_findings: Array.isArray(data.image_findings) ? data.image_findings : [],
+        image_findings: Array.isArray(data.image_findings) && data.image_findings.length > 0
+          ? data.image_findings
+          : ['Chưa phát hiện tổn thương đặc trưng rõ ràng — nên khám trực tiếp tại cơ sở y tế'],
         history_flags: Array.isArray(data.history_flags) ? data.history_flags : [],
-        annotations: Array.isArray(data.annotations) ? data.annotations : [],
+        annotations: Array.isArray(data.annotations) && data.annotations.length > 0
+          ? data.annotations
+          : imageSrc ? [{ x: 0.05, y: 0.05, w: 0.90, h: 0.90, label: 'Vùng cần quan sát thêm', severity: 'medium' as const }]
+          : [],
         alternatives: Array.isArray(data.alternatives) ? data.alternatives : [],
         seek_care: data.seek_care || 'routine-visit',
         teen_message: data.teen_message || 'Đừng lo, EduHealth AI đang giúp cậu khoanh vùng bước đầu.',
@@ -1288,7 +1293,15 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
           {imageSrc && (
             <div className={`${bgCard} rounded-2xl p-4 shadow-xl border`}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className={`font-black text-sm flex items-center gap-2 ${darkMode ? 'text-rose-400' : 'text-rose-600'}`}><Layers size={16} />Bản đồ nhiệt & Khoanh vùng</h3>
+                <div className="flex items-center gap-2">
+                  <Layers size={16} className={darkMode ? 'text-rose-400' : 'text-rose-600'} />
+                  <h3 className={`font-black text-sm ${darkMode ? 'text-rose-400' : 'text-rose-600'}`}>Bản đồ nhiệt & Khoanh vùng</h3>
+                  {result.annotations.length === 0 && (
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${darkMode ? 'bg-amber-900/50 text-amber-400' : 'bg-amber-100 text-amber-600'}`}>
+                      Cần thêm dữ liệu
+                    </span>
+                  )}
+                </div>
                 <div className="flex gap-2">
                   <button onClick={() => setShowHeatmap(!showHeatmap)} className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${showHeatmap ? 'bg-purple-500 text-white' : (darkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-500')}`}>
                     {showHeatmap ? '🔍 Đang hiện heatmap' : '👁️ Ẩn heatmap'}
@@ -1298,46 +1311,49 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
                   </button>
                 </div>
               </div>
+
               {/* Color Legend */}
-              {result.annotations.length > 0 && (
-                <div className="flex gap-3 mb-3 flex-wrap">
-                  {(['high', 'medium', 'low'] as const).map(sev => (
-                    <div key={sev} className="flex items-center gap-1.5 text-xs font-bold">
-                      <div className="w-4 h-4 rounded border-2" style={{ background: SEVERITY_COLORS[sev].bg, borderColor: SEVERITY_COLORS[sev].border }} />
-                      <span className={SEVERITY_COLORS[sev].text}>{SEVERITY_COLORS[sev].label}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {result.annotations.length > 0 ? (
-                showHeatmap ? (
+              <div className="flex gap-3 mb-3 flex-wrap">
+                {(['high', 'medium', 'low'] as const).map(sev => (
+                  <div key={sev} className="flex items-center gap-1.5 text-xs font-bold">
+                    <div className="w-4 h-4 rounded border-2" style={{ background: SEVERITY_COLORS[sev].bg, borderColor: SEVERITY_COLORS[sev].border }} />
+                    <span className={SEVERITY_COLORS[sev].text}>{SEVERITY_COLORS[sev].label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Image with or without heatmap boxes */}
+              <div className="relative rounded-xl overflow-hidden">
+                {showHeatmap && result.annotations.length > 0 ? (
                   <ImageWithBoxes imageSrc={imageSrc} annotations={result.annotations} />
                 ) : (
                   <img src={imageSrc} alt="Ảnh phân tích" className="w-full rounded-xl" />
-                )
-              ) : (
-                imageSrc && <img src={imageSrc} alt="Ảnh đã tải lên" className="w-full rounded-xl" />
-              )}
+                )}
+                {/* Overlay warning when no detailed annotations */}
+                {result.annotations.length > 0 && result.annotations[0]?.label === 'Vùng cần quan sát thêm' && (
+                  <div className={`absolute bottom-2 left-2 right-2 text-center py-1.5 px-3 rounded-xl text-xs font-bold ${darkMode ? 'bg-amber-900/80 text-amber-200' : 'bg-amber-100/90 text-amber-700'} backdrop-blur-sm`}>
+                    ⚡ Ảnh chưa đủ rõ để khoanh chi tiết — vùng trên là ước lượng. Hãy cung cấp thêm mô tả triệu chứng để tăng độ chính xác.
+                  </div>
+                )}
+              </div>
 
               {/* Annotation List */}
-              {result.annotations.length > 0 && (
-                <div className="mt-3 space-y-2">
-                  {result.annotations.map((ann, idx) => {
-                    const c = SEVERITY_COLORS[ann.severity] || SEVERITY_COLORS.low;
-                    return (
-                      <div key={idx} className={`flex items-start gap-3 p-2.5 rounded-xl border ${darkMode ? 'bg-slate-700/50 border-slate-600' : 'bg-slate-50 border-slate-100'}`}>
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-black shrink-0 mt-0.5" style={{ background: c.border }}>
-                          {idx + 1}
-                        </div>
-                        <div className="flex-1">
-                          <span className={`font-bold text-sm ${c.text}`}>{ann.label}</span>
-                          <span className={`text-xs ml-2 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>({c.label})</span>
-                        </div>
+              <div className="mt-3 space-y-2">
+                {result.annotations.map((ann, idx) => {
+                  const c = SEVERITY_COLORS[ann.severity] || SEVERITY_COLORS.low;
+                  return (
+                    <div key={idx} className={`flex items-start gap-3 p-2.5 rounded-xl border ${darkMode ? 'bg-slate-700/50 border-slate-600' : 'bg-slate-50 border-slate-100'}`}>
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-black shrink-0 mt-0.5" style={{ background: c.border }}>
+                        {idx + 1}
                       </div>
-                    );
-                  })}
-                </div>
-              )}
+                      <div className="flex-1">
+                        <span className={`font-bold text-sm ${c.text}`}>{ann.label}</span>
+                        <span className={`text-xs ml-2 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>({c.label})</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
