@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   HeartPulse, BookOpen, Camera, MapPin, AlertTriangle, CheckCircle,
   Upload, Send, Loader2, ChevronRight, X, Search, ChevronDown,
@@ -9,7 +9,10 @@ import {
   MessageSquare, ShieldCheck, Bell, TrendingUp, Clock,
   Heart, Star, Newspaper, UserPlus, LogIn, Info,
   Activity as ActivityIcon, Calendar, ThumbsUp, Filter,
-  Clock3, ArrowUp, TrendingDown, User, Users, RefreshCw
+  Clock3, ArrowUp, TrendingDown, User, Users, RefreshCw,
+  ExternalLink, Award, Syringe, Pill, Wind, Bone, Brain, Eye as EyeIcon,
+  Sun, Thermometer, Bug, Leaf, Droplets, Flame, Smile, Frown,
+  Download, FileDown, XCircle, ShieldAlert, StarHalf
 } from 'lucide-react';
 import { ActivityPost, PostType, AuthorRole } from './types';
 
@@ -20,10 +23,21 @@ const API_BASE = 'https://eduhealth-proxy-production.up.railway.app';
 // DỮ LIỆU CẨM NANG THƯ VIỆN SỨC KHỎE HỌC ĐƯỜNG
 // Hình ảnh từ Wikimedia Commons (CC BY-SA 4.0)
 // ═══════════════════════════════════════════════════════════════
+
+// ACNE TYPES REFERENCE DATA
+const ACNE_TYPES = [
+  { id: 'at-1', name: 'Mụn đầu đen', latin: 'Open Comedo', icon: '⚫', color: '#64748b' },
+  { id: 'at-2', name: 'Mụn đầu trắng', latin: 'Closed Comedo', icon: '⚪', color: '#94a3b8' },
+  { id: 'at-3', name: 'Mụn sưng đỏ', latin: 'Papule', icon: '🔴', color: '#ef4444' },
+  { id: 'at-4', name: 'Mụn có mủ', latin: 'Pustule', icon: '🟡', color: '#f59e0b' },
+  { id: 'at-5', name: 'Mụn nang', latin: 'Nodule', icon: '🟣', color: '#8b5cf6' },
+  { id: 'at-6', name: 'Mụn bọc', latin: 'Cyst', icon: '🔵', color: '#3b82f6' },
+];
+
 const HEALTH_LIBRARY = [
   // ── MỤN & DA LIỄU ──
   {
-    category: 'MỤN & DA LIỄU',
+    category: 'MỤN & DA LIỄU HỌC ĐƯỜNG',
     icon: '🧴',
     color: 'rose',
     bgLight: 'bg-rose-50',
@@ -33,18 +47,18 @@ const HEALTH_LIBRARY = [
     diseases: [
       {
         id: 'mun-1',
-        name: 'Mụn đầu đen / Mụn đầu trắng',
-        otherNames: 'Acne Vulgaris',
-        description: 'Lỗ chân lông bị kẹt dầu + tế bào chết, tạo thành chấm đen hoặc nốt trắng. Gặp ở ~80% học sinh THPT.',
+        name: 'Kẻ chấm đen lì lợm - Mụn đầu đen / Mụn đầu trắng',
+        otherNames: 'Acne Vulgaris.',
+        description: 'Nó là gì thế? Là tình trạng lỗ chân lông bị kẹt dầu và tế bào chết, tạo thành các chấm đen hoặc nốt trắng nhỏ khiến da sần và dễ mất tự tin.',
         causes: 'Hormone testosterone tăng tuổi dậy thì → tuyến bã nhờn hoạt động mạnh → lỗ chân lông bị bít tắc.',
         symptoms: ['Chấm đen nhỏ ở mũi, cằm, trán', 'Nốt trắng li ti hơi sần khi sờ', 'Da đổ dầu nhiều cuối buổi học', 'Lỗ chân lông to, bề mặt da không mịn'],
         schoolContext: 'Đội mũ bảo hiểm/khẩu trang bí cả ngày, học thể dục xong không rửa mặt, hay chống tay lên má, tối về cạy mụn trước gương, stress thi cử làm tăng tiết bã nhờn.',
         treatment: ['NGỪNG: Không nặn, không cạy, không lột mụn liên tục. Dừng đổi skincare lung tung.', 'RỬA: Rửa mặt nhẹ nhàng tối đa 2 lần/ngày và sau khi đổ mồ hôi – dùng sữa rửa mặt dịu nhẹ (pH 5.5).', 'DỊU: Kem/sữa dưỡng ẩm không gây bít tắc (oil-free). Tránh scrub hoặc chà khăn mạnh.', 'KHÁM: Nếu mụn viêm, kéo dài >4 tuần hoặc có nguy cơ sẹo → đến da liễu.'],
         dangerSigns: ['Mụn ngày càng dày, lan xuống lưng/ngực', 'Để lại nhiều thâm, sẹo lõm rõ', 'Tự ti rõ rệt, bỏ giao tiếp, bỏ ăn'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/0601_Acne_Vulgaris.jpg/600px-0601_Acne_Vulgaris.jpg', caption: 'Mụn trứng cá mức độ nhẹ trên da mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/0602_Acne_Vulgaris.jpg/600px-0602_Acne_Vulgaris.jpg', caption: 'Mụn trứng cá mức độ trung bình với nốt viêm', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/0603_Acne_Vulgaris.jpg/600px-0603_Acne_Vulgaris.jpg', caption: 'Mụn trứng cá viêm sưng trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/0601_Acne_Vulgaris.jpg/600px-0601_Acne_Vulgaris.jpg', caption: 'Mụn trứng cá - nốt đỏ viêm trên da mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/0603_Acne_Vulgaris.jpg/600px-0603_Acne_Vulgaris.jpg', caption: 'Mụn viêm sưng to trên da mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/0604_Acne_Vulgaris_on_the_chest.jpg/600px-0604_Acne_Vulgaris_on_the_chest.jpg', caption: 'Mụn trứng cá trên vùng ngực và lưng', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }, { title: 'AAD', url: 'https://aad.org' }]
       },
@@ -59,9 +73,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Không nặn bằng móng tay, không bôi kem đánh răng hay "mẹo mạng" lên mụn.', 'RỬA: Rửa mặt dịu nhẹ, nhất là sau khi đổ mồ hôi.', 'DỊU: Chườm mát giảm sưng. Dùng benzoyl peroxide hoặc adapalene đúng cách.', 'KHÁM: Nếu mụn bọc sâu, đau nhiều → đến da liễu sớm.'],
         dangerSigns: ['Mụn sưng to, đau dữ, có dấu hiệu áp xe (mủ vàng tụ)', 'Mụn dày đặc ở mặt, ngực, lưng', 'Ảnh hưởng mạnh đến tâm trạng, giao tiếp'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/0601_Acne_Vulgaris.jpg/600px-0601_Acne_Vulgaris.jpg', caption: 'Mụn viêm đỏ trên bề mặt da mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/0604_Acne_Vulgaris_on_the_chest.jpg/600px-0604_Acne_Vulgaris_on_the_chest.jpg', caption: 'Mụn viêm lan rộng trên vùng ngực', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Acne_vulgaris_2.jpg/600px-Acne_vulgaris_2.jpg', caption: 'Mụn trứng cá viêm nặng dưới da', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/0602_Acne_Vulgaris.jpg/600px-0602_Acne_Vulgaris.jpg', caption: 'Mụn viêm đỏ sưng trên da - dạng papule', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Acne_vulgaris_2.jpg/600px-Acne_vulgaris_2.jpg', caption: 'Mụn trứng cá nang nhiễm trùng nặng dưới da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/0603_Acne_Vulgaris.jpg/600px-0603_Acne_Vulgaris.jpg', caption: 'Mụn mủ pustule sưng đỏ trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       },
@@ -76,9 +90,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Gãi, dùng xà phòng thơm, nước giặt mùi hắc.', 'RỬA: Tắm nước ấm vừa. Thoa kem dưỡng ẩm NGAY SAU KHI TẮM còn ẩm.', 'DỊU: Kem steroid nhẹ (hydrocortisone 1%) tối đa 7 ngày cho đợt bùng phát.', 'KHÁM: Đến da liễu để được kê kem ức chế miễn dịch.'],
         dangerSigns: ['Da đỏ rực, ngứa không ngủ được nhiều đêm', 'Có mủ, vảy vàng, sốt (nhiễm trùng thứ phát)', 'Da bong tróc rộng, có dấu hiệu nhiễm Herpes'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Atopic_dermatitis_child_1.jpg/600px-Atopic_dermatitis_child_1.jpg', caption: 'Trẻ bị viêm da cơ địa ở vùng mặt và cổ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Atopic_dermatitis_ab.jpeg/600px-Atopic_dermatitis_ab.jpeg', caption: 'Tổn thương viêm da cơ địa trên da tay', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Dermatite_o_eczema_atopico_avambraccio_2015.jpg/600px-Dermatite_o_eczema_atopico_avambraccio_2015.jpg', caption: 'Viêm da cơ địa trên vùng cẳng tay', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Atopic_dermatitis_child_3.jpg/600px-Atopic_dermatitis_child_3.jpg', caption: 'Viêm da cơ địa trên da mặt trẻ em - vùng má và trán', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Dermatite_o_eczema_atopico_avambraccio_2015.jpg/600px-Dermatite_o_eczema_atopico_avambraccio_2015.jpg', caption: 'Viêm da cơ địa trên da cẳng tay - tổn thương đỏ ngứa', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Atopic_dermatitis_child.JPG/600px-Atopic_dermatitis_child.JPG', caption: 'Viêm da cơ địa bùng phát ở trẻ nhỏ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }, { title: 'AAD', url: 'https://aad.org' }]
       },
@@ -132,6 +146,125 @@ const HEALTH_LIBRARY = [
           { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Impetigo_crouteux_jambes.jpg/600px-Impetigo_crouteux_jambes.jpg', caption: 'Chốc lở Impetigo trên da chân với vảy mật ong', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
+      },
+      {
+        id: 'mun-7',
+        name: 'Mụn rộp Herpes miệng',
+        otherNames: 'Herpes Simplex Virus (HSV-1), Cold Sore',
+        description: 'Nhiễm virus Herpes simplex type 1 (HSV-1). Mụn nước nhỏ tụ lại thành chùm trên nền da đỏ quanh miệng, đau rát và ngứa.',
+        causes: 'Virus Herpes simplex type 1 (HSV-1) lây qua tiếp xúc nước bọt, hôn, dùng chung cốc/chén, khăn. Virus ẩn trong thần kinh và tái phát khi miễn dịch suy giảm.',
+        symptoms: ['Mụn nước trong suốt tụ thành chùm 3-5 quả trên nền đỏ', 'Da quanh mụn đỏ, sưng nhẹ', 'Đau rát, ngứa hoặc châm chích trước khi mụn xuất hiện', 'Mụn vỡ để lại vết loét đau, khô thành vảy trong 7-10 ngày', 'Sốt nhẹ, hạch dưới hàm sưng'],
+        schoolContext: 'Lây qua dùng chung bình nước, khăn, son môi. Stress thi cử, thức khuya, đau ốm làm tái phát mụn rộp. Học sinh thường tự ti khi có mụn rộp trên môi.',
+        treatment: ['NGỪNG: Không chạm tay bẩn vào mụn. Không bóp, không lột vảy. Không dùng chung son, khăn, bình nước.', 'RỬA: Rửa tay xà phòng sau khi chạm vào vùng mụn. Giữ vùng môi sạch.', 'DỊU: Thoa kem kháng virus (acyclovir 5%) càng sớm càng tốt khi có triệu chứng tiền triệu (ngứa, rát). Chườm mát giảm đau.', 'KHÁM: Nếu tái phát >6 lần/năm → cần thuốc uống ngừa từ bác sĩ.'],
+        dangerSigns: ['Mụn lan rộng mắt, bộ phận sinh dục (HSV-2)', 'Sốt cao, hạch sưng to không giảm', 'Mụn không khỏi sau 14 ngày hoặc lan rộng rất nhanh', 'Trẻ nhỏ bị Herpes miệng lan rộng, khó ăn uống'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Herpes_face_pommette.jpg/600px-Herpes_face_pommette.jpg', caption: 'Herpes miệng – tổn thương mụn nước tụ thành chùm trên má', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Orofacial_herpes_simplex_virus_infection_of_the_left_upper_gum.jpg/600px-Orofacial_herpes_simplex_virus_infection_of_the_left_upper_gum.jpg', caption: 'Herpes miệng – tổn thương trên nướu và môi trên', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Herpesinfection.JPG/600px-Herpesinfection.JPG', caption: 'Tổn thương Herpes simplex trên da mặt – nhiều mụn nước', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'CDC', url: 'https://cdc.gov/herpes' }]
+      },
+      {
+        id: 'mun-8',
+        name: 'Rosacea (Trứng cá đỏ)',
+        otherNames: 'Rosacea, Acne Rosacea',
+        description: 'Bệnh da mãn tính gây đỏ mặt dai dẳng, giãn mao mạch, và mụn mủ nhỏ. Phổ biến ở người da trắng và da sáng 30-50 tuổi.',
+        causes: 'Nguyên nhân chưa rõ ràng: giãn mạch máu bề mặt + phản ứng viêm + vi khuẩn Demodex. Triggers: rượu, gia vị, nhiệt độ nóng, stress, tia UV.',
+        symptoms: ['Đỏ mặt dai dẳng ở vùng trung tâm (má, mũi, cằm, trán)', 'Giãn mao mạch (telangiectasia) nhìn thấy được ở má', 'Mụn mủ nhỏ (papules/pustules) trên nền da đỏ', 'Da mặt nhạy cảm, dễ bị kích ứng', 'Mũi có thể sưng to (rhinophyma) ở trường hợp nặng'],
+        schoolContext: 'Học sinh vị thành niên thường bị nhầm với mụn trứng cá thông thường. Áp lực tâm lý về ngoại hình khi mặt đỏ liên tục. Triggers phổ biến trong môi trường học đường: gia vị, nước ngọt, căng thẳng.',
+        treatment: ['NGỪNG: Uống rượu, ăn đồ cay nóng, ở môi trường nóng. Tránh xả xạc mạnh, dùng mỹ phẩm không phù hợp.', 'RỬA: Rửa mặt nhẹ nhàng với sữa rửa mặt dịu nhẹ. Tránh nước nóng.', 'DỊU: Thoa metronidazole gel hoặc azelaic acid theo chỉ định. Chống nắng SPF 30+ mỗi ngày.', 'KHÁM: Nếu đỏ mặt kéo dài >3 tuần, mụn mủ lan rộng → đến da liễu.'],
+        dangerSigns: ['Mắt bị đỏ, đau, nhạy cảm ánh sáng (Rosacea mắt – nguy cơ mất thị lực)', 'Mũi sưng to, biến dạng (rhinophyma)', 'Đỏ mặt không đáp ứng điều trị sau 8 tuần'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Rosacea_01.jpg/600px-Rosacea_01.jpg', caption: 'Rosacea trung tâm mặt – đỏ da và giãn mao mạch ở má', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Rosacea_mild.jpg/600px-Rosacea_mild.jpg', caption: 'Rosacea nhẹ – đỏ vùng má và mũi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Acne_rosacea.jpg/600px-Acne_rosacea.jpg', caption: 'Acne Rosacea – mụn mủ nhỏ trên nền da đỏ mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'AAD', url: 'https://aad.org/rosacea' }]
+      },
+      {
+        id: 'mun-9',
+        name: 'Vảy nến',
+        otherNames: 'Psoriasis Vulgaris',
+        description: 'Bệnh da tự miễn mãn tính. Dát đỏ có vảy bạc đặc trưng, tổn thương đối xứng ở khuỷu, đầu gối, da đầu.',
+        causes: 'Tự miễn dịch: tế bào T lympho tấn công tế bào da → tái tạo quá nhanh (4-7 ngày thay vì 28 ngày). Yếu tố di truyền + triggers: stress, nhiễm trùng, thuốc, lạnh.',
+        symptoms: ['Dát đỏ well-defined, bề mặt có vảy bạc dày bám chặt', 'Vảy trắng bong tróc khi cạo (dễ xuất huyết điểm – Auspitz sign)', 'Vị trí đặc trưng: khuỷu tay, đầu gối, da đầu, thân mình', 'Móng tay có vết lõm (pitting), dày, bong tróc', 'Ngứa nhẹ đến vừa'],
+        schoolContext: 'Bệnh ảnh hưởng tâm lý học sinh rất nặng – tự ti về ngoại hình khi mặc đồng phục, đi bơi. Trẻ bị stress nặng (thi cử) → bùng phát. Trẻ bị nhiễm trùng (viêm họng) → khởi phát psoriasis.',
+        treatment: ['NGỪNG: Gãi, bóc vảy. Dùng kem steroid mạnh không theo chỉ định.', 'RỬA: Tắm nước ấm, dùng sữa tắm dịu nhẹ. Thoa kem dưỡng ẩm ngay sau tắm.', 'DỊU: Thoa steroid từ bác sĩ. Ánh sáng trị liệu (UVB) cho trường hợp rộng.', 'KHÁM: Đến da liễu. Bệnh cần điều trị dài hạn, có thuốc sinh học cho nặng.'],
+        dangerSigns: ['Dát đỏ lan rộng >20% diện tích cơ thể', 'Viêm khớp: sưng đau khớp, cứng khớp buổi sáng', 'Móng biến dạng nặng, bong tróc toàn bộ', 'Vảy nến mủ (psoriasis pustular) – cần nhập viện'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Psoriasis_vulgaris_to_avoid_wrong_diagnosis_and_help_in_treating.jpg/600px-Psoriasis_vulgaris_to_avoid_wrong_diagnosis_and_help_in_treating.jpg', caption: 'Psoriasis vulgaris – dát đỏ vảy bạc đặc trưng trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/An_Arm_Covered_With_Plaque_Type_Psoriasis.jpg/600px-An_Arm_Covered_With_Plaque_Type_Psoriasis.jpg', caption: 'Vảy nến trên cánh tay – vảy bạc dày trên nền da đỏ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Psoriasis_on_elbow.jpg/600px-Psoriasis_on_elbow.jpg', caption: 'Psoriasis trên khuỷu tay – vị trí đặc trưng của vảy nến', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'AAD', url: 'https://aad.org/psoriasis' }]
+      },
+      {
+        id: 'mun-10',
+        name: 'Bạch biến',
+        otherNames: 'Vitiligo',
+        description: 'Da mất sắc tố từng mảng, xuất hiện vùng trắng hoàn toàn không có melanin. Có thể lan rộng hoặc ổn định. Không lây.',
+        causes: 'Tự miễn dịch: cơ thể tấn công và phá hủy tế bào sản xuất melanin (melanocyte). Gen di truyền chiếm 20-30%. Căng thẳng, chấn thương da có thể khởi phát.',
+        symptoms: ['Vùng da TRẮNG hoàn toàn, ranh giới rõ với da bình thường', 'Vị trí: quanh miệng, mắt, tay, chân, đầu gối, khuỷu', 'Vùng trắng đồng nhất, không vảy, không ngứa', 'Tóc trên vùng tổn thương có thể bạc trắng', 'Da nhạy cảm với ánh nắng trên vùng trắng'],
+        schoolContext: 'Học sinh tự ti rất nặng vì vùng trắng trên da mặt/ Tay dễ bị bạn bè chú ý và hỏi han. Bắt nạt kỳ thị ngoại hình có thể xảy ra. Trẻ cần được tư vấn tâm lý sớm.',
+        treatment: ['NGỪNG: Xấu hổ, cô lập bản thân. Dùng kem tẩy trắng (không phải điều trị thật sự).', 'RỬA: Bảo vệ da khỏi ánh nắng: kem chống nắng SPF 30+ mỗi ngày.', 'DỊU: Thoa steroid hoặc calcineurin inhibitor (tacrolimus) theo chỉ định. Ánh sáng UVB narrowband.', 'KHÁM: Đến da liễu sớm. Điều trị hiệu quả cao nhất khi phát hiện sớm. Đường dây 1800-9090 nếu cần hỗ trợ tâm lý.'],
+        dangerSigns: ['Tổn thương lan rộng rất nhanh trong vài tuần', 'Mắt bị ảnh hưởng (vitiligo quanh mắt)', 'Có dấu hiệu bệnh tự miễn khác (tuyến giáp)', 'Trầm cảm, cô lập, có ý nghĩ tự hại'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/0801_Vitiligo.jpg/600px-0801_Vitiligo.jpg', caption: 'Bạch biến Vitiligo – vùng da mất sắc tố trắng hoàn toàn trên cổ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/0802_Vitiligo.jpg/600px-0802_Vitiligo.jpg', caption: 'Vitiligo trên da mặt – các vùng trắng đồng nhất ranh giới rõ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Vitiligo_on_hand.jpg/600px-Vitiligo_on_hand.jpg', caption: 'Bạch biến trên bàn tay – vị trí phổ biến thường gặp', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'AAD', url: 'https://aad.org/vitiligo' }]
+      },
+      {
+        id: 'mun-11',
+        name: 'Zona thần kinh',
+        otherNames: 'Shingles, Herpes Zoster',
+        description: 'Virus Varicella-Zoster (cùng virus thủy đậu) tái hoạt động trong dây thần kinh. Mụn nước排列成条带 trên một bên cơ thể theo đường dây thần kinh, kèm đau dữ dội.',
+        causes: 'Sau khi khỏi thủy đậu, virus VZV ẩn trong gốc dây thần kinh. Tái hoạt khi miễn dịch suy giảm (stress, bệnh nặng, thuốc ức chế miễn dịch, tuổi già).',
+        symptoms: ['Đau dữ dội theo đường dây thần kinh (đau thần kinh liệt)', 'Mụn nước trong排列成条带 trên một bên cơ thể, không lan sang bên kia', 'Mụn xuất hiện 1-5 ngày sau đau, thường ở ngực/lưng/mặt', 'Mụn vỡ để lại vết loét → khô → vảy trong 2-4 tuần', 'Có thể sốt nhẹ, mệt mỏi'],
+        schoolContext: 'Ít gặp ở học sinh nhỏ (đã tiêm phòng thủy đậu). Học sinh chưa tiêm phòng và chưa từng bị thủy đậu có nguy cơ. Người lớn tuổi và người suy giảm miễn dịch dễ bị Zona.',
+        treatment: ['NGỪNG: Gãi mụn nước. Để trẻ đến trường khi còn mụn nước chưa khô.', 'RỬA: Giữ vùng da sạch, khô. Rửa tay thường xuyên.', 'DỊU: Thuốc kháng virus (acyclovir, valacyclovir) hiệu quả nhất nếu uống trong 72 giờ đầu. Giảm đau: paracetamol.', 'KHÁM NGAY: Đau dữ dội, Zona ở mặt (gần mắt), người suy giảm miễn dịch.'],
+        dangerSigns: ['Zona ở vùng mắt (có thể mù mắt) → khám mắt ngay', 'Đau thần kinh kéo dài >3 tháng sau Zona (postherpetic neuralgia)', 'Zona lan rộng toàn thân, sốt cao', 'Người bệnh suy giảm miễn dịch bị Zona nặng'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Chickenpox_blister-%28closeup%29.jpg/600px-Chickenpox_blister-%28closeup%29.jpg', caption: 'Zona thần kinh – mụn nước trên nền da đỏ theo đường dây thần kinh', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Chickenpox_blister.jpg/600px-Chickenpox_blister.jpg', caption: 'Tổn thương Zona thần kinh trên thân mình – mụn nước tụ thành vệt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/V%C3%A9sicules_varicelle_chickenpox.jpg/600px-V%C3%A9sicules_varicelle_chickenpox.jpg', caption: 'Mụn nước Zona Herpes Zoster – hình thành vệt đặc trưng theo dây thần kinh', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'CDC', url: 'https://cdc.gov/shingles' }]
+      },
+      {
+        id: 'mun-12',
+        name: 'Mề đay',
+        otherNames: 'Urticaria, Hives',
+        description: 'Phản ứng dị ứng gây ra các sẩn đỏ NGỨA DỮ, thay đổi hình dạng và vị trí liên tục trong vài giờ. Cấp tính hoặc mãn tính.',
+        causes: 'Giải phóng histamine từ tế bào mast khi tiếp xúc tác nhân dị ứng: thực phẩm (tôm, đậu phộng), thuốc, côn trùng đốt, gió lạnh, áp lực tâm lý, virus.',
+        symptoms: ['Sẩn đỏ (wheals) nổi lên da, NGỨA DỮ DỘI', 'Sẩn thay đổi hình dạng, kích thước, vị trí liên tục trong vài giờ', 'Có thể có quanh mắt, môi (angioedema)', 'Da sờ ấm, căng, đau nhẹ tại sẩn', 'Cấp tính: <6 tuần. Mãn tính: >6 tuần, tái đi tái lại'],
+        schoolContext: 'Học sinh bị dị ứng thực phẩm trong bữa ăn bán trú, canteen trường. Côn trùng đốt trong giờ ra chơi. Stress thi cử → tái phát mề đay mãn tính. Gây mất tập trung học do ngứa dữ.',
+        treatment: ['NGỪNG: Tiếp xúc tác nhân gây dị ứng (nếu đã xác định). Không gãi (gãi làm nặng thêm).', 'RỬA: Ghi nhật ký ăn uống để tìm thực phẩm gây dị ứng. Rửa tay, mặt sau giờ ra chơi.', 'DỊU: Thuốc kháng histamine (cetirizine, loratadine) – không gây buồn ngủ được ưu tiên.', 'KHÁM NGAY: Khó thở, khàn tiếng, phù quanh miệng/mắt (sốc phản vệ). Sẩn mề đay không giảm sau 24h dù thuốc.'],
+        dangerSigns: ['Khó thở, thở gấp, khàn tiếng → GỌI CẤP CỨU ngay (sốc phản vệ)', 'Sưng môi, lưỡi, mí mắt (angioedema – tắc nghẽn đường thở)', 'Sẩn không biến mất sau 24h dù kháng histamine', 'Sốt cao kèm theo sẩn ngứa'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Atopic_dermatitis_child_3.jpg/600px-Atopic_dermatitis_child_3.jpg', caption: 'Mề đay Urticaria – sẩn đỏ nổi ngứa dữ dội trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Dermatite_o_eczema_atopico_avambraccio_2015.jpg/600px-Dermatite_o_eczema_atopico_avambraccio_2015.jpg', caption: 'Phản ứng dị ứng da – tổn thương mề đay trên da cánh tay', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Atopic_dermatitis_child.JPG/600px-Atopic_dermatitis_child.JPG', caption: 'Sẩn mề đay ở trẻ – phản ứng viêm da dị ứng cấp tính', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'AAD', url: 'https://aad.org/urticaria' }]
+      },
+      {
+        id: 'mun-13',
+        name: 'Phát ban do virus',
+        otherNames: 'Viral Exanthem, Measles-like rash',
+        description: 'Phát ban toàn thân do virus (rubella, measles, roseola, enterovirus). Xuất hiện sau sốt, thường là dát đỏ hoặc dát hồng lan tỏa.',
+        causes: 'Nhiều loại virus: Rubella, Measles (sởi), Roseola (HHV-6), Enterovirus (EV68, EV71),腺病毒. Lây qua giọt bắn, tiếp xúc.',
+        symptoms: ['Phát ban đỏ/hồng rải rác hoặc lan tỏa toàn thân, thường sau 1-3 ngày sốt', 'Dát phẳng (macules) hoặc nổi nhẹ (papules), không ngứa hoặc ngứa nhẹ', 'Bắt đầu ở mặt, lan xuống thân, tay chân', 'Kèm theo: sốt, mệt mỏi, đau họng, chảy mũi, hạch sưng', 'Measles: có đốm Koplik trắng trong miệng'],
+        schoolContext: 'Lây rất nhanh trong trường học, đặc biệt Measles (sởi) và Rubella. Trẻ chưa tiêm phòng đầy đủ là nhóm nguy cơ cao nhất. Cần nghỉ học ngay khi phát hiện.',
+        treatment: ['NGỪNG: Đến trường khi đang sốt và phát ban. Tự ý cho trẻ uống kháng sinh (không có tác dụng với virus).', 'RỬA: Nghỉ ngơi tại nhà, uống nhiều nước, sữa.', 'DỊU: Hạ sốt bằng paracetamol. Giữ da sạch, mặc đồ thoáng mát.', 'KHÁM NGAY: Sốt cao không hạ, khó thở, co giật, phát ban không biến mất sau 5 ngày.'],
+        dangerSigns: ['Sốt cao >39.5°C không hạ dù thuốc', 'Co giật, lú lẫn, đau đầu dữ dội (viêm não virus)', 'Khó thở, thở nhanh (viêm phổi)', 'Phát ban xuất huyết: dát đỏ không bay khi ấn kính (xuất huyết da)', 'Môi tím, trẻ ngủ li bì (dấu hiệu suy hô hấp)'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Scarlet_fever_rash.jpg/600px-Scarlet_fever_rash.jpg', caption: 'Phát ban do virus – dát đỏ rải rác toàn thân kiểu sởi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Child_with_scarlet_fever.jpg/600px-Child_with_scarlet_fever.jpg', caption: 'Phát ban virus exanthem trẻ em – mệt mỏi kèm theo ban', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Scarlatina_tongue.JPG/600px-Scarlatina_tongue.JPG', caption: 'Phát ban toàn thân do nhiễm virus – biểu hiện trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'CDC', url: 'https://cdc.gov' }, { title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
       }
     ]
   },
@@ -173,9 +306,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Gãi mụn nước – để lại sẹo. Đến trường khi còn vảy chưa khô hẳn.', 'RỬA: Tắm nước ấm nhẹ nhàng. Cắt móng ngắn. Mặc đồ mềm, thoáng.', 'DỊU: Thuốc chống ngứa theo chỉ định. Chườm mát giảm ngứa.', 'KHÁM NGAY nếu sốt cao liên tục, khó thở, đau đầu dữ dội.'],
         dangerSigns: ['Sốt cao liên tục không hạ', 'Mụn nước có mủ, sưng đỏ lan rộng (nhiễm trùng da)', 'Trẻ khó thở, ho nhiều (viêm phổi)', 'Đau đầu dữ dội, cứng cổ, lú lẫn (viêm não)'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Varicella_day_5.jpg/600px-Varicella_day_5.jpg', caption: 'Mụn nước thủy đậu Varicella ngày thứ 5 trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Head_and_face_of_a_child_with_varicella_gangrenosa_Wellcome_L0062040.jpg/600px-Head_and_face_of_a_child_with_varicella_gangrenosa_Wellcome_L0062040.jpg', caption: 'Bệnh nhân thủy đậu nặng biến chứng varicella gangrenosa ở vùng mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/VARIVAX.jpg/600px-VARIVAX.jpg', caption: 'Hình ảnh minh họa virus Varicella-Zoster gây thủy đậu', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Chickenpox_blister-%28closeup%29.jpg/600px-Chickenpox_blister-%28closeup%29.jpg', caption: 'Mụn nước trong suốt đặc trưng thủy đậu trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Chickenpox_blister.jpg/600px-Chickenpox_blister.jpg', caption: 'Mụn nước thủy đậu chickenpox trên thân mình với nhiều vết phồng rộp', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/V%C3%A9sicules_varicelle_chickenpox.jpg/600px-V%C3%A9sicules_varicelle_chickenpox.jpg', caption: 'Mụn nước đặc trưng thủy đậu varicella trên da vai bệnh nhân', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
       },
@@ -190,9 +323,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Đến trường khi đang sốt, ho, đau mỏi. Đeo khẩu trang nếu bắt buộc ra ngoài.', 'RỬA: Rửa tay thường xuyên. Dùng khăn giấy che miệng khi ho/hắt hơi.', 'DỊU: Hạ sốt bằng paracetamol. Uống nhiều nước, oresol, nước hoa quả.', 'KHÁM: Nếu sốt cao >3 ngày, khó thở, đau ngực.'],
         dangerSigns: ['Khó thở, thở nhanh, thở gấp (viêm phổi)', 'Sốt không hạ hoặc sốt lại sau 3-4 ngày', 'Đau ngực dữ dội, ho ra máu', 'Lú lẫn, không tỉnh táo, co giật'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/H1N1_Influenza_Virus_Particles_%288411599236%29.jpg/600px-H1N1_Influenza_Virus_Particles_%288411599236%29.jpg', caption: 'Hình ảnh virus cúm Influenza H1N1 qua kính hiển vi điện tử', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/A_family_threatened_by_influenza_is_prepared_for_a_large_sca_Wellcome_V0011966.jpg/600px-A_family_threatened_by_influenza_is_prepared_for_a_large_sca_Wellcome_V0011966.jpg', caption: 'Gia đình ốm bệnh do cúm Influenza', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Three_miserable_men_suffering_from_gout%2C_toothache_and_flu_Wellcome_V0012085.jpg/600px-Three_miserable_men_suffering_from_gout%2C_toothache_and_flu_Wellcome_V0012085.jpg', caption: 'Người bệnh cúm với các triệu chứng mệt mỏi, đau đầu', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/H1N1_Influenza_Virus_Particles_%288411599236%29.jpg/600px-H1N1_Influenza_Virus_Particles_%288411599236%29.jpg', caption: 'Virus cúm Influenza H1N1 qua kính hiển vi điện tử', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/A_family_threatened_by_influenza_is_prepared_for_a_large_sca_Wellcome_V0011966.jpg/600px-A_family_threatened_by_influenza_is_prepared_for_a_large_sca_Wellcome_V0011966.jpg', caption: 'Gia đình bị ảnh hưởng bởi cúm Influenza mùa dịch', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Three_miserable_men_suffering_from_gout%2C_toothache_and_flu_Wellcome_V0012085.jpg/600px-Three_miserable_men_suffering_from_gout%2C_toothache_and_flu_Wellcome_V0012085.jpg', caption: 'Người bệnh cúm Influenza với các triệu chứng mệt mỏi đau đầu toàn thân', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'WHO', url: 'https://who.int/influenza' }]
       },
@@ -208,8 +341,8 @@ const HEALTH_LIBRARY = [
         dangerSigns: ['Đau nhức mắt dữ dội, đau sâu vào hốc mắt', 'Nhìn mờ, suy giảm thị lực đột ngột', 'Mắt rất sợ ánh sáng, không thể mở mắt', 'Chảy mủ đặc hoặc có máu từ kết mạc'],
         images: [
           { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Conjunctivitis_5174.jpg/600px-Conjunctivitis_5174.jpg', caption: 'Viêm kết mạc đỏ rực – mắt đỏ đặc trưng của bệnh đau mắt đỏ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/An_eye_with_conjunctivitis.jpg/600px-An_eye_with_conjunctivitis.jpg', caption: 'Mắt bị viêm kết mạc với lòng trắng đỏ hồng rải rác', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/ConjunctivitisRedEye.jpg/600px-ConjunctivitisRedEye.jpg', caption: 'Đau mắt đỏ do viêm kết mạc với mạch máu đỏ lan tỏa', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/An_eye_with_conjunctivitis.jpg/600px-An_eye_with_conjunctivitis.jpg', caption: 'Mắt bị viêm kết mạc hồng đỏ từng vùng trên lòng trắng mắt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/ConjunctivitisRedEye.jpg/600px-ConjunctivitisRedEye.jpg', caption: 'Đau mắt đỏ kết mạc với mạch máu đỏ tập trung quanh giác mạc', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
       }
@@ -345,44 +478,77 @@ const PostCard: React.FC<{ post: ActivityPost; onOpen: () => void; darkMode?: bo
   const textSecondary = darkMode ? 'text-slate-400' : 'text-slate-500';
   const borderColor = darkMode ? 'border-slate-700' : 'border-slate-100';
   const placeholderBg = darkMode ? 'from-slate-700 to-slate-800' : 'from-purple-100 to-pink-100';
+  const typeColors = { video: 'bg-red-500', article: 'bg-blue-500', infographic: 'bg-orange-500' };
+  const typeIcons = { video: '🎬', article: '📝', infographic: '🖼️' };
   return (
-    <div onClick={onOpen} className={`group cursor-pointer rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100'}`}>
+    <div
+      onClick={onOpen}
+      className={`pill-card rounded-2xl overflow-hidden cursor-pointer group transition-all duration-400 ${darkMode ? 'pill-card-dark' : ''}`}
+    >
+      {/* Image */}
       <div className="relative aspect-video overflow-hidden">
         {post.type === 'video' && getYouTubeEmbedUrl(post.content) ? (
-          <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
-            <img src={`https://img.youtube.com/vi/${post.content.match(/youtu\.be\/([^?]+)/)?.[1] || ''}/mqdefault.jpg`} alt="" className="w-full h-full object-cover opacity-80" onError={(e: any) => e.target.style.display = 'none'} />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-white/90 rounded-full p-3 shadow-lg"><PlayCircle size={32} className="text-rose-600" /></div>
+          <>
+            <img src={`https://img.youtube.com/vi/${post.content.match(/youtu\.be\/([^?]+)/)?.[1] || ''}/mqdefault.jpg`} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+              <div className="bg-white/95 backdrop-blur-sm rounded-full p-3 shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+                <PlayCircle size={28} className="text-rose-600 ml-0.5" />
+              </div>
             </div>
-          </div>
+          </>
         ) : post.type === 'infographic' && post.content ? (
-          <img src={post.content} alt={post.title} className="w-full h-full object-cover" />
+          <img src={post.content} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         ) : (
           <div className={`w-full h-full bg-gradient-to-br ${placeholderBg} flex items-center justify-center`}>
             <FileText size={48} className={darkMode ? 'text-slate-500' : 'text-purple-300'} />
           </div>
         )}
-        <div className={`absolute top-2 left-2 ${post.type === 'video' ? 'bg-red-100 text-red-600' : post.type === 'article' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'} px-2 py-0.5 rounded-full text-[10px] font-bold uppercase`}>
-          {post.type === 'video' ? '🎬 Video' : post.type === 'article' ? '📝 Bài viết' : '🖼️ Infographic'}
+        {/* Pill type badge */}
+        <div className={`absolute top-2 left-2 ${typeColors[post.type]} text-white px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wide shadow-lg flex items-center gap-1`}>
+          <span>{typeIcons[post.type]}</span>
+          <span>{post.type === 'video' ? 'Video' : post.type === 'article' ? 'Bài viết' : 'Infographic'}</span>
         </div>
       </div>
-      <div className={`p-4 space-y-2 ${darkMode ? 'bg-slate-800' : 'bg-white'}`}>
-        <div className="flex items-center gap-2">
-          <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold ${post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
+
+      {/* Content */}
+      <div className={`p-4 space-y-3 ${darkMode ? 'bg-slate-800' : 'bg-white'}`}>
+        {/* Author */}
+        <div className="flex items-center gap-2.5">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-black shadow-md ${post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
             {post.authorName[0]?.toUpperCase()}
           </div>
-          <div>
-            <p className={`text-xs font-bold ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{post.authorName}</p>
+          <div className="flex-1 min-w-0">
+            <p className={`text-xs font-bold truncate ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{post.authorName}</p>
             <p className={`text-[10px] ${post.authorRole === 'Cán bộ y tế' ? 'text-blue-400' : 'text-purple-400'}`}>{post.authorRole}</p>
           </div>
-          <span className={`ml-auto text-[10px] ${textSecondary}`}>{formatTimeAgo(post.createdAt)}</span>
+          <span className={`text-[10px] shrink-0 ${textSecondary} flex items-center gap-0.5`}>
+            <Clock3 size={9} />
+            {formatTimeAgo(post.createdAt)}
+          </span>
         </div>
-        <h3 className={`font-bold line-clamp-2 group-hover:text-rose-400 transition-colors ${textPrimary}`}>{post.title}</h3>
-        {post.description && <p className={`text-xs ${textSecondary} line-clamp-2`}>{post.description}</p>}
+        {/* Title */}
+        <h3 className={`font-black line-clamp-2 group-hover:text-rose-400 transition-colors duration-300 leading-snug ${textPrimary}`}>{post.title}</h3>
+        {post.description && <p className={`text-xs ${textSecondary} line-clamp-2 leading-relaxed`}>{post.description}</p>}
+        {/* Tags */}
+        {post.tags?.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {post.tags.slice(0, 3).map((tag: string) => (
+              <span key={tag} className={`text-[9px] px-2 py-0.5 rounded-full font-bold ${darkMode ? 'bg-slate-700 text-slate-400' : 'bg-rose-50 text-rose-400'}`}>#{tag}</span>
+            ))}
+          </div>
+        )}
+        {/* Stats */}
         <div className={`flex items-center gap-3 pt-2 border-t ${borderColor} text-xs ${textSecondary}`}>
-          <span className="flex items-center gap-1"><Eye size={12} />{post.views}</span>
-          <span className="flex items-center gap-1"><MessageCircle size={12} />{post.comments?.length || 0}</span>
-          {total > 0 && <span>{post.reactions.find(r => r.count > 0)?.type && REACTION_CONFIG.find(r => r.type === post.reactions.find(pr => pr.count > 0)?.type)?.emoji} {total}</span>}
+          <span className="flex items-center gap-1 hover:text-rose-500 transition-colors"><Eye size={12} />{post.views}</span>
+          <span className="flex items-center gap-1 hover:text-rose-500 transition-colors"><MessageCircle size={12} />{post.comments?.length || 0}</span>
+          {total > 0 && (
+            <span className="ml-auto flex items-center gap-1">
+              {REACTION_CONFIG.filter(r => (post.reactions.find(pr => pr.type === r.type)?.count || 0) > 0).slice(0, 2).map(r => (
+                <span key={r.type}>{r.emoji}</span>
+              ))}
+              <span className="font-bold">{total}</span>
+            </span>
+          )}
         </div>
       </div>
     </div>
@@ -608,6 +774,694 @@ const PostForm: React.FC<{ onClose: () => void; onSuccess: (p: ActivityPost) => 
 };
 
 // ═══════════════════════════════════════════════════════════════
+// AI SCAN VIEW — Multimodal Dermatology Screening with Heatmap
+// ═══════════════════════════════════════════════════════════════
+
+interface ScanAnnotation {
+  x: number; y: number; w: number; h: number;
+  label: string;
+  severity: 'high' | 'medium' | 'low';
+}
+
+interface ScanResult {
+  title: string;
+  category: string;
+  analysis: string[];
+  causes: string[];
+  urgency: string;
+  dangerSigns: string[];
+  safetyAdvice: string[];
+  confidence: 'low' | 'moderate' | 'high';
+  confidence_score: number;
+  confidence_note: string;
+  severity: 'mild' | 'moderate' | 'severe';
+  image_findings: string[];
+  history_flags: string[];
+  annotations: ScanAnnotation[];
+  alternatives: { name: string; reason_against: string }[];
+  seek_care: string;
+  teen_message: string;
+  // Extended analysis fields
+  analysis_steps?: {
+    dataQuality: { status: string; issues: string[] };
+    morphology: string[];
+    distribution: string[];
+    symptoms: string[];
+    triggers: string[];
+    exclusion: string[];
+    conclusion: string;
+  };
+}
+
+interface SeverityConfig { bg: string; border: string; label: string; text: string; }
+const SEVERITY_COLORS: Record<string, SeverityConfig> = {
+  high: { bg: 'rgba(239,68,68,0.45)', border: '#ef4444', label: 'Nặng', text: 'text-red-500' },
+  medium: { bg: 'rgba(245,158,11,0.45)', border: '#f59e0b', label: 'Trung bình', text: 'text-amber-500' },
+  low: { bg: 'rgba(34,197,94,0.35)', border: '#22c55e', label: 'Nhẹ', text: 'text-green-500' },
+};
+
+const URGENCY_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode; bg: string }> = {
+  'self-care': { label: 'Tự chăm sóc tại nhà', color: 'text-green-600', bg: 'bg-green-50 border-green-200', icon: <CheckCircle size={16} /> },
+  'routine-visit': { label: 'Nên tham vấn Y tế học đường', color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200', icon: <Stethoscope size={16} /> },
+  'soon': { label: 'Cần đi khám chuyên khoa', color: 'text-amber-600', bg: 'bg-amber-50 border-amber-200', icon: <AlertTriangle size={16} /> },
+  'urgent': { label: 'Khẩn cấp — Đi khám ngay', color: 'text-orange-600', bg: 'bg-orange-50 border-orange-200', icon: <ShieldAlert size={16} /> },
+  'emergency': { label: 'Cấp cứu — Gọi cấp cứu ngay!', color: 'text-red-600', bg: 'bg-red-50 border-red-200', icon: <XCircle size={16} /> },
+};
+
+const HeatmapCanvas: React.FC<{ imageSrc: string; annotations: ScanAnnotation[]; darkMode: boolean }> = ({ imageSrc, annotations, darkMode }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  const drawHeatmap = useCallback(() => {
+    const canvas = canvasRef.current;
+    const img = imgRef.current;
+    if (!canvas || !img || !img.complete) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    annotations.forEach((ann, idx) => {
+      const x = ann.x * canvas.width;
+      const y = ann.y * canvas.height;
+      const w = ann.w * canvas.width;
+      const h = ann.h * canvas.height;
+      const cfg = SEVERITY_COLORS[ann.severity] || SEVERITY_COLORS.low;
+
+      // Fill
+      ctx.fillStyle = cfg.bg;
+      ctx.fillRect(x, y, w, h);
+
+      // Border
+      ctx.strokeStyle = cfg.border;
+      ctx.lineWidth = Math.max(2, img.naturalWidth / 400);
+      ctx.strokeRect(x, y, w, h);
+
+      // Corner markers
+      const corner = Math.min(w, h) * 0.1;
+      ctx.lineWidth = Math.max(2, img.naturalWidth / 300);
+      const corners = [[x, y, corner, corner], [x + w, y, -corner, corner], [x, y + h, corner, -corner], [x + w, y + h, -corner, -corner]];
+      corners.forEach(([cx2, cy2, cw2, ch2]) => {
+        ctx.beginPath();
+        ctx.moveTo(cx2, cy2 + ch2);
+        ctx.lineTo(cx2, cy2);
+        ctx.lineTo(cx2 + cw2, cy2);
+        ctx.stroke();
+      });
+
+      // Label background
+      const fontSize = Math.max(12, img.naturalWidth / 45);
+      ctx.font = `bold ${fontSize}px sans-serif`;
+      const text = `${idx + 1}. ${ann.label}`;
+      const metrics = ctx.measureText(text);
+      const pad = fontSize * 0.5;
+      const labelY = y - fontSize * 0.3;
+      ctx.fillStyle = cfg.border;
+      ctx.beginPath();
+      ctx.roundRect(x, labelY - fontSize - pad, Math.min(metrics.width + pad * 2, canvas.width * 0.6), fontSize + pad * 1.2, fontSize * 0.3);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(text, x + pad, labelY - pad);
+    });
+  }, [annotations]);
+
+  useEffect(() => {
+    if (imgRef.current?.complete) drawHeatmap();
+  }, [drawHeatmap, imageSrc]);
+
+  return (
+    <div className="relative inline-block w-full">
+      <img ref={imgRef} src={imageSrc} alt="Ảnh phân tích" className="w-full rounded-xl" onLoad={drawHeatmap} />
+      <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full rounded-xl pointer-events-none" style={{ mixBlendMode: 'multiply' }} />
+    </div>
+  );
+};
+
+const ImageWithBoxes: React.FC<{ imageSrc: string; annotations: ScanAnnotation[] }> = ({ imageSrc, annotations }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dims, setDims] = useState({ w: 0, h: 0 });
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new ResizeObserver(entries => {
+      for (const e of entries) { setDims({ w: e.contentRect.width, h: e.contentRect.height }); }
+    });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative w-full">
+      <img src={imageSrc} alt="Ảnh phân tích" className="w-full rounded-xl" onLoad={e => { const r = e.currentTarget.getBoundingClientRect(); setDims({ w: r.width, h: r.height }); }} />
+      {annotations.map((ann, idx) => {
+        const cfg = SEVERITY_COLORS[ann.severity] || SEVERITY_COLORS.low;
+        return (
+          <div key={idx} style={{ position: 'absolute', left: `${ann.x * 100}%`, top: `${ann.y * 100}%`, width: `${ann.w * 100}%`, height: `${ann.h * 100}%`, border: `3px solid ${cfg.border}`, background: cfg.bg, borderRadius: 8 }}>
+            <div style={{ position: 'absolute', bottom: '100%', left: 0, background: cfg.border, color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 6px', borderRadius: '6px 6px 6px 0', whiteSpace: 'nowrap', marginBottom: 2 }}>
+              {idx + 1}. {ann.label}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const downloadResultImage = (imageSrc: string, annotations: ScanAnnotation[], result: ScanResult) => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const img = new window.Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    annotations.forEach((ann, idx) => {
+      const x = ann.x * canvas.width, y = ann.y * canvas.height;
+      const w = ann.w * canvas.width, h = ann.h * canvas.height;
+      const cfg = SEVERITY_COLORS[ann.severity] || SEVERITY_COLORS.low;
+      ctx.fillStyle = cfg.bg;
+      ctx.fillRect(x, y, w, h);
+      ctx.strokeStyle = cfg.border;
+      ctx.lineWidth = 4;
+      ctx.strokeRect(x, y, w, h);
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillStyle = cfg.border;
+      ctx.fillRect(x, y - 36, Math.min(ctx.measureText(`${idx + 1}. ${ann.label}`).width + 20, canvas.width * 0.5), 32);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(`${idx + 1}. ${ann.label}`, x + 10, y - 13);
+    });
+    ctx.font = 'bold 28px sans-serif';
+    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+    ctx.fillRect(0, canvas.height - 70, canvas.width, 70);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(`EduHealth AI: ${result.title} | Độ chắc chắn: ${result.confidence}`, 16, canvas.height - 35);
+    const link = document.createElement('a');
+    link.download = `eduhealth-scan-${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+  img.src = imageSrc;
+};
+
+// ── Checklist definitions ──────────────────────────────────────
+const CHECKLIST_ITEMS = [
+  { key: 'stress_sleep', label: 'Căng thẳng / Thức khuya nhiều', icon: '😰' },
+  { key: 'dairy_sugar', label: 'Ăn nhiều đồ ngọt / sữa', icon: '🍦' },
+  { key: 'sweat_friction', label: 'Đổ mồ hôi nhiều / Ma sát (mũ, khẩu trang, cặp tóc)', icon: '💧' },
+  { key: 'mask_helmet', label: 'Đội mũ bảo hiểm / Đeo khẩu trang >4h/ngày', icon: '⏱️' },
+  { key: 'new_product', label: 'Dùng sản phẩm dưỡng da mới gần đây', icon: '🧴' },
+  { key: 'topical_steroid', label: 'Có bôi kem steroid (hydrocortisone,...)', icon: '💊' },
+  { key: 'touching_picking', label: 'Hay chạm tay / nặn mụn bằng tay', icon: '✋' },
+  { key: 'pet_contact', label: 'Tiếp xúc với thú cưng (chó, mèo)', icon: '🐾' },
+  { key: 'hair_products', label: 'Dùng gel / wax / serum tóc gần đây', icon: '💈' },
+  { key: 'shared_items', label: 'Dùng chung khăn, gối, mũ với người khác', icon: '🤝' },
+];
+
+const SYMPTOM_ITEMS = [
+  { key: 'itchy', label: '🌙 Ngứa (nhất là về đêm)', severity: 'symptom' },
+  { key: 'painful', label: '🤕 Đau / Nhức', severity: 'symptom' },
+  { key: 'burning', label: '🔥 Nóng rát / Châm chích', severity: 'symptom' },
+  { key: 'pustular', label: '💛 Có mủ / Mụn mủ', severity: 'symptom' },
+  { key: 'spreading', label: '📈 Đang lan rộng nhanh', severity: 'symptom' },
+  { key: 'fever', label: '🌡️ Có sốt / Mệt mỏi', severity: 'symptom' },
+  { key: 'recurring', label: '🔄 Tái đi tái lỡ nhiều lần', severity: 'symptom' },
+];
+
+// ── Main AIScanView Component ──────────────────────────────────
+const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [checklist, setChecklist] = useState<Record<string, boolean>>({});
+  const [symptoms, setSymptoms] = useState<Record<string, boolean>>({});
+  const [textDescription, setTextDescription] = useState('');
+  const [duration, setDuration] = useState('');
+  const [result, setResult] = useState<ScanResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showHeatmap, setShowHeatmap] = useState(true);
+  const [activeTab, setActiveTab] = useState<'input' | 'result'>('input');
+  const [dataQuality, setDataQuality] = useState<{ status: string; issues: string[] } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textColor = darkMode ? 'text-slate-100' : 'text-slate-800';
+  const bgCard = darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100';
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const src = ev.target?.result as string;
+      setImageSrc(src);
+      setImageBase64(src);
+      setResult(null);
+      setError(null);
+      setActiveTab('input');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const src = ev.target?.result as string;
+      setImageSrc(src);
+      setImageBase64(src);
+      setResult(null);
+      setError(null);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleScan = async () => {
+    if (!imageSrc && !textDescription.trim()) {
+      setError('Vui lòng tải lên ảnh hoặc nhập mô tả triệu chứng.');
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const payload: any = {
+        checklist,
+        symptoms: { ...symptoms, description: textDescription, duration },
+      };
+      if (imageBase64) payload.imageBase64 = imageBase64;
+
+      const res = await fetch(`${API_BASE}/api/scan`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Lỗi server (${res.status})`);
+      }
+      const data = await res.json();
+      const parsed: ScanResult = {
+        title: data.title || 'Cần khám để xác định',
+        category: data.category || 'MỤN & DA LIỄU',
+        analysis: Array.isArray(data.analysis) ? data.analysis : [],
+        causes: Array.isArray(data.causes) ? data.causes : [],
+        urgency: data.urgency || 'Nên tham vấn Y tế học đường',
+        dangerSigns: Array.isArray(data.dangerSigns) ? data.dangerSigns : [],
+        safetyAdvice: Array.isArray(data.safetyAdvice) ? data.safetyAdvice : [],
+        confidence: data.confidence || 'low',
+        confidence_score: data.confidence_score || 0,
+        confidence_note: data.confidence_note || '',
+        severity: data.severity || 'moderate',
+        image_findings: Array.isArray(data.image_findings) ? data.image_findings : [],
+        history_flags: Array.isArray(data.history_flags) ? data.history_flags : [],
+        annotations: Array.isArray(data.annotations) ? data.annotations : [],
+        alternatives: Array.isArray(data.alternatives) ? data.alternatives : [],
+        seek_care: data.seek_care || 'routine-visit',
+        teen_message: data.teen_message || 'Đừng lo, EduHealth AI đang giúp cậu khoanh vùng bước đầu.',
+        analysis_steps: data.analysis_steps || null,
+      };
+      setResult(parsed);
+      if (data.data_quality) setDataQuality(data.data_quality);
+      setActiveTab('result');
+    } catch (err: any) {
+      setError(err.message || 'Lỗi kết nối. Vui lòng thử lại.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setImageSrc(null);
+    setImageBase64(null);
+    setResult(null);
+    setError(null);
+    setChecklist({});
+    setSymptoms({});
+    setTextDescription('');
+    setDuration('');
+    setActiveTab('input');
+    setDataQuality(null);
+  };
+
+  const handleDownload = () => {
+    if (imageSrc && result) downloadResultImage(imageSrc, result.annotations, result);
+  };
+
+  const cfg = result ? (URGENCY_CONFIG[result.seek_care] || URGENCY_CONFIG['routine-visit']) : null;
+  const confColor = result?.confidence === 'high' ? 'text-green-500' : result?.confidence === 'moderate' ? 'text-amber-500' : 'text-red-500';
+  const sevColor = result?.severity === 'severe' ? 'text-red-500' : result?.severity === 'moderate' ? 'text-amber-500' : 'text-green-500';
+
+  return (
+    <div className="animate-in fade-in duration-300 space-y-4">
+      {/* Header Banner */}
+      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 rounded-2xl overflow-hidden shadow-xl">
+        <div className="p-6 text-white">
+          <h2 className="text-2xl font-black flex items-center gap-3"><Camera size={28} />Sàng lọc AI Thông minh</h2>
+          <p className="text-white/80 mt-1 text-sm">Phân tích đa phương thức: Ảnh + Checklist + Triệu chứng → Heatmap + Khoanh vùng chẩn đoán</p>
+          <div className="flex gap-2 mt-3 flex-wrap">
+            {['🔍 Phân tích 7 bước', '🗺️ Heatmap đa màu', '📦 Khoanh vùng thông minh', '⬇️ Tải ảnh kết quả'].map((tag, i) => (
+              <span key={i} className="bg-white/20 text-white text-xs font-bold px-2 py-1 rounded-full">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tab Switcher */}
+      <div className={`${bgCard} rounded-2xl p-1 flex gap-1 shadow-lg border`}>
+        <button onClick={() => setActiveTab('input')} className={`flex-1 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${activeTab === 'input' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md' : `${textColor} opacity-60 hover:opacity-100`}`}>
+          📋 Nhập dữ liệu
+        </button>
+        <button onClick={() => result && setActiveTab('result')} className={`flex-1 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${activeTab === 'result' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md' : `${textColor} opacity-60 hover:opacity-100`} ${!result ? 'cursor-not-allowed' : ''}`}>
+          📊 Kết quả {result ? `(${result.confidence})` : ''}
+        </button>
+      </div>
+
+      {/* ── INPUT TAB ── */}
+      {activeTab === 'input' && (
+        <div className="space-y-4">
+          {/* Upload Zone */}
+          <div
+            className={`${bgCard} rounded-2xl p-6 border-2 border-dashed transition-all cursor-pointer relative overflow-hidden`}
+            style={{ borderColor: imageSrc ? '#a855f7' : undefined }}
+            onDragOver={e => e.preventDefault()}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+            {imageSrc ? (
+              <div className="relative">
+                {showHeatmap && result && result.annotations.length > 0 ? (
+                  <ImageWithBoxes imageSrc={imageSrc} annotations={result.annotations} />
+                ) : (
+                  <img src={imageSrc} alt="Preview" className="w-full rounded-xl max-h-80 object-contain" />
+                )}
+                <button onClick={e => { e.stopPropagation(); handleReset(); }} className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 shadow-lg hover:bg-red-600 transition-colors">
+                  <X size={16} />
+                </button>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-20 h-20 bg-purple-100 text-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Upload size={36} />
+                </div>
+                <p className={`font-bold ${textColor}`}>Kéo & thả ảnh vào đây</p>
+                <p className={`text-sm mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Hoặc nhấn để chọn file (JPG, PNG, WEBP)</p>
+                <p className={`text-xs mt-2 ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>Hỗ trợ chụp close-up vùng tổn thương da</p>
+              </div>
+            )}
+          </div>
+
+          {/* Checklist */}
+          <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+            <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}><Layers size={16} />Yếu tố nguy cơ (Checklist)</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {CHECKLIST_ITEMS.map(item => (
+                <label key={item.key} className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all text-sm ${checklist[item.key] ? (darkMode ? 'bg-purple-900/40 border border-purple-500' : 'bg-purple-50 border border-purple-200') : (darkMode ? 'bg-slate-700 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                  <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-4 h-4 accent-purple-500 rounded" />
+                  <span>{item.icon}</span>
+                  <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Symptoms */}
+          <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+            <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-rose-400' : 'text-rose-600'}`}><ActivityIcon size={16} />Triệu chứng</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {SYMPTOM_ITEMS.map(item => (
+                <label key={item.key} className={`flex items-center gap-2 p-3 rounded-xl cursor-pointer transition-all text-sm ${symptoms[item.key] ? (darkMode ? 'bg-rose-900/40 border border-rose-500' : 'bg-rose-50 border border-rose-200') : (darkMode ? 'bg-slate-700 border border-transparent' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                  <input type="checkbox" checked={!!symptoms[item.key]} onChange={e => setSymptoms(p => ({ ...p, [item.key]: e.target.checked }))} className="w-4 h-4 accent-rose-500 rounded" />
+                  <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Text description */}
+          <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+            <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`}><MessageSquare size={16} />Mô tả thêm (tùy chọn)</h3>
+            <textarea
+              value={textDescription}
+              onChange={e => setTextDescription(e.target.value)}
+              placeholder="Mô tả chi tiết tình trạng: vị trí, hình dạng, thay đổi theo thời gian, đã dùng thuốc gì chưa..."
+              rows={4}
+              className={`w-full rounded-xl p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all ${darkMode ? 'bg-slate-700 border border-slate-600 text-slate-100 placeholder-slate-500' : 'bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400'}`}
+            />
+            <input
+              value={duration}
+              onChange={e => setDuration(e.target.value)}
+              placeholder="Thời gian xuất hiện: ví dụ '3 ngày', '2 tuần', 'từ tháng trước'..."
+              className={`w-full mt-2 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 ${darkMode ? 'bg-slate-700 border border-slate-600 text-slate-100 placeholder-slate-500' : 'bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400'}`}
+            />
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-600 text-sm flex items-center gap-2">
+              <XCircle size={16} /> {error}
+            </div>
+          )}
+
+          {/* CTA */}
+          <button
+            onClick={handleScan}
+            disabled={loading}
+            className={`w-full py-4 rounded-2xl font-black text-lg shadow-xl transition-all flex items-center justify-center gap-3 ${loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 text-white hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99]'}`}
+          >
+            {loading ? (
+              <><div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" /><span>Đang phân tích 7 bước...</span></>
+            ) : (
+              <><Zap size={22} /><span>Phân tích ngay với AI</span></>
+            )}
+          </button>
+          <p className={`text-center text-xs ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>⚠️ Kết quả chỉ mang tính tham khảo, KHÔNG thay thế chẩn đoán y khoa. Luôn tham vấn bác sĩ.</p>
+        </div>
+      )}
+
+      {/* ── RESULT TAB ── */}
+      {activeTab === 'result' && result && (
+        <div className="space-y-4">
+          {/* Urgency Banner */}
+          {cfg && (
+            <div className={`${cfg.bg} border-2 rounded-2xl p-4 flex items-center gap-3`}>
+              <div className={`${cfg.color}`}>{cfg.icon}</div>
+              <div>
+                <p className={`font-black text-sm ${cfg.color}`}>{cfg.label}</p>
+                <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Hành động khuyến nghị từ EduHealth AI</p>
+              </div>
+            </div>
+          )}
+
+          {/* Main Diagnosis Card */}
+          <div className={`${bgCard} rounded-2xl p-5 shadow-xl border-2 border-purple-200`}>
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${darkMode ? 'bg-purple-900 text-purple-300' : 'bg-purple-100 text-purple-600'}`}>{result.category}</span>
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${sevColor} ${darkMode ? 'bg-slate-700' : 'bg-slate-100'}`}>Mức độ: {result.severity === 'severe' ? 'Nặng' : result.severity === 'moderate' ? 'Trung bình' : 'Nhẹ'}</span>
+                </div>
+                <h2 className={`text-xl font-black ${textColor}`}>{result.title}</h2>
+                <div className="flex items-center gap-3 mt-2">
+                  <div className={`flex items-center gap-1 font-bold text-sm ${confColor}`}>
+                    <StarHalf size={14} />Độ chắc chắn: {result.confidence === 'high' ? 'Cao' : result.confidence === 'moderate' ? 'Trung bình' : 'Thấp'} ({result.confidence_score}/10)
+                  </div>
+                </div>
+                {result.confidence_note && <p className={`text-sm mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{result.confidence_note}</p>}
+              </div>
+            </div>
+            {result.teen_message && (
+              <div className={`mt-3 p-3 rounded-xl text-sm ${darkMode ? 'bg-purple-900/40 text-purple-200' : 'bg-purple-50 text-purple-700'} border border-purple-200`}>
+                💬 {result.teen_message}
+              </div>
+            )}
+          </div>
+
+          {/* ── Heatmap / Image ── */}
+          {imageSrc && (
+            <div className={`${bgCard} rounded-2xl p-4 shadow-xl border`}>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={`font-black text-sm flex items-center gap-2 ${darkMode ? 'text-rose-400' : 'text-rose-600'}`}><Layers size={16} />Bản đồ nhiệt & Khoanh vùng</h3>
+                <div className="flex gap-2">
+                  <button onClick={() => setShowHeatmap(!showHeatmap)} className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${showHeatmap ? 'bg-purple-500 text-white' : (darkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-500')}`}>
+                    {showHeatmap ? '🔍 Đang hiện heatmap' : '👁️ Ẩn heatmap'}
+                  </button>
+                  <button onClick={handleDownload} className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1 ${darkMode ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>
+                    <Download size={12} />Tải ảnh
+                  </button>
+                </div>
+              </div>
+              {/* Color Legend */}
+              {result.annotations.length > 0 && (
+                <div className="flex gap-3 mb-3 flex-wrap">
+                  {(['high', 'medium', 'low'] as const).map(sev => (
+                    <div key={sev} className="flex items-center gap-1.5 text-xs font-bold">
+                      <div className="w-4 h-4 rounded border-2" style={{ background: SEVERITY_COLORS[sev].bg, borderColor: SEVERITY_COLORS[sev].border }} />
+                      <span className={SEVERITY_COLORS[sev].text}>{SEVERITY_COLORS[sev].label}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {result.annotations.length > 0 ? (
+                showHeatmap ? (
+                  <ImageWithBoxes imageSrc={imageSrc} annotations={result.annotations} />
+                ) : (
+                  <img src={imageSrc} alt="Ảnh phân tích" className="w-full rounded-xl" />
+                )
+              ) : (
+                imageSrc && <img src={imageSrc} alt="Ảnh đã tải lên" className="w-full rounded-xl" />
+              )}
+
+              {/* Annotation List */}
+              {result.annotations.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  {result.annotations.map((ann, idx) => {
+                    const c = SEVERITY_COLORS[ann.severity] || SEVERITY_COLORS.low;
+                    return (
+                      <div key={idx} className={`flex items-start gap-3 p-2.5 rounded-xl border ${darkMode ? 'bg-slate-700/50 border-slate-600' : 'bg-slate-50 border-slate-100'}`}>
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-black shrink-0 mt-0.5" style={{ background: c.border }}>
+                          {idx + 1}
+                        </div>
+                        <div className="flex-1">
+                          <span className={`font-bold text-sm ${c.text}`}>{ann.label}</span>
+                          <span className={`text-xs ml-2 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>({c.label})</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Image Findings */}
+          {result.image_findings.length > 0 && (
+            <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+              <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`}><Eye size={16} />Phát hiện từ ảnh</h3>
+              <div className="flex flex-wrap gap-2">
+                {result.image_findings.map((f, i) => (
+                  <span key={i} className={`text-xs font-medium px-3 py-1.5 rounded-full ${darkMode ? 'bg-cyan-900/40 text-cyan-300 border border-cyan-700' : 'bg-cyan-50 text-cyan-700 border border-cyan-200'}`}>{f}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Analysis Steps */}
+          {result.analysis.length > 0 && (
+            <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+              <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}><ActivityIcon size={16} />Phân tích chi tiết (7 bước)</h3>
+              <div className="space-y-3">
+                {result.analysis.map((step, idx) => (
+                  <div key={idx} className={`flex gap-3 p-3 rounded-xl ${darkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-black shrink-0 ${darkMode ? 'bg-amber-600' : 'bg-amber-500'}`}>{idx + 1}</div>
+                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{step}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Causes & Triggers */}
+          {result.causes.length > 0 && (
+            <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+              <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-orange-400' : 'text-orange-600'}`}><Bug size={16} />Nguyên nhân & Yếu tố khởi phát</h3>
+              <ul className="space-y-2">
+                {result.causes.map((c, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-sm ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>
+                    <span className={darkMode ? 'text-orange-400 mt-0.5' : 'text-orange-500 mt-0.5'}>▸</span>{c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Safety Advice */}
+          {result.safetyAdvice.length > 0 && (
+            <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+              <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-green-400' : 'text-green-600'}`}><ShieldCheck size={16} />Hướng dẫn an toàn</h3>
+              <ul className="space-y-2">
+                {result.safetyAdvice.map((a, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-sm ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>
+                    <span className={darkMode ? 'text-green-400 mt-0.5' : 'text-green-500 mt-0.5'}>✓</span>{a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Danger Signs */}
+          {result.dangerSigns.length > 0 && (
+            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 shadow-lg">
+              <h3 className="font-black text-sm flex items-center gap-2 mb-3 text-red-600"><ShieldAlert size={16} />Dấu hiệu nguy hiểm — Cần đi khám ngay!</h3>
+              <ul className="space-y-2">
+                {result.dangerSigns.map((d, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-red-700">
+                    <span className="text-red-500 mt-0.5">⚠</span>{d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Alternatives */}
+          {result.alternatives.length > 0 && (
+            <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
+              <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}><ChevronRight size={16} />Chẩn đoán phân biệt khác</h3>
+              <div className="space-y-2">
+                {result.alternatives.map((alt, i) => (
+                  <div key={i} className={`p-3 rounded-xl ${darkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+                    <span className={`font-bold text-sm ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{alt.name}</span>
+                    <p className={`text-xs mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Lý do ít phù hợp: {alt.reason_against}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Data Quality Warning */}
+          {dataQuality && dataQuality.status !== 'adequate' && (
+            <div className={`rounded-2xl p-4 border ${darkMode ? 'bg-yellow-900/30 border-yellow-700' : 'bg-yellow-50 border-yellow-200'}`}>
+              <p className={`font-bold text-sm ${darkMode ? 'text-yellow-400' : 'text-yellow-700'}`}>⚡ Chất lượng dữ liệu: {dataQuality.status}</p>
+              {dataQuality.issues.map((issue, i) => (
+                <p key={i} className={`text-xs mt-1 ${darkMode ? 'text-yellow-300' : 'text-yellow-600'}`}>• {issue}</p>
+              ))}
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <button onClick={handleReset} className={`flex-1 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${darkMode ? 'bg-slate-700 text-slate-200 hover:bg-slate-600' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>
+              <RefreshCw size={16} />Phân tích mới
+            </button>
+            <button onClick={handleDownload} disabled={!imageSrc} className={`flex-1 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${imageSrc ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-xl' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`}>
+              <FileDown size={16} />Tải ảnh kết quả
+            </button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'result' && !result && (
+        <div className={`${bgCard} rounded-2xl p-12 text-center shadow-lg border`}>
+          <Stethoscope size={56} className={`mx-auto mb-3 opacity-30 ${textColor}`} />
+          <p className={`font-bold ${textColor}`}>Chưa có kết quả phân tích</p>
+          <p className={`text-sm mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Vui lòng nhập dữ liệu và nhấn "Phân tích ngay với AI"</p>
+          <button onClick={() => setActiveTab('input')} className="mt-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-xl font-bold text-sm hover:shadow-lg transition-all">
+            ← Quay lại nhập dữ liệu
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════
 const App: React.FC = () => {
@@ -640,8 +1494,8 @@ const App: React.FC = () => {
     }))
   );
 
-  // Filtered + sorted news (useMemo returns the array directly)
-  const filteredNews = useCallback(() => {
+  // Filtered + sorted news (memoized)
+  const filteredNews = useMemo(() => {
     let result = [...posts];
     if (newsFilter) result = result.filter((p: any) => p.type === newsFilter);
     return result.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -899,12 +1753,12 @@ const App: React.FC = () => {
                       <div
                         key={post.id}
                         onClick={() => setDetailPost(post)}
-                        className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:border-rose-200 cursor-pointer group hover:-translate-y-1 animate-in slide-in-from-bottom duration-400"
+                        className={`pill-card rounded-2xl overflow-hidden cursor-pointer group transition-all duration-400 animate-in slide-in-from-bottom duration-400 ${darkMode ? 'pill-card-dark' : ''}`}
                         style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
                       >
                         <div className="flex items-stretch">
                           {/* Thumbnail */}
-                          <div className="w-32 sm:w-40 shrink-0 relative overflow-hidden bg-slate-100">
+                          <div className="w-32 sm:w-40 shrink-0 relative overflow-hidden">
                             {post.type === 'video' && getYouTubeEmbedUrl(post.content) ? (
                               <>
                                 <img
@@ -913,29 +1767,29 @@ const App: React.FC = () => {
                                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                   onError={(e: any) => e.target.style.display = 'none'}
                                 />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                                  <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                                    <PlayCircle size={22} className="text-rose-600 ml-0.5" />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                                  <div className="w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+                                    <PlayCircle size={20} className="text-rose-600 ml-0.5" />
                                   </div>
                                 </div>
                               </>
                             ) : post.type === 'infographic' && post.content ? (
                               <img src={post.content} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
-                                <FileText size={28} className="text-purple-300" />
+                              <div className={`w-full h-full bg-gradient-to-br flex items-center justify-center ${darkMode ? 'from-slate-700 to-slate-800' : 'from-purple-100 to-pink-100'}`}>
+                                <FileText size={28} className={darkMode ? 'text-slate-500' : 'text-purple-300'} />
                               </div>
                             )}
-                            {/* Type badge */}
-                            <div className={`absolute top-2 left-2 ${post.type === 'video' ? 'bg-red-500' : post.type === 'article' ? 'bg-blue-500' : 'bg-orange-500'} text-white px-2 py-0.5 rounded-full text-[9px] font-bold uppercase shadow`}>
-                              {post.type === 'video' ? '🎬 Video' : post.type === 'article' ? '📝 Bài viết' : '🖼️ Infographic'}
+                            {/* Pill type badge */}
+                            <div className={`absolute top-2 left-2 ${post.type === 'video' ? 'bg-red-500' : post.type === 'article' ? 'bg-blue-500' : 'bg-orange-500'} text-white px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide shadow-lg flex items-center gap-1`}>
+                              {post.type === 'video' ? '🎬' : post.type === 'article' ? '📝' : '🖼️'} {post.type === 'video' ? 'Video' : post.type === 'article' ? 'Bài' : 'Ảnh'}
                             </div>
                           </div>
 
                           {/* Content */}
                           <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
                             <div>
-                              <h3 className={`font-bold group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
+                              <h3 className={`font-black group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
                                 {post.title}
                               </h3>
                               {post.description && (
@@ -944,7 +1798,7 @@ const App: React.FC = () => {
                             </div>
                             <div className="flex items-center justify-between mt-3">
                               <div className="flex items-center gap-2">
-                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 ${post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
+                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 shadow-md ${post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
                                   {post.authorName[0]?.toUpperCase()}
                                 </div>
                                 <div className="min-w-0">
@@ -969,14 +1823,14 @@ const App: React.FC = () => {
                     ))
                   )}
 
-                  {/* Show More / Less */}
+                  {/* Show More / Less - Pill button */}
                   {filteredNews.length > 3 && (
                     <button
                       onClick={() => setShowAllNews(!showAllNews)}
-                      className="w-full py-3 text-sm font-bold text-rose-500 hover:text-rose-600 transition-colors flex items-center justify-center gap-2 bg-white rounded-xl shadow border border-rose-100 hover:shadow-md"
+                      className={`pill-card rounded-2xl w-full py-3 text-sm font-bold text-rose-500 hover:text-rose-600 transition-all flex items-center justify-center gap-2 hover:shadow-xl border ${darkMode ? 'border-slate-700' : 'border-rose-100'} active:scale-95`}
                     >
                       {showAllNews ? (
-                        <><ChevronDown size={16} />Thu gọn</>
+                        <><ChevronDown size={16} className="animate-rotate-in" />Thu gọn</>
                       ) : (
                         <><ChevronRight size={16} />Xem thêm {filteredNews.length - 3} bài viết</>
                       )}
@@ -997,40 +1851,56 @@ const App: React.FC = () => {
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
             </div>
 
-            {/* Hero + Category Dropdown */}
+            {/* Hero + Category Dropdown - Pill Card style */}
             <div className="relative">
-              <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-xl"
-                style={{ boxShadow: '0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(168, 85, 247, 0.2)' }}>
+              <div className={`rounded-3xl p-6 text-white relative overflow-hidden transition-all duration-500 ${darkMode ? 'shadow-2xl border border-slate-700' : ''}`}
+                style={{
+                  background: darkMode ? 'linear-gradient(135deg, #1e293b 0%, #334155 100%)' : 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%)',
+                  boxShadow: darkMode ? '0 0 40px rgba(0,0,0,0.5)' : '0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(168, 85, 247, 0.2)'
+                }}>
                 {/* Animated particles */}
                 <div className="absolute inset-0 overflow-hidden">
-                  {[...Array(6)].map((_, i) => (
+                  {[...Array(8)].map((_, i) => (
                     <div
                       key={i}
                       className="absolute w-2 h-2 bg-white/20 rounded-full animate-float"
                       style={{
-                        left: `${15 + i * 15}%`,
-                        top: `${20 + (i % 3) * 25}%`,
-                        animationDuration: `${3 + i * 0.7}s`,
-                        animationDelay: `${i * 0.5}s`,
+                        left: `${10 + i * 12}%`,
+                        top: `${15 + (i % 4) * 22}%`,
+                        animationDuration: `${3 + i * 0.6}s`,
+                        animationDelay: `${i * 0.4}s`,
                       }}
                     />
                   ))}
                 </div>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-15"><School size={160} /></div>
+                {/* Glow orbs */}
+                <div className="absolute -top-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10"><School size={160} /></div>
                 <div className="relative">
-                  <h2 className="text-2xl font-black mb-2 flex items-center gap-2 tracking-tight">
-                    <span className="animate-bounce inline-block" style={{ animationDuration: '2s' }}>📚</span>
-                    Cẩm nang thư viện học đường
-                  </h2>
-                  <p className="text-white/80 max-w-xl text-sm">Thông tin y khoa cập nhật giúp học sinh và phụ huynh nhận biết, phòng ngừa và xử lý các vấn đề sức khỏe thường gặp trong môi trường học đường.</p>
-                  <p className="text-white/60 text-xs mt-2 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-xl border border-white/20 animate-heartbeat">
+                      📚
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-black flex items-center gap-2 tracking-tight">
+                        Cẩm nang thư viện học đường
+                        <span className="pill-tag bg-white/20 text-white text-xs animate-blink">✨ Mới</span>
+                      </h2>
+                    </div>
+                  </div>
+                  <p className="text-white/80 max-w-xl text-sm leading-relaxed">Thông tin y khoa cập nhật giúp học sinh và phụ huynh nhận biết, phòng ngừa và xử lý các vấn đề sức khỏe thường gặp trong môi trường học đường.</p>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    <span className="pill-tag bg-white/20 text-white border border-white/20">
                       🏥 {totalDiseases} bài viết
                     </span>
-                    <span className="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                    <span className="pill-tag bg-white/20 text-white border border-white/20">
                       📂 4 danh mục
                     </span>
-                  </p>
+                    <span className="pill-tag bg-rose-500/30 text-white border border-rose-400/30">
+                      🔬 30+ bệnh lý
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -1127,31 +1997,33 @@ const App: React.FC = () => {
               </div>
             )}
 
-            {/* Search Results */}
+            {/* Search Results - Pill Card grid */}
             {search && filteredLibrary.length > 0 && (
               <div className="space-y-4">
-                <div className="flex items-center gap-2 p-3 bg-rose-50 rounded-xl border border-rose-100">
-                  <Search size={16} className="text-rose-500 shrink-0" />
-                  <p className="text-sm text-slate-600 font-medium">
-                    Tìm thấy <span className="text-rose-500 font-bold">{filteredLibrary.reduce((s: number, c: any) => s + c.diseases.length, 0)}</span> kết quả cho "
-                    <span className="text-rose-500 font-bold">{search}</span>"
+                <div className={`pill-card rounded-2xl p-4 border flex items-center gap-3 ${darkMode ? 'border-slate-700' : 'border-rose-100'}`}>
+                  <div className="w-10 h-10 bg-rose-100 dark:bg-rose-900/50 rounded-xl flex items-center justify-center text-rose-500 shrink-0">
+                    <Search size={18} />
+                  </div>
+                  <p className={`text-sm font-bold ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>
+                    Tìm thấy <span className="text-rose-500">{filteredLibrary.reduce((s: number, c: any) => s + c.diseases.length, 0)}</span> kết quả cho "
+                    <span className="text-rose-500">"{search}"</span>"
                   </p>
                 </div>
                 {filteredLibrary.map((cat: any) => (
                   <div key={cat.category} className="space-y-3">
-                    <h3 className="text-base font-black text-slate-700 flex items-center gap-2">
+                    <h3 className={`text-base font-black flex items-center gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                       <span className="text-xl">{cat.icon}</span> {cat.category}
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                       {cat.diseases.map((d: any) => (
                         <div key={d.id} onClick={() => { setSelectedCat(cat.category); setSelectedDisease(d); }}
-                          className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden border border-slate-100 group hover:-translate-y-1">
-                          <div className="aspect-video overflow-hidden">
-                            <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
+                          className={`pill-card rounded-2xl overflow-hidden cursor-pointer group transition-all duration-400 ${darkMode ? 'pill-card-dark' : ''}`}>
+                          <div className="pill-image-wrap aspect-video">
+                            <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover" onError={(e: any) => { e.target.style.display = 'none'; e.target.parentElement.style.background = darkMode ? '#1e293b' : '#f1f5f9'; }} />
                           </div>
-                          <div className="p-3">
-                            <h4 className={`font-bold text-sm group-hover:text-rose-400 transition-colors line-clamp-1 ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{d.name}</h4>
-                            <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{d.description}</p>
+                          <div className="p-3 space-y-1">
+                            <h4 className={`font-black text-sm group-hover:text-rose-500 transition-colors line-clamp-1 ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{d.name}</h4>
+                            <p className={`text-xs line-clamp-2 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{d.description}</p>
                           </div>
                         </div>
                       ))}
@@ -1174,39 +2046,92 @@ const App: React.FC = () => {
         {/* ══ LIBRARY – CATEGORY SELECTED (show disease list) ══ */}
         {tab === 'library' && selectedCat && !selectedDisease && currentCat && (
           <div className="space-y-5 animate-in fade-in duration-300">
-            {/* Category Header */}
+            {/* Category Header - Pill style */}
             <button onClick={() => { setSelectedCat(null); setSelectedDisease(null); }}
-              className="flex items-center gap-2 text-slate-500 hover:text-slate-700 font-medium">
-              <ChevronLeft size={20} /> Quay lại Cẩm nang thư viện
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 hover:scale-105 active:scale-95 ${darkMode ? 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-rose-400 border border-slate-700' : 'bg-white text-slate-500 hover:bg-rose-50 hover:text-rose-500 border border-slate-200'} shadow-md`}>
+              <ChevronLeft size={16} className="animate-rotate-in" />
+              <span>Quay lại Cẩm nang thư viện</span>
             </button>
 
-            <div className={`bg-gradient-to-r ${getCategoryGradient(currentCat)} rounded-2xl p-5 text-white relative overflow-hidden`}>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20"><BookOpen size={120} /></div>
+            <div className={`rounded-3xl p-5 text-white relative overflow-hidden transition-all duration-500 ${darkMode ? 'shadow-2xl border border-slate-700' : 'shadow-2xl'}`}
+              style={{ background: darkMode ? 'linear-gradient(135deg, #1e293b 0%, #334155 100%)' : `linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #f97316 100%)`, boxShadow: darkMode ? '0 0 40px rgba(0,0,0,0.5)' : '0 0 40px rgba(244,63,94,0.3)' }}>
+              {/* Animated glow orbs */}
+              <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-pulse" />
+              <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-white/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+              <div className="absolute inset-0 overflow-hidden">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="absolute w-2 h-2 bg-white/20 rounded-full animate-float"
+                    style={{ left: `${20 + i * 22}%`, top: `${15 + i * 20}%`, animationDuration: `${3.5 + i * 0.8}s`, animationDelay: `${i * 0.5}s` }} />
+                ))}
+              </div>
               <div className="relative">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-4xl">{currentCat.icon}</span>
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl shadow-xl border border-white/20 animate-bounce-in">
+                    {currentCat.icon}
+                  </div>
                   <div>
-                    <h2 className="text-2xl font-black tracking-tight">{currentCat.category}</h2>
-                    <p className="text-white/80 text-sm">{currentCat.diseases.length} bài viết</p>
+                    <h2 className="text-2xl font-black tracking-tight flex items-center gap-2">
+                      {currentCat.category}
+                      <span className="pill-tag bg-white/20 text-white text-xs animate-blink">LIVE</span>
+                    </h2>
+                    <p className="text-white/80 text-sm mt-1 flex items-center gap-1">
+                      <BookOpen size={12} />
+                      {currentCat.diseases.length} bài viết được cập nhật
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Disease Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {currentCat.diseases.map((d: any) => (
+            {/* Disease Cards - Pill Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {currentCat.diseases.map((d: any, idx: number) => (
                 <div key={d.id} onClick={() => setSelectedDisease(d)}
-                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden border border-slate-100 hover:-translate-y-1 group">
-                  <div className="aspect-video overflow-hidden bg-slate-100">
-                    <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
-                  </div>
-                  <div className="p-4">
-                    <h4 className={`font-bold group-hover:text-rose-400 transition-colors ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{d.name}</h4>
-                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">{d.description}</p>
-                    <div className="flex items-center gap-1 mt-2 text-rose-500 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                      Xem chi tiết <ChevronRight size={14} />
+                  className={`pill-card rounded-2xl overflow-hidden cursor-pointer group text-left transition-all duration-400 hover:shadow-2xl ${darkMode ? 'pill-card-dark' : 'pill-card'} ${darkMode ? '' : ''}`}
+                  style={{ animationDelay: `${idx * 60}ms`, animationFillMode: 'both' }}
+                >
+                  {/* Image with ribbon pill */}
+                  <div className="pill-image-wrap aspect-video">
+                    <img src={d.images[0]?.url} alt={d.name}
+                      className="w-full h-full object-cover"
+                      onError={(e: any) => { e.target.style.display = 'none'; e.target.parentElement.style.background = darkMode ? '#1e293b' : '#f1f5f9'; }} />
+                    {/* Animated ribbon */}
+                    <div className="pill-ribbon animate-bounce-in" style={{ animationDelay: `${idx * 60 + 200}ms` }}>
+                      {currentCat.icon} {currentCat.category.split(' ')[0]}
                     </div>
+                    {/* Hover overlay with icon */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-3">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 text-xs font-bold text-slate-700 flex items-center gap-1 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                        Xem chi tiết <ChevronRight size={12} />
+                      </div>
+                    </div>
+                  </div>
+                  {/* Content */}
+                  <div className="p-4 space-y-2">
+                    <h4 className={`font-black text-sm leading-tight group-hover:text-rose-500 transition-colors duration-300 ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
+                      {d.name}
+                    </h4>
+                    <p className={`text-xs leading-relaxed line-clamp-3 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {d.description}
+                    </p>
+                    {/* Quick tags */}
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {d.symptoms?.slice(0, 2).map((s: string, si: number) => (
+                        <span key={si} className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${darkMode ? 'bg-slate-700 text-slate-400' : 'bg-rose-50 text-rose-500'}`}>
+                          • {s.substring(0, 20)}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Bottom hover arrow */}
+                  <div className={`px-4 pb-3 flex items-center justify-between ${darkMode ? 'text-slate-500' : 'text-slate-300'} text-xs`}>
+                    <span className="flex items-center gap-1">
+                      <FileText size={10} />
+                      {d.images?.length || 3} ảnh minh họa
+                    </span>
+                    <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity text-rose-400 font-bold">
+                      Chi tiết <ChevronRight size={12} />
+                    </span>
                   </div>
                 </div>
               ))}
@@ -1216,68 +2141,201 @@ const App: React.FC = () => {
 
         {/* ══ DISEASE DETAIL ══ */}
         {tab === 'library' && selectedDisease && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            <button onClick={() => setSelectedDisease(null)} className="flex items-center gap-2 text-slate-500 hover:text-slate-700 font-medium">
-              <ChevronLeft size={20} /> Quay lại {selectedCat}
+          <div className="space-y-5 animate-in fade-in duration-400">
+            {/* Back button with pill style */}
+            <button
+              onClick={() => setSelectedDisease(null)}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 hover:scale-105 active:scale-95 ${darkMode ? 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-rose-400' : 'bg-white text-slate-500 hover:bg-rose-50 hover:text-rose-500'} shadow-md border ${darkMode ? 'border-slate-700' : 'border-slate-200'}`}
+            >
+              <ChevronLeft size={16} className="animate-rotate-in" />
+              <span>Quay lại {selectedCat}</span>
             </button>
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-              {/* Images Gallery */}
-              <div className="grid grid-cols-3 gap-2 p-2 bg-slate-100">
-                {selectedDisease.images.map((img: any, i: number) => (
-                  <div key={i} className={`relative overflow-hidden rounded-xl ${i === 0 ? 'col-span-3 md:col-span-2 aspect-video' : 'aspect-square'}`}>
-                    <img src={img.url} alt={img.caption} className="w-full h-full object-cover" onError={(e: any) => e.target.style.display = 'none'} />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
-                      <p className="text-white text-[10px]">{img.caption}</p>
+
+            {/* Main Disease Card - Pill style */}
+            <div className={`rounded-3xl overflow-hidden shadow-2xl border transition-all duration-500 ${darkMode ? 'bg-slate-800/90 border-slate-700 backdrop-blur-xl' : 'bg-white/95 border-slate-200 backdrop-blur-xl'}`}
+              style={{ boxShadow: darkMode ? '0 0 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(244,63,94,0.1)' : '0 0 40px rgba(244,63,94,0.1), 0 0 0 1px rgba(244,63,94,0.05)' }}>
+
+              {/* Header Banner */}
+              <div className={`relative p-6 ${darkMode ? 'bg-gradient-to-r from-slate-800 to-slate-900' : 'bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500'} overflow-hidden`}>
+                {/* Animated background */}
+                <div className="absolute inset-0 overflow-hidden">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="absolute w-3 h-3 bg-white/10 rounded-full animate-float"
+                      style={{ left: `${20 + i * 18}%`, top: `${15 + (i % 3) * 30}%`, animationDuration: `${3 + i}s`, animationDelay: `${i * 0.4}s` }} />
+                  ))}
+                </div>
+                <div className="absolute -top-12 -right-12 w-40 h-40 bg-white/10 rounded-full blur-2xl animate-pulse-ring" />
+                <div className="relative">
+                  <div className="flex items-start gap-4">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl shadow-xl animate-bounce-in border border-white/20">
+                      {HEALTH_LIBRARY.find(c => c.diseases.some((d: any) => d.id === selectedDisease.id))?.icon || '🧴'}
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-2xl font-black text-white tracking-tight leading-tight">{selectedDisease.name}</h2>
+                      {selectedDisease.otherNames && <p className="text-white/70 text-sm mt-1 italic">{selectedDisease.otherNames}</p>}
                     </div>
                   </div>
-                ))}
-              </div>
-              <div className="p-6 space-y-6">
-                <div>
-                  <h2 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-slate-800'}`}>{selectedDisease.name}</h2>
-                  {selectedDisease.otherNames && <p className="text-slate-400 text-sm italic">{selectedDisease.otherNames}</p>}
-                </div>
-                <div className="prose max-w-none">
-                  <p className="text-slate-600">{selectedDisease.description}</p>
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-blue-50 rounded-xl p-4">
-                    <h4 className="font-bold text-blue-600 mb-2 flex items-center gap-2"><AlertTriangle size={16} />Nguyên nhân</h4>
-                    <p className="text-sm text-slate-600">{selectedDisease.causes}</p>
+                  {/* Animated pill badge */}
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="pill-tag bg-white/20 text-white backdrop-blur-sm border border-white/20 animate-blink">⚠️ Cần biết</span>
+                    {selectedDisease.dangerSigns?.length > 0 && <span className="pill-tag bg-red-500/30 text-white animate-pulse">🔴 Nguy hiểm</span>}
                   </div>
-                  <div className="bg-rose-50 rounded-xl p-4">
-                    <h4 className="font-bold text-rose-600 mb-2 flex items-center gap-2"><ActivityIcon size={16} />Triệu chứng</h4>
-                    <ul className="text-sm text-slate-600 list-disc pl-4 space-y-1">
-                      {selectedDisease.symptoms.map((s: string, i: number) => (<li key={i}>{s}</li>))}
+                </div>
+              </div>
+
+              {/* Images Gallery - Pill style with zoom */}
+              <div className="p-3 bg-slate-50 dark:bg-slate-900">
+                <div className="grid grid-cols-3 gap-2">
+                  {selectedDisease.images.map((img: any, i: number) => (
+                    <div
+                      key={i}
+                      className={`img-gallery-item group relative rounded-2xl overflow-hidden cursor-pointer ${i === 0 ? 'col-span-3 md:col-span-2 aspect-video' : 'aspect-square'}`}
+                      onClick={() => window.open(img.url, '_blank')}
+                    >
+                      <img
+                        src={img.url}
+                        alt={img.caption}
+                        className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-110"
+                        onError={(e: any) => e.target.style.display = 'none'}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <p className="text-white text-[10px] font-medium leading-tight line-clamp-2 drop-shadow-lg">{img.caption}</p>
+                      </div>
+                      <div className="absolute top-2 right-2 bg-black/40 backdrop-blur-sm rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <ExternalLink size={12} className="text-white" />
+                      </div>
+                      {/* Loading shimmer */}
+                      <div className="absolute inset-0 skeleton hidden" id={`img-skeleton-${i}`} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="p-6 space-y-5">
+
+                {/* Description with pill style */}
+                <div className={`rounded-2xl p-4 border transition-all duration-300 hover:shadow-lg ${darkMode ? 'bg-slate-700/50 border-slate-600' : 'bg-rose-50/50 border-rose-100'}`}>
+                  <p className={`text-base leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>
+                    {selectedDisease.description}
+                  </p>
+                </div>
+
+                {/* Info Grid - 2 columns with pill cards */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Causes */}
+                  <div className={`pill-card rounded-2xl p-4 border transition-all duration-300 ${darkMode ? 'border-slate-700' : 'border-rose-100'}`}
+                    onMouseEnter={(e: any) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(244,63,94,0.15)'; }}
+                    onMouseLeave={(e: any) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center text-blue-500">
+                        <AlertTriangle size={18} />
+                      </div>
+                      <h4 className="font-bold text-blue-600 dark:text-blue-400 text-sm">Nguyên nhân</h4>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{selectedDisease.causes}</p>
+                  </div>
+
+                  {/* Symptoms */}
+                  <div className={`pill-card rounded-2xl p-4 border transition-all duration-300 ${darkMode ? 'border-slate-700' : 'border-rose-100'}`}
+                    onMouseEnter={(e: any) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(244,63,94,0.15)'; }}
+                    onMouseLeave={(e: any) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 bg-rose-100 dark:bg-rose-900/50 rounded-xl flex items-center justify-center text-rose-500">
+                        <ActivityIcon size={18} />
+                      </div>
+                      <h4 className="font-bold text-rose-600 dark:text-rose-400 text-sm">Triệu chứng</h4>
+                    </div>
+                    <ul className={`text-sm space-y-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                      {selectedDisease.symptoms.map((s: string, i: number) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-rose-400 mt-0.5 shrink-0">•</span>
+                          <span>{s}</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
-                <div className="bg-amber-50 rounded-xl p-4">
-                  <h4 className="font-bold text-amber-600 mb-2 flex items-center gap-2"><School size={16} />Bối cảnh học đường</h4>
-                  <p className="text-sm text-slate-600">{selectedDisease.schoolContext}</p>
+
+                {/* School Context */}
+                <div className={`step-pill rounded-2xl border ${darkMode ? 'bg-amber-900/20 border-amber-700/50' : 'bg-amber-50 border-amber-100'}`}
+                  onMouseEnter={(e: any) => { e.currentTarget.style.transform = 'translateX(4px)'; }}
+                  onMouseLeave={(e: any) => { e.currentTarget.style.transform = ''; }}>
+                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/50 rounded-xl flex items-center justify-center text-amber-500 shrink-0">
+                    <School size={18} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-amber-600 dark:text-amber-400 text-sm mb-1">Bối cảnh học đường</h4>
+                    <p className={`text-sm ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{selectedDisease.schoolContext}</p>
+                  </div>
                 </div>
+
+                {/* Treatment Steps - Pill style */}
                 <div>
-                  <h4 className="font-bold text-green-600 mb-3 flex items-center gap-2"><ShieldCheck size={16} />Xử lý & Điều trị</h4>
-                  <div className="space-y-2">
+                  <h4 className="font-bold text-green-600 dark:text-green-400 mb-3 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center">
+                      <ShieldCheck size={16} />
+                    </div>
+                    Xử lý & Điều trị
+                  </h4>
+                  <div className="space-y-3">
                     {selectedDisease.treatment.map((t: string, i: number) => (
-                      <div key={i} className="flex gap-2"><span className="font-bold text-green-500 shrink-0">{i + 1}.</span><p className="text-sm text-slate-600">{t}</p></div>
+                      <div
+                        key={i}
+                        className={`step-pill rounded-2xl border transition-all duration-300 group ${darkMode ? 'bg-slate-700/50 border-slate-600 hover:border-green-600' : 'bg-green-50/50 border-green-100 hover:border-green-300'} hover:shadow-md`}
+                        onMouseEnter={(e: any) => { e.currentTarget.style.transform = 'translateX(6px)'; }}
+                        onMouseLeave={(e: any) => { e.currentTarget.style.transform = ''; }}
+                        style={{ animationDelay: `${i * 80}ms`, animationFillMode: 'both' }}
+                      >
+                        {/* Step number pill */}
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-base shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300 ${i === 0 ? 'bg-gradient-to-br from-rose-500 to-pink-500' : i === 1 ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : i === 2 ? 'bg-gradient-to-br from-amber-500 to-orange-500' : 'bg-gradient-to-br from-green-500 to-emerald-500'}`}>
+                          {i + 1}
+                        </div>
+                        <p className={`text-sm flex-1 ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{t}</p>
+                      </div>
                     ))}
                   </div>
                 </div>
+
+                {/* Danger Signs - Emergency pill */}
                 {selectedDisease.dangerSigns?.length > 0 && (
-                  <div className="bg-red-50 rounded-xl p-4 border border-red-200">
-                    <h4 className="font-bold text-red-600 mb-2 flex items-center gap-2"><AlertTriangle size={16} />Dấu hiệu nguy hiểm – Cần đi khám ngay</h4>
-                    <ul className="text-sm text-red-700 list-disc pl-4 space-y-1">
-                      {selectedDisease.dangerSigns.map((s: string, i: number) => <li key={i}>{s}</li>)}
+                  <div className={`rounded-2xl p-5 border-2 border-red-300 dark:border-red-700 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 transition-all duration-300 hover:shadow-lg`}
+                    style={{ animation: 'glowPulse 3s ease-in-out infinite' }}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="notif-dot" />
+                      <div className="w-10 h-10 bg-red-100 dark:bg-red-900/50 rounded-xl flex items-center justify-center text-red-500 animate-heartbeat">
+                        <AlertTriangle size={18} />
+                      </div>
+                      <h4 className="font-black text-red-600 dark:text-red-400 text-sm">Dấu hiệu nguy hiểm – Cần đi khám ngay</h4>
+                    </div>
+                    <ul className="space-y-2">
+                      {selectedDisease.dangerSigns.map((s: string, i: number) => (
+                        <li key={i} className="flex items-start gap-2 text-red-700 dark:text-red-300 text-sm">
+                          <span className="text-red-500 mt-0.5 shrink-0 animate-blink">⚠️</span>
+                          <span>{s}</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 )}
-                <div>
-                  <h4 className="font-bold text-slate-600 mb-2">Nguồn tham khảo</h4>
+
+                {/* Sources - Pill tags */}
+                <div className={`rounded-2xl p-4 border ${darkMode ? 'bg-slate-700/30 border-slate-600' : 'bg-slate-50 border-slate-100'}`}>
+                  <h4 className={`font-bold text-sm mb-3 flex items-center gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                    <ExternalLink size={14} />
+                    Nguồn tham khảo y khoa
+                  </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedDisease.sources?.map((s: any, i: number) => (
-                      <a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
-                        className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs hover:bg-slate-200 transition-colors">
+                      <a
+                        key={i}
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`pill-tag transition-all duration-300 hover:scale-105 ${darkMode ? 'bg-slate-600 text-slate-300 hover:bg-slate-500 hover:text-white' : 'bg-slate-200 text-slate-600 hover:bg-rose-200 hover:text-rose-700'}`}
+                      >
+                        <ExternalLink size={10} />
                         {s.title}
                       </a>
                     ))}
@@ -1285,26 +2343,43 @@ const App: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Related diseases pill carousel */}
+            {(() => {
+              const currentCat = HEALTH_LIBRARY.find((c: any) => c.category === selectedCat);
+              const related = currentCat?.diseases.filter((d: any) => d.id !== selectedDisease.id) || [];
+              if (related.length === 0) return null;
+              return (
+                <div className="space-y-3">
+                  <h3 className={`text-base font-bold flex items-center gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                    <span className="text-xl">📋</span> Các bệnh liên quan trong {selectedCat}
+                  </h3>
+                  <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+                    {related.map((d: any) => (
+                      <button
+                        key={d.id}
+                        onClick={() => setSelectedDisease(d)}
+                        className={`pill-card shrink-0 w-48 rounded-2xl overflow-hidden border group text-left transition-all duration-300 hover:shadow-xl ${darkMode ? 'border-slate-700' : 'border-slate-200'}`}
+                      >
+                        <div className="aspect-video overflow-hidden rounded-none">
+                          <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e: any) => e.target.style.display = 'none'} />
+                        </div>
+                        <div className="p-3">
+                          <p className={`font-bold text-xs line-clamp-2 group-hover:text-rose-400 transition-colors ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{d.name}</p>
+                          <p className="text-[10px] text-slate-400 mt-1 line-clamp-1">{d.description}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         )}
 
         {/* ══ AI SCAN ══ */}
         {tab === 'aiscan' && (
-          <div className="animate-in fade-in duration-300">
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl overflow-hidden">
-              <div className="p-8 text-white">
-                <h2 className="text-2xl font-black flex items-center gap-3"><Camera size={28} />Sàng lọc AI thông minh</h2>
-                <p className="text-white/80 mt-2">Tăng cường khả năng chẩn đoán bằng AI Multimodal, kết hợp bản đồ nhiệt để thấu hiểu rõ hơn tình trạng sức khỏe của bạn.</p>
-              </div>
-            </div>
-            <div className="bg-white rounded-b-2xl -mt-4 mx-4 p-6 shadow-xl">
-              <div className="text-center py-12 text-slate-400">
-                <Stethoscope size={64} className="mx-auto mb-4 opacity-30" />
-                <p className="font-bold">Tính năng AI Sàng lọc đang được cập nhật...</p>
-                <p className="text-sm mt-1">Vui lòng quay lại sau!</p>
-              </div>
-            </div>
-          </div>
+          <AIScanView darkMode={darkMode} />
         )}
 
         {/* ══ NEWSFEED ══ */}

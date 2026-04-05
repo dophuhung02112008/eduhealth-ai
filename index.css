@@ -1,29 +1,323 @@
-/* Minimal CSS - animations are defined inline in App.tsx */
+/* ═══════════════════════════════════════════════════════════════
+   EDUHEALTH AI - Custom Animations & Styles
+   ═══════════════════════════════════════════════════════════════ */
 
 /* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
+::-webkit-scrollbar { width: 6px; }
+.line-clamp { -webkit-line-clamp: 3; line-clamp: 3; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ═══ KEYFRAME ANIMATIONS ═══ */
+
+/* Float - gentle drift */
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-18px) rotate(5deg); }
+  66% { transform: translateY(8px) rotate(-3deg); }
+  100% { transform: translateY(0) rotate(0deg); }
 }
 
-/* Utility classes */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Pulse ring */
+@keyframes pulseRing {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.6; }
 }
 
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+/* Shimmer */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Glow pulse */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(244,63,94,0.3); }
+  50% { box-shadow: 0 0 40px rgba(244,63,94,0.6), 0 0 80px rgba(244,63,94,0.3); }
+}
+
+/* Slide in from bottom */
+@keyframes slideInFromBottom {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Slide in from top */
+@keyframes slideInFromTop {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Slide in from left */
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Fade in up */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Spin */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Heartbeat */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.2); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  70% { transform: scale(1); }
+}
+
+/* Ripple */
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* Gradient shift */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Wave float */
+@keyframes waveFloat {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-12px) translateX(6px); }
+  75% { transform: translateY(6px) translateX(-4px); }
+}
+
+/* Blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Progress fill */
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* Bounce in */
+@keyframes bounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Slide right */
+@keyframes slideRight {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Rotate in */
+@keyframes rotateIn {
+  from { transform: rotate(-90deg) scale(0.8); opacity: 0; }
+  to { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+
+/* ═══ UTILITY ANIMATION CLASSES ═══ */
+
+.animate-float { animation: float linear infinite; }
+.animate-pulse-ring { animation: pulseRing 2s ease-in-out infinite; }
+.animate-shimmer {
+  position: relative;
   overflow: hidden;
+}
+.animate-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+.animate-glow { animation: glowPulse 2.5s ease-in-out infinite; }
+.animate-heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+.animate-spin { animation: spin 0.8s linear infinite; }
+.animate-blink { animation: blink 2s ease-in-out infinite; }
+.animate-wave { animation: waveFloat 4s ease-in-out infinite; }
+.animate-gradient { background-size: 200% 200%; animation: gradientShift 3s ease infinite; }
+.animate-progress { animation: progressFill 1.5s ease-out forwards; }
+.animate-bounce-in { animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
+.animate-rotate-in { animation: rotateIn 0.4s ease-out forwards; }
+
+/* Entrance animations */
+.animate-in {
+  animation-fill-mode: both;
+}
+.fade-in { animation-name: fadeInUp; }
+.slide-in-from-bottom { animation-name: slideInFromBottom; }
+.slide-in-from-top { animation-name: slideInFromTop; }
+.slide-in-from-left { animation-name: slideInFromLeft; }
+.slide-in-from-right { animation-name: slideRight; }
+
+/* Duration utilities */
+.duration-200 { animation-duration: 200ms; }
+.duration-300 { animation-duration: 300ms; }
+.duration-400 { animation-duration: 400ms; }
+.duration-500 { animation-duration: 500ms; }
+.duration-600 { animation-duration: 600ms; }
+
+/* ─── PILL / CAPSULE CARD STYLES ─── */
+
+/* Light mode pill base */
+.pill-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pill-card:hover {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(244, 63, 94, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(244, 63, 94, 0.12), 0 0 0 1px rgba(244, 63, 94, 0.1);
+}
+.pill-card:active { transform: translateY(-2px) scale(0.99); }
+
+/* Dark mode pill base */
+.pill-card-dark {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pill-card-dark:hover {
+  background: rgba(51, 65, 85, 0.95);
+  border-color: rgba(244, 63, 94, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(244, 63, 94, 0.15);
+}
+.pill-card-dark:active { transform: translateY(-2px) scale(0.99); }
+
+/* Pill tag */
+.pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition: all 0.3s ease;
+}
+
+/* Pill image zoom */
+.pill-image-wrap {
+  overflow: hidden;
+  border-radius: 16px;
+  position: relative;
+}
+.pill-image-wrap img {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pill-image-wrap:hover img { transform: scale(1.08); }
+
+/* Pill ribbon */
+.pill-ribbon {
+  position: absolute;
+  top: 12px;
+  left: -4px;
+  background: linear-gradient(135deg, #f43f5e, #ec4899);
+  color: white;
+  padding: 4px 14px 4px 18px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+  z-index: 10;
+}
+
+/* Image gallery with zoom effect */
+.img-gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+}
+.img-gallery-item img {
+  transition: transform 0.5s ease;
+}
+.img-gallery-item:hover img { transform: scale(1.06); }
+.img-gallery-item .img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.img-gallery-item:hover .img-overlay { opacity: 1; }
+
+/* Step indicator pills */
+.step-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+.step-pill:hover { transform: translateX(4px); }
+
+/* Notification dot */
+.notif-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: pulseRing 1.5s ease-in-out infinite;
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ─── DARK MODE OVERRIDES ─── */
+.dark .pill-card {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(100, 116, 139, 0.3);
+}
+.dark .pill-card:hover {
+  background: rgba(51, 65, 85, 0.95);
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+/* Tab active pill */
+.tab-pill-active {
+  background: linear-gradient(135deg, rgba(244,63,94,0.15), rgba(236,72,153,0.15));
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  color: #f43f5e;
+}
+.tab-pill-active:hover {
+  background: linear-gradient(135deg, rgba(244,63,94,0.2), rgba(236,72,153,0.2));
+}
+
+/* ─── RESPONSIVE UTILITIES ─── */
+@media (max-width: 640px) {
+  .sm\:hidden { display: none; }
 }
