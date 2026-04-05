@@ -1436,7 +1436,7 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button onClick={handleReset} className={`flex-1 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${darkMode ? 'bg-slate-700 text-slate-200 hover:bg-slate-600' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>
               <RefreshCw size={16} />Phân tích mới
             </button>
@@ -1444,6 +1444,16 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
               <FileDown size={16} />Tải ảnh kết quả
             </button>
           </div>
+
+          {/* Find Care Button */}
+          <button
+            onClick={() => (window as any).__openFindCare?.()}
+            className="w-full py-4 rounded-2xl font-black text-base flex items-center justify-center gap-3 shadow-xl transition-all bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99] animate-pulse-ring"
+            style={{ animation: 'glowPulse 2.5s ease-in-out infinite, pulseRing 2s ease-in-out infinite' }}
+          >
+            <MapPin size={22} />
+            🏥 Tìm cơ sở y tế gần bạn
+          </button>
         </div>
       )}
 
@@ -1457,6 +1467,560 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
           </button>
         </div>
       )}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════
+// FIND CARE MODAL — Interactive Map with Hospitals & Pharmacies
+// ═══════════════════════════════════════════════════════════════
+
+interface Facility {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  distance: string;
+  rating: number;
+  type: 'hospital' | 'pharmacy';
+  lat: number;
+  lng: number;
+  specialty?: string;
+  openHours: string;
+  badge?: string;
+  color: string;
+  bgColor: string;
+  borderColor: string;
+  textColor: string;
+  icon: string;
+  navUrl: string;
+}
+
+// Sample facilities — 5 hospitals + 5 pharmacies across Vietnam
+// These are realistic data points near major cities
+const SAMPLE_FACILITIES: Facility[] = [
+  // ── HOSPITALS ────────────────────────────────────────────────
+  {
+    id: 'h1',
+    name: 'Bệnh viện Da liễu Trung ương',
+    address: '15 Phố Chùa Bộc, Quang Trung, Đống Đa, Hà Nội',
+    phone: '024 3852 4326',
+    distance: '1.2 km',
+    rating: 4.7,
+    type: 'hospital',
+    lat: 21.0061,
+    lng: 105.8256,
+    specialty: 'Da liễu',
+    openHours: '07:00–17:00 (T2–T7)',
+    badge: 'Chuyên khoa',
+    color: '#ef4444',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-200',
+    textColor: 'text-red-600',
+    icon: '🏥',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0061,105.8256',
+  },
+  {
+    id: 'h2',
+    name: 'Bệnh viện Bạch Mai',
+    address: '78 Đường Giải Phóng, Phương Đình, Đống Đa, Hà Nội',
+    phone: '024 3869 3731',
+    distance: '2.8 km',
+    rating: 4.8,
+    type: 'hospital',
+    lat: 21.0033,
+    lng: 105.8417,
+    specialty: '�a học nội khoa',
+    openHours: '06:30–17:00 (T2–CN)',
+    badge: 'Tuyến TW',
+    color: '#ef4444',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-200',
+    textColor: 'text-red-600',
+    icon: '🏥',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0033,105.8417',
+  },
+  {
+    id: 'h3',
+    name: 'Bệnh viện Nhi Trung ương',
+    address: '18/879 Đường La Thành, Đống Đa, Hà Nội',
+    phone: '024 6273 8537',
+    distance: '3.5 km',
+    rating: 4.6,
+    type: 'hospital',
+    lat: 21.0289,
+    lng: 105.8203,
+    specialty: 'Nhi khoa',
+    openHours: '07:00–16:30 (T2–T6)',
+    badge: 'Chuyên khoa Nhi',
+    color: '#ef4444',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-200',
+    textColor: 'text-red-600',
+    icon: '🏥',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0289,105.8203',
+  },
+  {
+    id: 'h4',
+    name: 'Bệnh viện Đại học Y Hà Nội',
+    address: '1 Tôn Thất Tùng, Đống Đa, Hà Nội',
+    phone: '024 3857 4238',
+    distance: '4.1 km',
+    rating: 4.5,
+    type: 'hospital',
+    lat: 21.0022,
+    lng: 105.8167,
+    specialty: 'Đa khoa – Giảng dạy',
+    openHours: '07:30–16:30 (T2–T6)',
+    badge: 'Đa khoa',
+    color: '#ef4444',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-200',
+    textColor: 'text-red-600',
+    icon: '🏥',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0022,105.8167',
+  },
+  {
+    id: 'h5',
+    name: 'Viện Y học Cổ truyền Trung ương',
+    address: '168 Nguyễn Lương Bằng, Đống Đa, Hà Nội',
+    phone: '024 3577 5827',
+    distance: '5.3 km',
+    rating: 4.4,
+    type: 'hospital',
+    lat: 21.0122,
+    lng: 105.8092,
+    specialty: 'Da liễu Y học cổ truyền',
+    openHours: '07:00–17:00 (T2–T6)',
+    badge: 'Y học cổ truyền',
+    color: '#ef4444',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-200',
+    textColor: 'text-red-600',
+    icon: '🏥',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0122,105.8092',
+  },
+  // ── PHARMACIES ──────────────────────────────────────────────
+  {
+    id: 'p1',
+    name: 'Nhà thuốc Long Châu',
+    address: '140 Cầu Giấy, Phường Dịch Vọng, Cầu Giấy, Hà Nội',
+    phone: '028 3848 2002',
+    distance: '0.8 km',
+    rating: 4.6,
+    type: 'pharmacy',
+    lat: 21.0383,
+    lng: 105.7917,
+    specialty: 'Thuốc không kê đơn, Y tế',
+    openHours: '07:00–22:00 (Mở hàng ngày)',
+    color: '#10b981',
+    bgColor: 'bg-emerald-50',
+    borderColor: 'border-emerald-200',
+    textColor: 'text-emerald-600',
+    icon: '💊',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0383,105.7917',
+  },
+  {
+    id: 'p2',
+    name: 'Nhà thuốc Pharmacity',
+    address: '56 Tôn Thất Thuyết, Mỹ Đình 2, Nam Từ Liêm, Hà Nội',
+    phone: '028 3848 2002',
+    distance: '1.5 km',
+    rating: 4.5,
+    type: 'pharmacy',
+    lat: 21.0278,
+    lng: 105.7750,
+    specialty: 'Dược phẩm – Y tế',
+    openHours: '07:00–22:00 (Mở hàng ngày)',
+    color: '#10b981',
+    bgColor: 'bg-emerald-50',
+    borderColor: 'border-emerald-200',
+    textColor: 'text-emerald-600',
+    icon: '💊',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0278,105.7750',
+  },
+  {
+    id: 'p3',
+    name: 'Hiệu thuốc 89 Hà Tây',
+    address: '89 Trần Duy Hưng, Cầu Giấy, Hà Nội',
+    phone: '024 3562 8901',
+    distance: '2.1 km',
+    rating: 4.7,
+    type: 'pharmacy',
+    lat: 21.0100,
+    lng: 105.7833,
+    specialty: 'Thuốc da liễu, Y học cổ truyền',
+    openHours: '07:30–21:30 (T2–CN)',
+    badge: 'Chuyên da liễu',
+    color: '#10b981',
+    bgColor: 'bg-emerald-50',
+    borderColor: 'border-emerald-200',
+    textColor: 'text-emerald-600',
+    icon: '💊',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0100,105.7833',
+  },
+  {
+    id: 'p4',
+    name: 'Nhà thuốc Phúc An',
+    address: '32 Thái Hà, Trung Liệt, Đống Đa, Hà Nội',
+    phone: '024 3512 5678',
+    distance: '2.9 km',
+    rating: 4.4,
+    type: 'pharmacy',
+    lat: 21.0150,
+    lng: 105.8150,
+    specialty: 'Thuốc da liễu, Dược mỹ phẩm',
+    openHours: '08:00–21:00 (T2–T7)',
+    color: '#10b981',
+    bgColor: 'bg-emerald-50',
+    borderColor: 'border-emerald-200',
+    textColor: 'text-emerald-600',
+    icon: '💊',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0150,105.8150',
+  },
+  {
+    id: 'p5',
+    name: 'Nhà thuốc Đông Y Tuệ Tĩnh',
+    address: '16 Lê Văn Hưu, Nam Từ Liêm, Hà Nội',
+    phone: '024 3789 1234',
+    distance: '3.7 km',
+    rating: 4.8,
+    type: 'pharmacy',
+    lat: 21.0233,
+    lng: 105.7633,
+    specialty: 'Thuốc Đông Y, Y học cổ truyền',
+    openHours: '07:00–20:00 (T2–CN)',
+    badge: 'Đông Y',
+    color: '#10b981',
+    bgColor: 'bg-emerald-50',
+    borderColor: 'border-emerald-200',
+    textColor: 'text-emerald-600',
+    icon: '💊',
+    navUrl: 'https://www.google.com/maps/dir/?api=1&destination=21.0233,105.7633',
+  },
+];
+
+const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ darkMode, onClose }) => {
+  const [activeTab, setActiveTab] = useState<'hospital' | 'pharmacy'>('hospital');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const leafletMapRef = useRef<any>(null);
+  const markersRef = useRef<any[]>([]);
+  const textColor = darkMode ? 'text-slate-100' : 'text-slate-800';
+  const bgCard = darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100';
+
+  const hospitals = SAMPLE_FACILITIES.filter(f => f.type === 'hospital');
+  const pharmacies = SAMPLE_FACILITIES.filter(f => f.type === 'pharmacy');
+  const activeFacilities = activeTab === 'hospital' ? hospitals : pharmacies;
+
+  // Init Leaflet map
+  useEffect(() => {
+    if (!mapRef.current || leafletMapRef.current) return;
+    if (typeof (window as any).L === 'undefined') return;
+
+    const L = (window as any).L;
+    const defaultCenter: [number, number] = [21.0285, 105.8020]; // Hanoi center
+
+    const map = L.map(mapRef.current, {
+      center: defaultCenter,
+      zoom: 13,
+      zoomControl: true,
+      attributionControl: true,
+    });
+
+    // CartoDB Voyager tiles (clean, pretty, high contrast)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CartoDB',
+      maxZoom: 19,
+    }).addTo(map);
+
+    leafletMapRef.current = map;
+
+    // Add initial markers
+    addMarkers(hospitals, L, map);
+
+    return () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const addMarkers = (facilities: Facility[], L: any, map: any) => {
+    // Clear old markers
+    markersRef.current.forEach(m => m.remove());
+    markersRef.current = [];
+
+    facilities.forEach(facility => {
+      const isSelected = facility.id === selectedId;
+      const size = isSelected ? 44 : 36;
+      const fontSize = isSelected ? 18 : 14;
+      const markerHtml = `
+        <div style="
+          background: ${facility.color};
+          border: ${isSelected ? '4px' : '3px'} solid white;
+          border-radius: 50%;
+          box-shadow: 0 ${isSelected ? '8' : '4'}px ${isSelected ? '24' : '16'}px ${facility.color}${isSelected ? 'cc' : '80'};
+          width: ${size}px;
+          height: ${size}px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: ${fontSize}px;
+          transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+          transform: ${isSelected ? 'scale(1.15)' : 'scale(1)'};
+          z-index: ${isSelected ? 1000 : 1};
+          animation: ${!isSelected ? 'markerPulse 2s infinite' : 'none'};
+        ">${facility.icon}</div>`;
+
+      const icon = L.divIcon({
+        html: markerHtml,
+        className: '',
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+        popupAnchor: [0, -size / 2],
+      });
+
+      const marker = L.marker([facility.lat, facility.lng], { icon })
+        .addTo(map)
+        .bindPopup(`
+          <div style="min-width:220px; font-family:Inter,sans-serif;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style="font-size:20px;">${facility.icon}</span>
+              <strong style="font-size:13px;color:#1e293b;">${facility.name}</strong>
+            </div>
+            <div style="font-size:11px;color:#64748b;margin-bottom:4px;">📍 ${facility.address}</div>
+            <div style="font-size:11px;color:#64748b;margin-bottom:4px;">📞 ${facility.phone}</div>
+            <div style="font-size:11px;color:#64748b;margin-bottom:4px;">⏰ ${facility.openHours}</div>
+            ${facility.specialty ? `<div style="font-size:11px;color:#94a3b8;margin-bottom:6px;">🏷️ ${facility.specialty}</div>` : ''}
+            <a href="${facility.navUrl}" target="_blank" rel="noopener noreferrer"
+              style="display:inline-flex;align-items:center;gap:4px;background:${facility.color};color:white;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;text-decoration:none;margin-top:4px;">
+              🧭 Chỉ đường
+            </a>
+          </div>
+        `, { maxWidth: 280 });
+
+      marker.on('click', () => {
+        setSelectedId(facility.id);
+      });
+
+      markersRef.current.push(marker);
+    });
+  };
+
+  // Update markers when tab changes
+  useEffect(() => {
+    if (!leafletMapRef.current || typeof (window as any).L === 'undefined') return;
+    const L = (window as any).L;
+    const facilities = activeTab === 'hospital' ? hospitals : pharmacies;
+    addMarkers(facilities, L, leafletMapRef.current);
+
+    // Pan to first marker
+    if (facilities.length > 0) {
+      leafletMapRef.current.panTo([facilities[0].lat, facilities[0].lng], { animate: true, duration: 0.8 });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+
+  // Update selected marker appearance
+  useEffect(() => {
+    if (!leafletMapRef.current || typeof (window as any).L === 'undefined') return;
+    const facilities = activeTab === 'hospital' ? hospitals : pharmacies;
+    const L = (window as any).L;
+    addMarkers(facilities, L, leafletMapRef.current);
+
+    if (selectedId) {
+      const facility = facilities.find(f => f.id === selectedId);
+      if (facility) {
+        leafletMapRef.current.panTo([facility.lat, facility.lng], { animate: true, duration: 0.5 });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId]);
+
+  const selectedFacility = selectedId
+    ? (activeTab === 'hospital' ? hospitals : pharmacies).find(f => f.id === selectedId)
+    : null;
+
+  const handleNavigate = (facility: Facility) => {
+    window.open(facility.navUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const renderStars = (rating: number) => {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5;
+    return (
+      <div className="flex items-center gap-0.5">
+        {[...Array(5)].map((_, i) => (
+          <span key={i} className={`text-xs ${i < full ? 'text-amber-400' : i === full && half ? 'text-amber-300' : 'text-slate-300'}`}>
+            ★
+          </span>
+        ))}
+        <span className={`text-xs font-bold ml-1 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{rating}</span>
+      </div>
+    );
+  };
+
+  return (
+    <div className="findcare-modal-overlay" onClick={onClose}>
+      <div className="findcare-modal" onClick={e => e.stopPropagation()}>
+        <div className={`${bgCard} w-full max-w-5xl mx-4 mb-4 md:mb-0 rounded-3xl shadow-2xl overflow-hidden border-2 ${darkMode ? 'border-slate-600' : 'border-slate-200'}`}
+          style={{ maxHeight: '95vh', display: 'flex', flexDirection: 'column' }}>
+
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-700 shrink-0"
+            style={{ background: darkMode ? 'linear-gradient(135deg,#1e293b,#334155)' : 'linear-gradient(135deg,#065f46,#059669)' }}>
+            <div className="flex items-center gap-3 text-white">
+              <div className="w-11 h-11 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center text-xl shadow-lg">
+                🗺️
+              </div>
+              <div>
+                <h2 className="text-lg font-black">Tìm cơ sở y tế gần bạn</h2>
+                <p className="text-white/70 text-xs">Khoanh vùng → Tìm nơi khám gần nhất</p>
+              </div>
+            </div>
+            <button onClick={onClose} className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center text-white transition-all shadow-lg">
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Body: Map + List */}
+          <div className="flex flex-col md:flex-row flex-1 overflow-hidden" style={{ minHeight: 0 }}>
+
+            {/* Map */}
+            <div className="relative md:w-3/5 h-64 md:h-auto">
+              <div ref={mapRef} className="w-full h-full" style={{ minHeight: '320px' }} />
+
+              {/* Tab overlay */}
+              <div className="absolute top-3 left-3 right-3 z-[400] flex gap-1">
+                <button
+                  onClick={() => { setActiveTab('hospital'); setSelectedId(null); }}
+                  className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 shadow-lg transition-all ${activeTab === 'hospital' ? 'bg-red-500 text-white' : 'bg-white/90 text-slate-600 hover:bg-white'}`}
+                >
+                  🏥 Bệnh viện
+                </button>
+                <button
+                  onClick={() => { setActiveTab('pharmacy'); setSelectedId(null); }}
+                  className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 shadow-lg transition-all ${activeTab === 'pharmacy' ? 'bg-emerald-500 text-white' : 'bg-white/90 text-slate-600 hover:bg-white'}`}
+                >
+                  💊 Hiệu thuốc
+                </button>
+              </div>
+
+              {/* Legend */}
+              <div className="absolute bottom-3 left-3 z-[400] flex flex-col gap-1.5 bg-white/90 backdrop-blur rounded-xl px-3 py-2 shadow-lg">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-red-500 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] text-white">🏥</div>
+                  <span className="text-xs font-bold text-slate-700">Bệnh viện</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-emerald-500 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] text-white">💊</div>
+                  <span className="text-xs font-bold text-slate-700">Hiệu thuốc</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Facility List */}
+            <div className={`md:w-2/5 flex flex-col overflow-hidden border-t md:border-t-0 ${darkMode ? 'border-slate-700' : 'border-slate-200'}`}>
+              <div className={`px-4 py-3 flex items-center justify-between border-b shrink-0 ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-slate-100 bg-slate-50'}`}>
+                <div className="flex items-center gap-2">
+                  <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-black ${activeTab === 'hospital' ? 'bg-red-500' : 'bg-emerald-500'}`}>
+                    {activeTab === 'hospital' ? '🏥' : '💊'}
+                  </span>
+                  <div>
+                    <p className={`font-black text-sm ${textColor}`}>
+                      {activeTab === 'hospital' ? `${hospitals.length} Bệnh viện` : `${pharmacies.length} Hiệu thuốc`}
+                    </p>
+                    <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Gần vị trí của bạn</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className={`text-xs font-bold ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>📍 Hà Nội</p>
+                  <p className={`text-xs ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>Việt Nam</p>
+                </div>
+              </div>
+
+              {/* List */}
+              <div className="flex-1 overflow-y-auto no-scrollbar" style={{ maxHeight: 'calc(95vh - 280px)' }}>
+                {activeFacilities.map((facility, idx) => (
+                  <div
+                    key={facility.id}
+                    onClick={() => setSelectedId(facility.id)}
+                    className={`mx-3 my-2 rounded-2xl p-3.5 border-2 cursor-pointer transition-all duration-200 ${selectedId === facility.id
+                        ? `${facility.borderColor} ${facility.bgColor} shadow-lg`
+                        : darkMode ? 'bg-slate-700/50 border-transparent hover:border-slate-600 hover:bg-slate-700' : 'bg-slate-50 border-transparent hover:border-slate-200 hover:bg-white'
+                      }`}
+                    style={{ animationDelay: `${idx * 60}ms` }}
+                  >
+                    <div className="flex items-start gap-3">
+                      {/* Icon */}
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 ${selectedId === facility.id ? facility.bgColor : darkMode ? 'bg-slate-600' : 'bg-slate-200'}`}
+                        style={{ border: selectedId === facility.id ? `2px solid ${facility.color}` : 'none' }}>
+                        {facility.icon}
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-1">
+                          <h4 className={`font-black text-sm leading-tight truncate ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{facility.name}</h4>
+                          <span className={`text-xs font-bold shrink-0 ${facility.textColor}`}>{facility.distance}</span>
+                        </div>
+
+                        {facility.specialty && (
+                          <p className={`text-xs mt-0.5 truncate ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>🏷️ {facility.specialty}</p>
+                        )}
+                        <p className={`text-xs mt-0.5 truncate ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>📍 {facility.address}</p>
+
+                        <div className="flex items-center justify-between gap-2 mt-2">
+                          {renderStars(facility.rating)}
+                          <div className="flex gap-1">
+                            {facility.badge && (
+                              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${darkMode ? 'bg-slate-600 text-slate-300' : 'bg-slate-200 text-slate-500'}`}>
+                                {facility.badge}
+                              </span>
+                            )}
+                            <button
+                              onClick={e => { e.stopPropagation(); handleNavigate(facility); }}
+                              className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white transition-all hover:scale-105 active:scale-95"
+                              style={{ background: facility.color }}
+                            >
+                              🧭 Chỉ đường
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Expanded detail */}
+                    {selectedId === facility.id && (
+                      <div className={`mt-3 pt-3 border-t space-y-1.5 ${darkMode ? 'border-slate-600' : 'border-slate-200'}`}
+                        style={{ animation: 'fadeInUp 0.3s ease' }}>
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className={darkMode ? 'text-slate-400' : 'text-slate-500'}>📞</span>
+                          <a href={`tel:${facility.phone}`} className={`font-bold hover:underline ${facility.textColor}`}>{facility.phone}</a>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className={darkMode ? 'text-slate-400' : 'text-slate-500'}>⏰</span>
+                          <span className={darkMode ? 'text-slate-300' : 'text-slate-600'}>{facility.openHours}</span>
+                        </div>
+                        <button
+                          onClick={e => { e.stopPropagation(); handleNavigate(facility); }}
+                          className="w-full mt-2 py-2.5 rounded-xl text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg transition-all hover:shadow-xl active:scale-95"
+                          style={{ background: facility.color }}
+                        >
+                          <MapPin size={16} />Mở chỉ đường Google Maps
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -1479,6 +2043,13 @@ const App: React.FC = () => {
   const [newsFilter, setNewsFilter] = useState<string | null>(null);
   const [showAllNews, setShowAllNews] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [showFindCare, setShowFindCare] = useState(false);
+
+  // Expose FindCare opener to window for AIScanView button
+  useEffect(() => {
+    (window as any).__openFindCare = () => setShowFindCare(true);
+    return () => { delete (window as any).__openFindCare; };
+  }, []);
 
   // Floating background elements (medical icons)
   const floatingIcons = ['💊', '💉', '🩺', '🫀', '🧠', '🩻', '💊', '🩹', '🧬', '🦠', '🫁', '💜', '🩶', '🫧'];
@@ -2435,6 +3006,7 @@ const App: React.FC = () => {
       {/* MODALS */}
       {detailPost && <PostDetail post={detailPost} onClose={() => setDetailPost(null)} darkMode={darkMode} />}
       {showForm && <PostForm onClose={() => setShowForm(false)} onSuccess={p => { setPosts(prev => [p, ...prev]); setShowForm(false); }} darkMode={darkMode} />}
+      {showFindCare && <FindCareModal darkMode={darkMode} onClose={() => setShowFindCare(false)} />}
     </div>
   );
 };
