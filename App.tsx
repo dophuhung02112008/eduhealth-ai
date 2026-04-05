@@ -1716,8 +1716,8 @@ const SAMPLE_FACILITIES: Facility[] = [
   },
 ];
 
-const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ darkMode, onClose }) => {
-  const [activeTab, setActiveTab] = useState<'hospital' | 'pharmacy'>('hospital');
+const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialTab?: 'hospital' | 'pharmacy' }> = ({ darkMode, onClose, initialTab }) => {
+  const [activeTab, setActiveTab] = useState<'hospital' | 'pharmacy'>(initialTab || 'hospital');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
@@ -3055,23 +3055,8 @@ const App: React.FC = () => {
 
         {/* ══ FIND CARE ══ */}
         {tab === 'findcare' && (
-          <div className="animate-in fade-in duration-300 space-y-4">
-            <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-6 text-white text-center">
-              <h2 className="text-xl font-bold flex items-center justify-center gap-2"><MapPin size={24} />Tìm trạm y tế gần nhất</h2>
-              <p className="text-white/80 text-sm mt-1">Dựa trên vị trí của bạn, EduHealth AI đã tìm thấy các điểm hỗ trợ y tế tin cậy quanh đây.</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border-2 border-red-100 hover:border-red-300">
-                <div className="w-16 h-16 bg-red-100 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3"><Hospital size={32} /></div>
-                <p className={`font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>Bệnh viện & Phòng khám</p>
-                <p className="text-xs text-slate-400 mt-1">Ưu tiên cấp cứu & chuyên khoa</p>
-              </button>
-              <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border-2 border-emerald-100 hover:border-emerald-300">
-                <div className="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-3"><ShoppingCart size={32} /></div>
-                <p className={`font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>Nhà thuốc & Hiệu thuốc</p>
-                <p className="text-xs text-slate-400 mt-1">Vật tư y tế & Thuốc không kê đơn</p>
-              </button>
-            </div>
+          <div className="animate-in fade-in duration-300">
+            <FindCareModal darkMode={darkMode} onClose={() => setTab('library')} />
           </div>
         )}
       </main>
