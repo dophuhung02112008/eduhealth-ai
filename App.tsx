@@ -1788,15 +1788,18 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
 
   // ── Pan to selected facility on map ──
   useEffect(() => {
-    if (!leafletMapRef.current || !selectedFacility || typeof (window as any).L === 'undefined') return;
+    if (!leafletMapRef.current || !selectedId || typeof (window as any).L === 'undefined') return;
+    const target = facilities.find(f => f.id === selectedId);
+    if (!target) return;
     leafletMapRef.current.panTo(
-      [selectedFacility.lat, selectedFacility.lng],
+      [target.lat, target.lng],
       { animate: true, duration: 0.6 }
     );
-  }, [selectedId, selectedFacility]);
+  }, [selectedId]); // NOT selectedFacility — read facilities directly to avoid stale closure
 
   const handleNavigate = (facility: Facility) => {
-    window.open(facility.navUrl, '_blank', 'noopener,noreferrer');
+    const encodedAddr = encodeURIComponent(facility.address + ', ' + facility.name);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddr}`, '_blank', 'noopener,noreferrer');
   };
 
   const renderStars = (rating: number) => {
