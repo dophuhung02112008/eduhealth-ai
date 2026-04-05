@@ -734,15 +734,16 @@ const App: React.FC = () => {
       </div>
 
       {/* HEADER */}
-      <header className={`backdrop-blur-md sticky top-0 z-50 shadow-xl transition-all duration-500 ${darkMode ? 'bg-slate-900/80 text-white border-b border-slate-700' : 'bg-white/80 text-white border-b border-white/20'}`}>
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-500 via-pink-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg animate-pulse">
-              <HeartPulse size={24} className="text-white" />
+      <header className={`backdrop-blur-md sticky top-0 z-50 shadow-xl transition-all duration-500 ${darkMode ? 'bg-slate-900/90 border-b border-slate-700' : 'bg-white/95 border-b border-slate-200'}`}>
+        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-rose-500 via-pink-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg animate-pulse">
+              <HeartPulse size={26} className="text-white" />
             </div>
             <div>
-              <h1 className={`font-black text-xl tracking-wide ${darkMode ? 'text-white' : 'text-white drop-shadow-lg'}`}>EduHealth AI</h1>
-              <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-white/80'}`}>Trợ lý sức khỏe học đường</p>
+              <p className={`text-[9px] font-bold tracking-widest uppercase mb-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>43TPU(CHACHA AI)_EDUHEALTH AI</p>
+              <h1 className={`font-black text-xl tracking-wide ${darkMode ? 'text-white' : 'bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 bg-clip-text text-transparent font-black'}`}>EduHealth AI</h1>
+              <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Hỗ trợ chăm sóc & chẩn đoán sức khỏe học đường · Không thay thế bác sĩ y khoa</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
