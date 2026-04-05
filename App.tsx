@@ -469,6 +469,13 @@ const formatTimeAgo = (iso: string): string => {
   return `${Math.floor(h / 24)} ngày trước`;
 };
 
+const formatCountdown = (seconds: number): string => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+};
+
 // ═══════════════════════════════════════════════════════════════
 // COMPONENTS
 // ═══════════════════════════════════════════════════════════════
@@ -2012,6 +2019,13 @@ const App: React.FC = () => {
   const [showAllNews, setShowAllNews] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [showFindCare, setShowFindCare] = useState(false);
+  // Health articles state
+  const [healthArticles, setHealthArticles] = useState<any[]>([]);
+  const [loadingArticles, setLoadingArticles] = useState(false);
+  const [articlesOpen, setArticlesOpen] = useState(true);
+  const [showAllArticles, setShowAllArticles] = useState(false);
+  // Countdown to next article
+  const [countdown, setCountdown] = useState(24 * 60 * 60); // seconds until next refresh
 
   // Expose FindCare opener to window for AIScanView button
   useEffect(() => {
@@ -2049,6 +2063,35 @@ const App: React.FC = () => {
       }).catch(() => {}).finally(() => setLoadingPosts(false));
     }
   }, [tab]);
+
+  // ── Fetch health articles ──
+  useEffect(() => {
+    if (tab !== 'library') return;
+    setLoadingArticles(true);
+    fetch(`${API_BASE}/api/articles`)
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d.articles)) setHealthArticles(d.articles); })
+      .catch(() => {})
+      .finally(() => setLoadingArticles(false));
+  }, [tab]);
+
+  // ── Countdown timer: refreshes every hour (simulates 24h cycle) ──
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          // Trigger refresh
+          fetch(`${API_BASE}/api/articles`)
+            .then(r => r.json())
+            .then(d => { if (Array.isArray(d.articles)) setHealthArticles(d.articles); })
+            .catch(() => {});
+          return 24 * 60 * 60; // reset
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -2176,7 +2219,7 @@ const App: React.FC = () => {
             </button>
             <button onClick={() => { setTab('news'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'news' ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
-              <Newspaper size={18} />Bản tin
+              <Newspaper size={18} />Tin tức
             </button>
             <button onClick={() => { setTab('findcare'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'findcare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
@@ -2193,77 +2236,63 @@ const App: React.FC = () => {
         {tab === 'library' && !selectedCat && !selectedDisease && (
           <div className="space-y-6 animate-in fade-in duration-300">
 
-            {/* ═══ NEWS FEED SECTION (Realtime, at the top) ═══ */}
+            {/* ═══ HEALTH ARTICLES SECTION — Auto-updated school health news ═══ */}
             <div className="space-y-3">
-              {/* News Section Header */}
+              {/* Header Banner */}
               <div
-                onClick={() => setNewsOpen(!newsOpen)}
-                className="bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500 rounded-2xl p-5 text-white cursor-pointer relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01]"
-                style={{ boxShadow: '0 0 30px rgba(244, 63, 94, 0.4), 0 0 60px rgba(244, 63, 94, 0.2)' }}
+                onClick={() => setArticlesOpen(!articlesOpen)}
+                className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-5 text-white cursor-pointer relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01]"
+                style={{ boxShadow: '0 0 30px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.2)' }}
               >
-                {/* Animated background blobs */}
                 <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse" />
                 <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-lg animate-pulse" style={{ animationDelay: '1s' }} />
-                {/* Extra glow ring */}
-                <div className="absolute inset-0 rounded-2xl border-2 border-white/20 animate-pulse" />
+                <div className="absolute inset-0 rounded-2xl border-2 border-white/20" />
 
                 <div className="relative flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="relative">
                       <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
-                        <Newspaper size={28} className="text-white" />
-                        {posts.length > 0 && (
-                          <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-black animate-bounce shadow-lg">
-                            {posts.length > 9 ? '9+' : posts.length}
+                        <BookOpen size={28} className="text-white" />
+                        {healthArticles.length > 0 && (
+                          <div className="absolute -top-1 -right-1 w-5 h-5 bg-cyan-400 rounded-full flex items-center justify-center text-[10px] font-black animate-bounce shadow-lg">
+                            {healthArticles.length > 9 ? '9+' : healthArticles.length}
                           </div>
                         )}
                       </div>
                     </div>
                     <div>
                       <h2 className="text-2xl font-black flex items-center gap-2 tracking-tight">
-                        📣 Bản tin học đường
+                        📖 Tin y tế học đường
                         <span className="bg-white/20 backdrop-blur-sm text-xs px-2 py-0.5 rounded-full font-medium animate-pulse">
-                          LIVE
+                          AUTO ⏱
                         </span>
                       </h2>
-                      <p className="text-white/80 text-sm mt-0.5 flex items-center gap-1">
+                      <p className="text-white/80 text-sm mt-0.5 flex items-center gap-2 flex-wrap">
                         <Clock3 size={12} />
-                        Cập nhật theo thời gian thực · {posts.length} bài viết
-                        {loadingPosts && <span className="ml-1 flex items-center gap-1"><RefreshCw size={10} className="animate-spin" /> đang tải...</span>}
+                        {healthArticles.length} bài báo y tế · Mỗi ngày 1 bài mới
+                        {loadingArticles && <span className="ml-1 flex items-center gap-1"><RefreshCw size={10} className="animate-spin" />đang tải...</span>}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); setShowForm(true); }}
-                      className="bg-white text-rose-600 px-4 py-2 rounded-xl font-bold text-sm hover:shadow-xl transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
-                    >
-                      <Plus size={16} />Đăng bài
-                    </button>
-                    <div className={`w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-transform duration-300 ${newsOpen ? 'rotate-180' : ''}`}>
+                    <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-1.5 flex flex-col items-center">
+                      <span className="text-[10px] text-white/60 font-medium">Bài tiếp theo</span>
+                      <span className="font-black text-sm font-mono tracking-widest">{formatCountdown(countdown)}</span>
+                    </div>
+                    <div className={`w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-transform duration-300 ${articlesOpen ? 'rotate-180' : ''}`}>
                       <ChevronDown size={20} className="text-white" />
                     </div>
                   </div>
                 </div>
 
-                {/* Category Filter Pills */}
-                {newsOpen && (
+                {/* Category pills */}
+                {articlesOpen && (
                   <div className="mt-4 flex flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-                    <button
-                      onClick={() => setNewsFilter(null)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105 ${!newsFilter ? 'bg-white text-rose-600 shadow-lg' : 'bg-white/20 text-white hover:bg-white/30'}`}
-                    >
-                      🎬 Tất cả ({posts.length})
-                    </button>
-                    {(['video', 'article', 'infographic'] as PostType[]).map((type) => {
-                      const count = posts.filter(p => p.type === type).length;
+                    {['Sức khỏe học đường','Dinh dưỡng học đường','Phòng bệnh','Sức khỏe tâm thần','Bệnh da liễu','Sơ cứu','Tiêm chủng','Sức khỏe mắt'].map(cat => {
+                      const count = healthArticles.filter((a: any) => a.category === cat).length;
                       return count > 0 && (
-                        <button
-                          key={type}
-                          onClick={() => setNewsFilter(newsFilter === type ? null : type)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105 ${newsFilter === type ? 'bg-white text-rose-600 shadow-lg' : 'bg-white/20 text-white hover:bg-white/30'}`}
-                        >
-                          {type === 'video' ? '🎬' : type === 'article' ? '📝' : '🖼️'} {type === 'video' ? 'Video' : type === 'article' ? 'Bài viết' : 'Infographic'} ({count})
+                        <button key={cat} className="px-3 py-1.5 rounded-full text-xs font-bold bg-white/20 text-white hover:bg-white/30 transition-all">
+                          🏫 {cat} ({count})
                         </button>
                       );
                     })}
@@ -2271,107 +2300,85 @@ const App: React.FC = () => {
                 )}
               </div>
 
-              {/* News Posts Accordion / List */}
-              {newsOpen && (
+              {/* Articles list */}
+              {articlesOpen && (
                 <div className="space-y-3">
-                  {loadingPosts ? (
+                  {loadingArticles ? (
                     <div className="flex justify-center py-10">
                       <div className="flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 border-4 border-rose-500 border-t-transparent rounded-full animate-spin" />
-                        <p className="text-slate-400 text-sm font-medium animate-pulse">Đang tải bản tin...</p>
+                        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                        <p className="text-slate-400 text-sm font-medium animate-pulse">Đang tải bài báo y tế...</p>
                       </div>
                     </div>
-                  ) : filteredNews.length === 0 ? (
+                  ) : healthArticles.length === 0 ? (
                     <div className="text-center py-10 bg-white rounded-2xl shadow-lg border border-slate-100">
-                      <div className="text-5xl mb-3">📭</div>
-                      <p className="font-bold text-slate-400">Chưa có bài đăng nào</p>
-                      <p className="text-xs text-slate-400 mt-1">Giáo viên và cán bộ y tế có thể đăng bài</p>
+                      <div className="text-5xl mb-3">📰</div>
+                      <p className="font-bold text-slate-400">Chưa có bài báo nào</p>
+                      <p className="text-xs text-slate-400 mt-1">Hệ thống sẽ tự động cập nhật sớm</p>
                     </div>
                   ) : (
-                    filteredNews.map((post: any, idx: number) => (
-                      <div
-                        key={post.id}
-                        onClick={() => setDetailPost(post)}
-                        className={`pill-card rounded-2xl overflow-hidden cursor-pointer group transition-all duration-400 animate-in slide-in-from-bottom duration-400 ${darkMode ? 'pill-card-dark' : ''}`}
+                    (showAllArticles ? healthArticles : healthArticles.slice(0, 3)).map((article: any, idx: number) => (
+                      <a
+                        key={article.id || idx}
+                        href={article.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`pill-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col sm:flex-row transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${darkMode ? 'pill-card-dark' : ''}`}
                         style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
                       >
-                        <div className="flex items-stretch">
-                          {/* Thumbnail */}
-                          <div className="w-32 sm:w-40 shrink-0 relative overflow-hidden">
-                            {post.type === 'video' && getYouTubeEmbedUrl(post.content) ? (
-                              <>
-                                <img
-                                  src={`https://img.youtube.com/vi/${post.content.match(/youtu\.be\/([^?]+)/)?.[1] || ''}/mqdefault.jpg`}
-                                  alt=""
-                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                  onError={(e: any) => e.target.style.display = 'none'}
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                                  <div className="w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300">
-                                    <PlayCircle size={20} className="text-rose-600 ml-0.5" />
-                                  </div>
-                                </div>
-                              </>
-                            ) : post.type === 'infographic' && post.content ? (
-                              <img src={post.content} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                            ) : (
-                              <div className={`w-full h-full bg-gradient-to-br flex items-center justify-center ${darkMode ? 'from-slate-700 to-slate-800' : 'from-purple-100 to-pink-100'}`}>
-                                <FileText size={28} className={darkMode ? 'text-slate-500' : 'text-purple-300'} />
-                              </div>
-                            )}
-                            {/* Pill type badge */}
-                            <div className={`absolute top-2 left-2 ${post.type === 'video' ? 'bg-red-500' : post.type === 'article' ? 'bg-blue-500' : 'bg-orange-500'} text-white px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide shadow-lg flex items-center gap-1`}>
-                              {post.type === 'video' ? '🎬' : post.type === 'article' ? '📝' : '🖼️'} {post.type === 'video' ? 'Video' : post.type === 'article' ? 'Bài' : 'Ảnh'}
-                            </div>
+                        {article.image_url && (
+                          <div className="w-full sm:w-40 h-40 sm:min-h-[100px] shrink-0 overflow-hidden bg-slate-100">
+                            <img
+                              src={article.image_url}
+                              alt={article.title}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
+                            />
                           </div>
-
-                          {/* Content */}
-                          <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
-                            <div>
-                              <h3 className={`font-black group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
-                                {post.title}
-                              </h3>
-                              {post.description && (
-                                <p className="text-xs text-slate-500 mt-1 line-clamp-2">{post.description}</p>
+                        )}
+                        <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
+                          {article.category && (
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full w-fit mb-1.5 ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-50 text-blue-600'}`}>
+                              🏫 {article.category}
+                            </span>
+                          )}
+                          <h3 className={`font-black group-hover:text-blue-500 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
+                            {article.title}
+                          </h3>
+                          {article.summary && (
+                            <p className={`text-xs mt-1 line-clamp-2 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{article.summary}</p>
+                          )}
+                          <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>📰 {article.source_name}</span>
+                              {article.read_time && (
+                                <span className="text-[10px] text-slate-400 flex items-center gap-0.5">⏱ {article.read_time} phút đọc</span>
                               )}
                             </div>
-                            <div className="flex items-center justify-between mt-3">
-                              <div className="flex items-center gap-2">
-                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 shadow-md ${post.authorRole === 'Cán bộ y tế' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
-                                  {post.authorName[0]?.toUpperCase()}
-                                </div>
-                                <div className="min-w-0">
-                                  <p className="text-xs font-bold text-slate-700 truncate">{post.authorName}</p>
-                                  <p className={`text-[10px] ${post.authorRole === 'Cán bộ y tế' ? 'text-blue-500' : 'text-purple-500'}`}>{post.authorRole}</p>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-3 text-[10px] text-slate-400 shrink-0 ml-2">
-                                <span className="flex items-center gap-0.5"><Eye size={11} />{post.views}</span>
-                                <span className="flex items-center gap-0.5"><MessageCircle size={11} />{post.comments?.length || 0}</span>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 mt-2">
-                              <span className="text-[10px] text-slate-400 flex items-center gap-0.5"><Clock3 size={10} />{formatTimeAgo(post.createdAt)}</span>
-                              {post.tags?.slice(0, 2).map((tag: string) => (
-                                <span key={tag} className="text-[9px] bg-rose-50 text-rose-400 px-1.5 py-0.5 rounded-full font-medium">#{tag}</span>
+                            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1 ${darkMode ? 'bg-emerald-900/40 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>
+                              Đọc bài → <ExternalLink size={8} />
+                            </span>
+                          </div>
+                          {article.tags && article.tags.length > 0 && (
+                            <div className="flex gap-1 mt-2 flex-wrap">
+                              {article.tags.slice(0, 3).map((tag: string) => (
+                                <span key={tag} className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${darkMode ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>#{tag}</span>
                               ))}
                             </div>
-                          </div>
+                          )}
                         </div>
-                      </div>
+                      </a>
                     ))
                   )}
-
-                  {/* Show More / Less - Pill button */}
-                  {filteredNews.length > 3 && (
+                  {healthArticles.length > 3 && (
                     <button
-                      onClick={() => setShowAllNews(!showAllNews)}
-                      className={`pill-card rounded-2xl w-full py-3 text-sm font-bold text-rose-500 hover:text-rose-600 transition-all flex items-center justify-center gap-2 hover:shadow-xl border ${darkMode ? 'border-slate-700' : 'border-rose-100'} active:scale-95`}
+                      onClick={() => setShowAllArticles(!showAllArticles)}
+                      className={`pill-card rounded-2xl w-full py-3 text-sm font-bold text-blue-500 hover:text-blue-600 transition-all flex items-center justify-center gap-2 hover:shadow-xl border ${darkMode ? 'border-slate-700' : 'border-blue-100'} active:scale-95`}
                     >
-                      {showAllNews ? (
-                        <><ChevronDown size={16} className="animate-rotate-in" />Thu gọn</>
+                      {showAllArticles ? (
+                        <><ChevronDown size={16} />Thu gọn</>
                       ) : (
-                        <><ChevronRight size={16} />Xem thêm {filteredNews.length - 3} bài viết</>
+                        <><ChevronRight size={16} />Xem thêm {healthArticles.length - 3} bài báo</>
                       )}
                     </button>
                   )}
@@ -2379,7 +2386,7 @@ const App: React.FC = () => {
               )}
             </div>
 
-            {/* Divider with animation */}
+            {/* Divider with animation */}            {/* Divider with animation */}
             <div className="flex items-center gap-3">
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
               <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
@@ -2939,7 +2946,7 @@ const App: React.FC = () => {
           <div className="space-y-4 animate-in fade-in duration-300">
             <div className="bg-gradient-to-r from-rose-500 to-orange-500 rounded-2xl p-4 text-white flex items-center justify-between">
               <div>
-                <h2 className="font-bold text-lg">📣 Bản tin sức khỏe học đường</h2>
+                <h2 className="font-bold text-lg">📣 Tin tức sức khỏe học đường</h2>
                 <p className="text-white/80 text-sm">Tin tức realtime từ cán bộ y tế & giáo viên</p>
               </div>
               <button onClick={() => setShowForm(true)} className="bg-white text-rose-600 px-4 py-2 rounded-xl font-bold text-sm hover:shadow-lg transition-all flex items-center gap-2">
