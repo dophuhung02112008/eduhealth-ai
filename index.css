@@ -195,18 +195,18 @@
 }
 .pill-card:active { transform: translateY(-2px) scale(0.99); }
 
-/* Dark mode pill base */
+/* Dark mode pill base — solid readable */
 .pill-card-dark {
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(100, 116, 139, 0.3);
+  background: #0f172a;
+  backdrop-filter: blur(12px);
+  border: 1px solid #1e3a5f;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .pill-card-dark:hover {
-  background: rgba(51, 65, 85, 0.95);
-  border-color: rgba(244, 63, 94, 0.4);
+  background: #1e293b;
+  border-color: rgba(244, 63, 94, 0.5);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(244, 63, 94, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(244, 63, 94, 0.2);
 }
 .pill-card-dark:active { transform: translateY(-2px) scale(0.99); }
 
@@ -304,8 +304,8 @@
 
 /* ─── DARK MODE OVERRIDES ─── */
 .dark .pill-card {
-  background: rgba(30, 41, 59, 0.85);
-  border-color: rgba(100, 116, 139, 0.3);
+  background: #0f172a;
+  border-color: #1e3a5f;
 }
 .dark .pill-card:hover {
   background: rgba(51, 65, 85, 0.95);

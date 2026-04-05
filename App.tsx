@@ -623,7 +623,7 @@ const PostDetail: React.FC<{ post: ActivityPost; onClose: () => void; darkMode?:
           {post.type === 'infographic' && post.content && (
             <img src={post.content} alt="" className="w-full rounded-xl" />
           )}
-          {post.description && <p className={`${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{post.description}</p>}
+          {post.description && <p className={`${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{post.description}</p>}
           {post.content && post.type === 'article' && <p className={`whitespace-pre-wrap ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{post.content}</p>}
           <div className="flex gap-1 flex-wrap">
             {REACTION_CONFIG.map(r => (
@@ -1010,7 +1010,8 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
   const [dataQuality, setDataQuality] = useState<{ status: string; issues: string[] } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textColor = darkMode ? 'text-slate-100' : 'text-slate-800';
-  const bgCard = darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100';
+  const bgCard = darkMode ? 'bg-slate-900 border border-slate-700' : 'bg-white border border-slate-100';
+  const bgCardAlt = darkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-100';
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -1177,7 +1178,7 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
                   <Upload size={36} />
                 </div>
                 <p className={`font-bold ${textColor}`}>Kéo & thả ảnh vào đây</p>
-                <p className={`text-sm mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Hoặc nhấn để chọn file (JPG, PNG, WEBP)</p>
+                <p className={`text-sm mt-1 ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>Hoặc nhấn để chọn file (JPG, PNG, WEBP)</p>
                 <p className={`text-xs mt-2 ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>Hỗ trợ chụp close-up vùng tổn thương da</p>
               </div>
             )}
@@ -1260,7 +1261,7 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
               <div className={`${cfg.color}`}>{cfg.icon}</div>
               <div>
                 <p className={`font-black text-sm ${cfg.color}`}>{cfg.label}</p>
-                <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Hành động khuyến nghị từ EduHealth AI</p>
+                <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>Hành động khuyến nghị từ EduHealth AI</p>
               </div>
             </div>
           )}
@@ -1279,7 +1280,7 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
                     <StarHalf size={14} />Độ chắc chắn: {result.confidence === 'high' ? 'Cao' : result.confidence === 'moderate' ? 'Trung bình' : 'Thấp'} ({result.confidence_score}/10)
                   </div>
                 </div>
-                {result.confidence_note && <p className={`text-sm mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{result.confidence_note}</p>}
+                {result.confidence_note && <p className={`text-sm mt-1 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>{result.confidence_note}</p>}
               </div>
             </div>
             {result.teen_message && (
@@ -1429,12 +1430,12 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
           {/* Alternatives */}
           {result.alternatives.length > 0 && (
             <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
-              <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}><ChevronRight size={16} />Chẩn đoán phân biệt khác</h3>
+              <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}><ChevronRight size={16} />Chẩn đoán phân biệt khác</h3>
               <div className="space-y-2">
                 {result.alternatives.map((alt, i) => (
                   <div key={i} className={`p-3 rounded-xl ${darkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
                     <span className={`font-bold text-sm ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{alt.name}</span>
-                    <p className={`text-xs mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Lý do ít phù hợp: {alt.reason_against}</p>
+                    <p className={`text-xs mt-1 ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>Lý do ít phù hợp: {alt.reason_against}</p>
                   </div>
                 ))}
               </div>
@@ -1477,7 +1478,7 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
         <div className={`${bgCard} rounded-2xl p-12 text-center shadow-lg border`}>
           <Stethoscope size={56} className={`mx-auto mb-3 opacity-30 ${textColor}`} />
           <p className={`font-bold ${textColor}`}>Chưa có kết quả phân tích</p>
-          <p className={`text-sm mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Vui lòng nhập dữ liệu và nhấn "Phân tích ngay với AI"</p>
+          <p className={`text-sm mt-1 ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>Vui lòng nhập dữ liệu và nhấn "Phân tích ngay với AI"</p>
           <button onClick={() => setActiveTab('input')} className="mt-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-xl font-bold text-sm hover:shadow-lg transition-all">
             ← Quay lại nhập dữ liệu
           </button>
@@ -1728,7 +1729,8 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
   const userMarkerRef = useRef<any>(null);
   const [facilities, setFacilities] = useState<Facility[]>(SAMPLE_FACILITIES);
   const textColor = darkMode ? 'text-slate-100' : 'text-slate-800';
-  const bgCard = darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100';
+  const bgCard = darkMode ? 'bg-slate-900 border border-slate-700' : 'bg-white border border-slate-100';
+  const bgCardAlt = darkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-100';
 
   // ── Haversine distance ──────────────────────────────────────
   const getDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
@@ -1904,7 +1906,7 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
             ★
           </span>
         ))}
-        <span className={`text-xs font-bold ml-1 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{rating}</span>
+        <span className={`text-xs font-bold ml-1 ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{rating}</span>
       </div>
     );
   };
@@ -1993,11 +1995,11 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
                     <p className={`font-black text-sm ${textColor}`}>
                       {activeTab === 'hospital' ? `${hospitals.length} Bệnh viện` : `${pharmacies.length} Hiệu thuốc`}
                     </p>
-                    <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Gần vị trí của bạn</p>
+                    <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>Gần vị trí của bạn</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`text-xs font-bold ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>📍 Hà Nội</p>
+                  <p className={`text-xs font-bold ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>📍 Hà Nội</p>
                   <p className={`text-xs ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>Việt Nam</p>
                 </div>
               </div>
@@ -2029,7 +2031,7 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
                         </div>
 
                         {facility.specialty && (
-                          <p className={`text-xs mt-0.5 truncate ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>🏷️ {facility.specialty}</p>
+                          <p className={`text-xs mt-0.5 truncate ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>🏷️ {facility.specialty}</p>
                         )}
                         <p className={`text-xs mt-0.5 truncate ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>📍 {facility.address}</p>
 
@@ -2226,9 +2228,9 @@ const App: React.FC = () => {
               <HeartPulse size={26} className="text-white" />
             </div>
             <div>
-              <p className={`text-[9px] font-bold tracking-widest uppercase mb-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>43TPU(CHACHA AI)_EDUHEALTH AI</p>
+              <p className={`text-[9px] font-bold tracking-widest uppercase mb-0.5 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>43TPU(CHACHA AI)_EDUHEALTH AI</p>
               <h1 className={`font-black text-xl tracking-wide ${darkMode ? 'text-white' : 'bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 bg-clip-text text-transparent font-black'}`}>EduHealth AI</h1>
-              <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Hỗ trợ chăm sóc & chẩn đoán sức khỏe học đường · Không thay thế bác sĩ y khoa</p>
+              <p className={`text-[10px] ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>Hỗ trợ chăm sóc & chẩn đoán sức khỏe học đường · Không thay thế bác sĩ y khoa</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -2252,7 +2254,7 @@ const App: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 py-3 space-y-3">
           {/* SEARCH */}
           <div className="relative">
-            <Search size={18} className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`} />
+            <Search size={18} className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-slate-300' : 'text-slate-400'}`} />
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Tìm kiếm bệnh, triệu chứng..."
               className={`w-full pl-10 pr-4 py-2.5 rounded-xl border focus:outline-none focus:border-rose-400 transition-colors ${darkMode ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-800'}`} />
           </div>
@@ -2577,7 +2579,7 @@ const App: React.FC = () => {
                         </div>
                         <div className="flex-1 text-left">
                           <p className={`font-bold group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
-                          <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
+                          <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
                         </div>
                         <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${getCategoryGradient(cat)} flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110`}>
                           →
@@ -2611,7 +2613,7 @@ const App: React.FC = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className={`font-black text-sm leading-tight truncate group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
-                        <p className={`text-xs mt-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
+                        <p className={`text-xs mt-0.5 ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
                       </div>
                     </div>
 
@@ -2619,7 +2621,7 @@ const App: React.FC = () => {
                     <div className="px-5 pb-1 flex-1">
                       <div className="space-y-1.5">
                         {cat.diseases.slice(0, 5).map((d: any) => (
-                          <p key={d.id} className={`text-xs leading-relaxed truncate flex items-start gap-1.5 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
+                          <p key={d.id} className={`text-xs leading-relaxed truncate flex items-start gap-1.5 ${darkMode ? 'text-slate-200' : 'text-slate-500'}`}>
                             <span className={`shrink-0 mt-0.5 ${darkMode ? 'text-rose-400' : 'text-rose-300'}`}>•</span>
                             <span className="truncate">{d.name}</span>
                           </p>
@@ -2655,7 +2657,7 @@ const App: React.FC = () => {
                 </div>
                 {filteredLibrary.map((cat: any) => (
                   <div key={cat.category} className="space-y-3">
-                    <h3 className={`text-base font-black flex items-center gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                    <h3 className={`text-base font-black flex items-center gap-2 ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>
                       <span className="text-xl">{cat.icon}</span> {cat.category}
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -2667,7 +2669,7 @@ const App: React.FC = () => {
                           </div>
                           <div className="p-3 space-y-1">
                             <h4 className={`font-black text-sm group-hover:text-rose-500 transition-colors line-clamp-1 ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{d.name}</h4>
-                            <p className={`text-xs line-clamp-2 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{d.description}</p>
+                            <p className={`text-xs line-clamp-2 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>{d.description}</p>
                           </div>
                         </div>
                       ))}
@@ -2755,7 +2757,7 @@ const App: React.FC = () => {
                     <h4 className={`font-black text-sm leading-tight group-hover:text-rose-500 transition-colors duration-300 ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
                       {d.name}
                     </h4>
-                    <p className={`text-xs leading-relaxed line-clamp-3 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                    <p className={`text-xs leading-relaxed line-clamp-3 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
                       {d.description}
                     </p>
                     {/* Quick tags */}
@@ -2878,7 +2880,7 @@ const App: React.FC = () => {
                       </div>
                       <h4 className="font-bold text-blue-600 dark:text-blue-400 text-sm">Nguyên nhân</h4>
                     </div>
-                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{selectedDisease.causes}</p>
+                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{selectedDisease.causes}</p>
                   </div>
 
                   {/* Symptoms */}
@@ -2891,7 +2893,7 @@ const App: React.FC = () => {
                       </div>
                       <h4 className="font-bold text-rose-600 dark:text-rose-400 text-sm">Triệu chứng</h4>
                     </div>
-                    <ul className={`text-sm space-y-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                    <ul className={`text-sm space-y-2 ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>
                       {selectedDisease.symptoms.map((s: string, i: number) => (
                         <li key={i} className="flex items-start gap-2">
                           <span className="text-rose-400 mt-0.5 shrink-0">•</span>
@@ -2911,7 +2913,7 @@ const App: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-amber-600 dark:text-amber-400 text-sm mb-1">Bối cảnh học đường</h4>
-                    <p className={`text-sm ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{selectedDisease.schoolContext}</p>
+                    <p className={`text-sm ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{selectedDisease.schoolContext}</p>
                   </div>
                 </div>
 
@@ -2966,7 +2968,7 @@ const App: React.FC = () => {
 
                 {/* Sources - Pill tags */}
                 <div className={`rounded-2xl p-4 border ${darkMode ? 'bg-slate-700/30 border-slate-600' : 'bg-slate-50 border-slate-100'}`}>
-                  <h4 className={`font-bold text-sm mb-3 flex items-center gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                  <h4 className={`font-bold text-sm mb-3 flex items-center gap-2 ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>
                     <ExternalLink size={14} />
                     Nguồn tham khảo y khoa
                   </h4>
@@ -2995,7 +2997,7 @@ const App: React.FC = () => {
               if (related.length === 0) return null;
               return (
                 <div className="space-y-3">
-                  <h3 className={`text-base font-bold flex items-center gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                  <h3 className={`text-base font-bold flex items-center gap-2 ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>
                     <span className="text-xl">📋</span> Các bệnh liên quan trong {selectedCat}
                   </h3>
                   <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
