@@ -1780,11 +1780,20 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
     } else {
       map.panTo([userLocation.lat, userLocation.lng], { animate: true, duration: 0.8 });
     }
-  }, [userLocation, activeTab, selectedId]);
+  }, [userLocation, activeTab]);
 
   const selectedFacility = selectedId
     ? (activeTab === 'hospital' ? hospitals : pharmacies).find(f => f.id === selectedId)
     : null;
+
+  // ── Pan to selected facility on map ──
+  useEffect(() => {
+    if (!leafletMapRef.current || !selectedFacility || typeof (window as any).L === 'undefined') return;
+    leafletMapRef.current.panTo(
+      [selectedFacility.lat, selectedFacility.lng],
+      { animate: true, duration: 0.6 }
+    );
+  }, [selectedId, selectedFacility]);
 
   const handleNavigate = (facility: Facility) => {
     window.open(facility.navUrl, '_blank', 'noopener,noreferrer');
