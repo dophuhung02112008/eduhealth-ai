@@ -1719,14 +1719,56 @@ const SAMPLE_FACILITIES: Facility[] = [
 const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ darkMode, onClose }) => {
   const [activeTab, setActiveTab] = useState<'hospital' | 'pharmacy'>('hospital');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [geoError, setGeoError] = useState<string | null>(null);
+  const [geoLoading, setGeoLoading] = useState(true);
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMapRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
+  const userMarkerRef = useRef<any>(null);
+  const [facilities, setFacilities] = useState<Facility[]>(SAMPLE_FACILITIES);
   const textColor = darkMode ? 'text-slate-100' : 'text-slate-800';
   const bgCard = darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100';
 
-  const hospitals = SAMPLE_FACILITIES.filter(f => f.type === 'hospital');
-  const pharmacies = SAMPLE_FACILITIES.filter(f => f.type === 'pharmacy');
+  // ── Haversine distance ──────────────────────────────────────
+  const getDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  // ── Geolocation + sort facilities ─────────────────────────────
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setGeoError('Trình duyệt không hỗ trợ định vị.');
+      setGeoLoading(false);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        const loc = { lat, lng };
+        setUserLocation(loc);
+
+        // Sort all facilities by distance from user
+        const sorted = SAMPLE_FACILITIES.map(f => ({
+          ...f,
+          distance: getDistance(lat, lng, f.lat, f.lng).toFixed(1) + ' km',
+        })).sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
+        setFacilities(sorted);
+      },
+      (err) => {
+        setGeoError('Không lấy được vị trí. Đang dùng vị trí mặc định Hà Nội.');
+        setUserLocation({ lat: 21.0285, lng: 105.8020 });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  }, []);
+
+  const hospitals = facilities.filter(f => f.type === 'hospital');
+  const pharmacies = facilities.filter(f => f.type === 'pharmacy');
   const activeFacilities = activeTab === 'hospital' ? hospitals : pharmacies;
 
   // Init Leaflet map
@@ -1735,26 +1777,21 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ d
     if (typeof (window as any).L === 'undefined') return;
 
     const L = (window as any).L;
-    const defaultCenter: [number, number] = [21.0285, 105.8020]; // Hanoi center
+    const defaultCenter: [number, number] = [21.0285, 105.8020];
 
     const map = L.map(mapRef.current, {
       center: defaultCenter,
-      zoom: 13,
+      zoom: 14,
       zoomControl: true,
       attributionControl: true,
     });
 
-    // CartoDB Voyager tiles (clean, pretty, high contrast)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       attribution: '© OpenStreetMap © CartoDB',
       maxZoom: 19,
     }).addTo(map);
 
     leafletMapRef.current = map;
-
-    // Add initial markers
-    addMarkers(hospitals, L, map);
-
     return () => {
       if (leafletMapRef.current) {
         leafletMapRef.current.remove();
@@ -1764,15 +1801,38 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ d
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const addMarkers = (facilities: Facility[], L: any, map: any) => {
-    // Clear old markers
+  // ── Add user marker + facility markers when location is ready ──
+  useEffect(() => {
+    if (!leafletMapRef.current || !userLocation || typeof (window as any).L === 'undefined') return;
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+
+    // Remove old user marker
+    if (userMarkerRef.current) { userMarkerRef.current.remove(); userMarkerRef.current = null; }
     markersRef.current.forEach(m => m.remove());
     markersRef.current = [];
 
-    facilities.forEach(facility => {
+    // User marker (blue pulsing dot)
+    const userHtml = `
+      <div style="
+        background: #3b82f6;
+        border: 4px solid white;
+        border-radius: 50%;
+        box-shadow: 0 0 0 6px rgba(59,130,246,0.3), 0 4px 16px rgba(59,130,246,0.5);
+        width: 20px; height: 20px;
+        animation: userPulse 2s infinite;
+      "></div>`;
+    const userIcon = L.divIcon({ html: userHtml, className: '', iconSize: [20, 20], iconAnchor: [10, 10] });
+    userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon, zIndexOffset: 1000 })
+      .addTo(map)
+      .bindPopup(`<div style="font-family:Inter,sans-serif;text-align:center;"><strong style="font-size:12px;">📍 Vị trí của bạn</strong></div>`);
+
+    // Add facility markers
+    const activeF = activeTab === 'hospital' ? hospitals : pharmacies;
+    activeF.forEach(facility => {
       const isSelected = facility.id === selectedId;
       const size = isSelected ? 44 : 36;
-      const fontSize = isSelected ? 18 : 14;
+      const fontSize2 = isSelected ? 18 : 14;
       const markerHtml = `
         <div style="
           background: ${facility.color};
@@ -1784,7 +1844,7 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ d
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: ${fontSize}px;
+          font-size: ${fontSize2}px;
           transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
           transform: ${isSelected ? 'scale(1.15)' : 'scale(1)'};
           z-index: ${isSelected ? 1000 : 1};
@@ -1818,43 +1878,13 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ d
           </div>
         `, { maxWidth: 280 });
 
-      marker.on('click', () => {
-        setSelectedId(facility.id);
-      });
-
+      marker.on('click', () => setSelectedId(facility.id));
       markersRef.current.push(marker);
     });
-  };
 
-  // Update markers when tab changes
-  useEffect(() => {
-    if (!leafletMapRef.current || typeof (window as any).L === 'undefined') return;
-    const L = (window as any).L;
-    const facilities = activeTab === 'hospital' ? hospitals : pharmacies;
-    addMarkers(facilities, L, leafletMapRef.current);
-
-    // Pan to first marker
-    if (facilities.length > 0) {
-      leafletMapRef.current.panTo([facilities[0].lat, facilities[0].lng], { animate: true, duration: 0.8 });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab]);
-
-  // Update selected marker appearance
-  useEffect(() => {
-    if (!leafletMapRef.current || typeof (window as any).L === 'undefined') return;
-    const facilities = activeTab === 'hospital' ? hospitals : pharmacies;
-    const L = (window as any).L;
-    addMarkers(facilities, L, leafletMapRef.current);
-
-    if (selectedId) {
-      const facility = facilities.find(f => f.id === selectedId);
-      if (facility) {
-        leafletMapRef.current.panTo([facility.lat, facility.lng], { animate: true, duration: 0.5 });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedId]);
+    // Pan map to user location
+    map.panTo([userLocation.lat, userLocation.lng], { animate: true, duration: 0.8 });
+  }, [userLocation, activeTab, selectedId]);
 
   const selectedFacility = selectedId
     ? (activeTab === 'hospital' ? hospitals : pharmacies).find(f => f.id === selectedId)
@@ -1894,7 +1924,21 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void }> = ({ d
               </div>
               <div>
                 <h2 className="text-lg font-black">Tìm cơ sở y tế gần bạn</h2>
-                <p className="text-white/70 text-xs">Khoanh vùng → Tìm nơi khám gần nhất</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  {geoLoading ? (
+                    <span className="flex items-center gap-1 text-white/70 text-xs">
+                      <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Đang lấy vị trí...
+                    </span>
+                  ) : geoError ? (
+                    <span className="flex items-center gap-1 text-amber-300 text-xs">⚠️ {geoError}</span>
+                  ) : userLocation ? (
+                    <span className="flex items-center gap-1 text-white/80 text-xs">
+                      📍 Đã xác định vị trí của bạn
+                      <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                    </span>
+                  ) : null}
+                </div>
               </div>
             </div>
             <button onClick={onClose} className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center text-white transition-all shadow-lg">
@@ -2545,38 +2589,51 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Category Cards Grid (when no search, show all) */}
+            {/* Category Cards Grid — Equal height, aligned labels */}
             {!search && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                 {HEALTH_LIBRARY.map((cat: any, idx: number) => (
                   <button
                     key={cat.category}
                     onClick={() => { setSelectedCat(cat.category); setSelectedDisease(null); }}
-                    className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-1 text-left group animate-in slide-in-from-bottom duration-400`}
+                    className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-1 text-left group animate-in slide-in-from-bottom flex flex-col h-full animate-in slide-in-from-bottom`}
                     style={{ animationDelay: `${idx * 100}ms`, animationFillMode: 'both' }}
                   >
-                    <div className={`h-2 bg-gradient-to-r ${getCategoryGradient(cat)} relative overflow-hidden`}>
+                    {/* Color bar */}
+                    <div className={`h-1.5 bg-gradient-to-r ${getCategoryGradient(cat)} relative overflow-hidden shrink-0`}>
                       <div className="absolute inset-0 bg-white/20 animate-shimmer" />
                     </div>
-                    <div className="p-5">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-3xl ${getCategoryIconBg(cat)} group-hover:scale-110 transition-transform duration-300 shadow-md`}>
-                          {cat.icon}
-                        </div>
-                        <div>
-                          <p className={`font-black text-base group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
-                          <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
-                        </div>
+
+                    {/* Header */}
+                    <div className="flex items-center gap-3 px-5 pt-5 pb-4 shrink-0">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 ${getCategoryIconBg(cat)} group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
+                        {cat.icon}
                       </div>
-                      <div className="space-y-2">
-                        {cat.diseases.map((d: any) => (
-                          <p key={d.id} className={`text-sm group-hover:text-rose-400 transition-colors truncate flex items-center gap-1 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
-                            <span className={`shrink-0 ${darkMode ? 'text-rose-400' : 'text-rose-300'}`}>•</span>{d.name}
+                      <div className="min-w-0 flex-1">
+                        <p className={`font-black text-sm leading-tight truncate group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
+                        <p className={`text-xs mt-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
+                      </div>
+                    </div>
+
+                    {/* Disease list — max 5 items, equal bullet column */}
+                    <div className="px-5 pb-1 flex-1">
+                      <div className="space-y-1.5">
+                        {cat.diseases.slice(0, 5).map((d: any) => (
+                          <p key={d.id} className={`text-xs leading-relaxed truncate flex items-start gap-1.5 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
+                            <span className={`shrink-0 mt-0.5 ${darkMode ? 'text-rose-400' : 'text-rose-300'}`}>•</span>
+                            <span className="truncate">{d.name}</span>
                           </p>
                         ))}
                       </div>
-                      <div className="mt-3 flex items-center gap-1 text-rose-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                        Xem tất cả <ChevronRight size={14} />
+                      {cat.diseases.length > 5 && (
+                        <p className={`text-xs mt-2 font-bold ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>+{cat.diseases.length - 5} bài khác</p>
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="px-5 pb-4 pt-2 mt-auto shrink-0">
+                      <div className="flex items-center gap-1 text-rose-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                        Xem tất cả <ChevronRight size={12} />
                       </div>
                     </div>
                   </button>
