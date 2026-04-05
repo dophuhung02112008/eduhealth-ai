@@ -1513,12 +1513,9 @@ interface Facility {
   navUrl: string;
 }
 
-// Sample facilities — 5 hospitals + 5 pharmacies across Vietnam
-// These are realistic data points near major cities
+// Facilities across 5 major cities — sorted by GPS distance from user
 const SAMPLE_FACILITIES: Facility[] = [
-  // ── HOSPITALS ────────────────────────────────────────────────
-  {
-    id: 'h1',
+    { id: 'h1',
     name: 'Bệnh viện Da liễu Trung ương',
     address: '15 Phố Chùa Bộc, Quang Trung, Đống Đa, Hà Nội',
     phone: '024 3852 4326',
