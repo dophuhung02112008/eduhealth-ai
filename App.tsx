@@ -1770,8 +1770,16 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
       markersRef.current.push(marker);
     });
 
-    // Pan map to user location
-    map.panTo([userLocation.lat, userLocation.lng], { animate: true, duration: 0.8 });
+    // Pan map to show user + all active facilities
+    if (activeF.length > 0) {
+      const bounds = L.latLngBounds([
+        [userLocation.lat, userLocation.lng],
+        ...activeF.map(f => [f.lat, f.lng] as [number, number])
+      ]);
+      map.fitBounds(bounds, { padding: [60, 60], maxZoom: 14 });
+    } else {
+      map.panTo([userLocation.lat, userLocation.lng], { animate: true, duration: 0.8 });
+    }
   }, [userLocation, activeTab, selectedId]);
 
   const selectedFacility = selectedId
@@ -1860,12 +1868,12 @@ const FindCareModal: React.FC<{ darkMode: boolean; onClose: () => void; initialT
               {/* Legend */}
               <div className="absolute bottom-3 left-3 z-[400] flex flex-col gap-1.5 bg-white/90 backdrop-blur rounded-xl px-3 py-2 shadow-lg">
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 bg-red-500 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] text-white">🏥</div>
-                  <span className="text-xs font-bold text-slate-700">Bệnh viện</span>
+                  <div className={`w-5 h-5 ${activeTab === 'hospital' ? 'bg-red-500' : 'bg-slate-300'} rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] text-white`}>🏥</div>
+                  <span className={`text-xs font-bold ${activeTab === 'hospital' ? 'text-slate-800' : 'text-slate-400'}`}>Bệnh viện</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 bg-emerald-500 rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] text-white">💊</div>
-                  <span className="text-xs font-bold text-slate-700">Hiệu thuốc</span>
+                  <div className={`w-5 h-5 ${activeTab === 'pharmacy' ? 'bg-emerald-500' : 'bg-slate-300'} rounded-full border-2 border-white shadow flex items-center justify-center text-[10px] text-white`}>💊</div>
+                  <span className={`text-xs font-bold ${activeTab === 'pharmacy' ? 'text-slate-800' : 'text-slate-400'}`}>Hiệu thuốc</span>
                 </div>
               </div>
             </div>
@@ -2944,7 +2952,14 @@ const App: React.FC = () => {
         {/* ══ FIND CARE ══ */}
         {tab === 'findcare' && (
           <div className="animate-in fade-in duration-300">
-            <FindCareModal darkMode={darkMode} onClose={() => setTab('library')} />
+            <div className="text-center text-slate-400 text-sm py-2">📍 Nhấn nút bên dưới để mở bản đồ tìm cơ sở y tế</div>
+            <button
+              onClick={() => setShowFindCare(true)}
+              className="w-full py-5 rounded-2xl font-black text-base flex items-center justify-center gap-3 shadow-xl transition-all bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99]"
+            >
+              <MapPin size={22} />
+              🗺️ Mở bản đồ tìm cơ sở y tế
+            </button>
           </div>
         )}
       </main>
