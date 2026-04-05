@@ -741,8 +741,8 @@ const App: React.FC = () => {
               <HeartPulse size={24} className="text-white" />
             </div>
             <div>
-              <h1 className="font-black text-lg leading-tight text-white">EduHealth AI</h1>
-              <p className="text-[10px] text-white/70">Trợ lý sức khỏe học đường</p>
+              <h1 className={`font-black text-xl tracking-wide ${darkMode ? 'text-white' : 'text-white drop-shadow-lg'}`}>EduHealth AI</h1>
+              <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-white/80'}`}>Trợ lý sức khỏe học đường</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -826,7 +826,7 @@ const App: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <h2 className="text-xl font-black flex items-center gap-2">
+                      <h2 className="text-2xl font-black flex items-center gap-2 tracking-tight">
                         📣 Bản tin học đường
                         <span className="bg-white/20 backdrop-blur-sm text-xs px-2 py-0.5 rounded-full font-medium animate-pulse">
                           LIVE
@@ -1017,7 +1017,7 @@ const App: React.FC = () => {
                 </div>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-15"><School size={160} /></div>
                 <div className="relative">
-                  <h2 className="text-2xl font-black mb-2 flex items-center gap-2">
+                  <h2 className="text-2xl font-black mb-2 flex items-center gap-2 tracking-tight">
                     <span className="animate-bounce inline-block" style={{ animationDuration: '2s' }}>📚</span>
                     Cẩm nang thư viện học đường
                   </h2>
@@ -1185,7 +1185,7 @@ const App: React.FC = () => {
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-4xl">{currentCat.icon}</span>
                   <div>
-                    <h2 className="text-xl font-black">{currentCat.category}</h2>
+                    <h2 className="text-2xl font-black tracking-tight">{currentCat.category}</h2>
                     <p className="text-white/80 text-sm">{currentCat.diseases.length} bài viết</p>
                   </div>
                 </div>
