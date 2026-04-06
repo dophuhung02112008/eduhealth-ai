@@ -2106,22 +2106,44 @@ const App: React.FC = () => {
       .finally(() => setLoadingOlder(false));
   }, [tab]);
 
-  // ── Countdown timer: refreshes every hour (simulates 24h cycle) ──
+  // ── Countdown timer: countdown to next Vietnam midnight (GMT+7) ──
+  const getVietnamMidnightMS = () => {
+    const now = new Date();
+    // Vietnam is GMT+7
+    const vnOffset = 7 * 60 * 60 * 1000;
+    const vnNow = new Date(now.getTime() + vnOffset);
+    const vnMidnight = new Date(vnOffset + (vnNow.getFullYear(), vnNow.getMonth(), vnNow.getDate(), 0, 0, 0));
+    // Set to next midnight Vietnam time
+    vnMidnight.setHours(0, 0, 0, 0);
+    if (vnMidnight.getTime() <= now.getTime()) vnMidnight.setDate(vnMidnight.getDate() + 1);
+    return vnMidnight.getTime() - now.getTime(); // ms until next midnight
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
-          // Trigger refresh
-          fetch(`${API_BASE}/api/articles`)
-            .then(r => r.json())
-            .then(d => { if (Array.isArray(d.articles)) setHealthArticles(d.articles); })
-            .catch(() => {});
-          return 24 * 60 * 60; // reset
+          // Trigger refresh — fetch new articles from backend
+          Promise.all([
+            fetch(`${API_BASE}/api/articles`).then(r => r.json()).catch(() => ({})),
+            fetch(`${API_BASE}/api/articles/older`).then(r => r.json()).catch(() => ({})),
+          ]).then(([a, b]) => {
+            if (Array.isArray(a.articles)) setHealthArticles(a.articles);
+            if (Array.isArray(b.articles)) setOlderArticles(b.articles);
+          });
+          return Math.floor(getVietnamMidnightMS() / 1000);
         }
         return prev - 1;
       });
     }, 1000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Set initial countdown to Vietnam midnight
+  useEffect(() => {
+    setCountdown(Math.floor(getVietnamMidnightMS() / 1000));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Close dropdown on outside click

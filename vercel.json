@@ -13,5 +13,11 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron-articles",
+      "schedule": "0 7 * * *"
+    }
   ]
 }
