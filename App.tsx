@@ -2021,9 +2021,12 @@ const App: React.FC = () => {
   const [showFindCare, setShowFindCare] = useState(false);
   // Health articles state
   const [healthArticles, setHealthArticles] = useState<any[]>([]);
+  const [olderArticles, setOlderArticles] = useState<any[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(false);
+  const [loadingOlder, setLoadingOlder] = useState(false);
   const [articlesOpen, setArticlesOpen] = useState(true);
   const [showAllArticles, setShowAllArticles] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(3); // show first 3, rest via scroll/button
   // Countdown to next article
   const openArticleModal = (article: any) => {
     setSelectedArticle(article);
@@ -2093,6 +2096,14 @@ const App: React.FC = () => {
       .then(d => { if (Array.isArray(d.articles)) setHealthArticles(d.articles); })
       .catch(() => {})
       .finally(() => setLoadingArticles(false));
+
+    // Also fetch older articles for scroll/load-more
+    setLoadingOlder(true);
+    fetch(`${API_BASE}/api/articles/older`)
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d.articles)) setOlderArticles(d.articles); })
+      .catch(() => {})
+      .finally(() => setLoadingOlder(false));
   }, [tab]);
 
   // ── Countdown timer: refreshes every hour (simulates 24h cycle) ──
@@ -2320,7 +2331,7 @@ const App: React.FC = () => {
                 )}
               </div>
 
-              {/* Articles list */}
+              {/* Articles list — scroll-to-load-more */}
               {articlesOpen && (
                 <div className="space-y-3">
                   {loadingArticles ? (
@@ -2330,75 +2341,136 @@ const App: React.FC = () => {
                         <p className="text-slate-400 text-sm font-medium animate-pulse">Đang tải bài báo y tế...</p>
                       </div>
                     </div>
-                  ) : healthArticles.length === 0 ? (
+                  ) : healthArticles.length === 0 && olderArticles.length === 0 ? (
                     <div className="text-center py-10 bg-white rounded-2xl shadow-lg border border-slate-100">
                       <div className="text-5xl mb-3">📰</div>
                       <p className="font-bold text-slate-400">Chưa có bài báo nào</p>
                       <p className="text-xs text-slate-400 mt-1">Hệ thống sẽ tự động cập nhật sớm</p>
                     </div>
                   ) : (
-                    (showAllArticles ? healthArticles : healthArticles.slice(0, 3)).map((article: any, idx: number) => (
-                      <div
-                        key={article.id || idx}
-                        onClick={() => openArticleModal(article)}
-                        className={`pill-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col sm:flex-row transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${darkMode ? 'pill-card-dark' : ''}`}
-                        style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
-                      >
-                        {article.image_url && (
-                          <div className="w-full sm:w-40 h-40 sm:min-h-[100px] shrink-0 overflow-hidden bg-slate-100">
-                            <img
-                              src={article.image_url}
-                              alt={article.title}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                              onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
-                          {article.category && (
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full w-fit mb-1.5 ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-50 text-blue-600'}`}>
-                              🏫 {article.category}
-                            </span>
-                          )}
-                          <h3 className={`font-black group-hover:text-blue-500 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
-                            {article.title}
-                          </h3>
-                          {article.summary && (
-                            <p className={`text-xs mt-1 line-clamp-2 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{article.summary}</p>
-                          )}
-                          <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
-                            <div className="flex items-center gap-2">
-                              <span className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>📰 {article.source_name}</span>
-                              {article.read_time && (
-                                <span className="text-[10px] text-slate-400 flex items-center gap-0.5">⏱ {article.read_time} phút đọc</span>
-                              )}
-                            </div>
-                            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1 ${darkMode ? 'bg-emerald-900/40 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>
-                              Xem chi tiết <ChevronRight size={8} />
-                            </span>
-                          </div>
-                          {article.tags && article.tags.length > 0 && (
-                            <div className="flex gap-1 mt-2 flex-wrap">
-                              {article.tags.slice(0, 3).map((tag: string) => (
-                                <span key={tag} className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${darkMode ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>#{tag}</span>
-                              ))}
+                    <>
+                      {/* Newest articles (scroll-to-load-more) */}
+                      {healthArticles.slice(0, visibleCount).map((article: any, idx: number) => (
+                        <div
+                          key={article.id || idx}
+                          onClick={() => openArticleModal(article)}
+                          className={`pill-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col sm:flex-row transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${darkMode ? 'pill-card-dark' : ''}`}
+                          style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
+                        >
+                          {article.image_url && (
+                            <div className="w-full sm:w-40 h-40 sm:min-h-[100px] shrink-0 overflow-hidden bg-slate-100">
+                              <img
+                                src={article.image_url}
+                                alt={article.title}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
+                              />
                             </div>
                           )}
+                          <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
+                            {article.category && (
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full w-fit mb-1.5 ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-50 text-blue-600'}`}>
+                                🏫 {article.category}
+                              </span>
+                            )}
+                            <h3 className={`font-black group-hover:text-blue-500 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
+                              {article.title}
+                            </h3>
+                            {article.summary && (
+                              <p className={`text-xs mt-1 line-clamp-2 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{article.summary}</p>
+                            )}
+                            <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
+                              <div className="flex items-center gap-2">
+                                <span className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>📰 {article.source_name}</span>
+                                {article.read_time && (
+                                  <span className="text-[10px] text-slate-400 flex items-center gap-0.5">⏱ {article.read_time} phút đọc</span>
+                                )}
+                              </div>
+                              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1 ${darkMode ? 'bg-emerald-900/40 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>
+                                Xem chi tiết <ChevronRight size={8} />
+                              </span>
+                            </div>
+                            {article.tags && article.tags.length > 0 && (
+                              <div className="flex gap-1 mt-2 flex-wrap">
+                                {article.tags.slice(0, 3).map((tag: string) => (
+                                  <span key={tag} className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${darkMode ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>#{tag}</span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))
-                  )}
-                  {healthArticles.length > 3 && (
-                    <button
-                      onClick={() => setShowAllArticles(!showAllArticles)}
-                      className={`pill-card rounded-2xl w-full py-3 text-sm font-bold text-blue-500 hover:text-blue-600 transition-all flex items-center justify-center gap-2 hover:shadow-xl border ${darkMode ? 'border-slate-700' : 'border-blue-100'} active:scale-95`}
-                    >
-                      {showAllArticles ? (
-                        <><ChevronDown size={16} />Thu gọn</>
-                      ) : (
-                        <><ChevronRight size={16} />Xem thêm {healthArticles.length - 3} bài báo</>
+                      ))}
+
+                      {/* Load more button (newer articles beyond first 3) */}
+                      {healthArticles.length > visibleCount && (
+                        <button
+                          onClick={() => setVisibleCount(prev => Math.min(prev + 3, healthArticles.length))}
+                          className={`pill-card rounded-2xl w-full py-3 text-sm font-bold text-blue-500 hover:text-blue-600 transition-all flex items-center justify-center gap-2 hover:shadow-xl border ${darkMode ? 'border-slate-700' : 'border-blue-100'} active:scale-95`}
+                        >
+                          <ChevronDown size={16} />
+                          Xem thêm {Math.min(3, healthArticles.length - visibleCount)} bài báo mới
+                          <span className="text-slate-400 font-normal text-xs">({visibleCount}/{healthArticles.length})</span>
+                        </button>
                       )}
-                    </button>
+
+                      {/* Scroll hint */}
+                      {healthArticles.length > 0 && (
+                        <div className="flex items-center justify-center gap-2 py-1">
+                          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+                          <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                            <ChevronDown size={10} /> Lướt xuống để xem bài cũ hơn
+                          </span>
+                          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+                        </div>
+                      )}
+
+                      {/* Older articles dropdown */}
+                      {olderArticles.length > 0 && (
+                        <details className={`pill-card rounded-2xl overflow-hidden group ${darkMode ? 'pill-card-dark' : ''}`}>
+                          <summary className="flex items-center justify-between p-4 cursor-pointer list-none hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs font-bold px-2 py-1 rounded-full ${darkMode ? 'bg-slate-600 text-slate-300' : 'bg-slate-100 text-slate-500'}`}>
+                                📚 Bài báo trước đó
+                              </span>
+                              <span className={`text-[10px] ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+                                {olderArticles.length} bài
+                              </span>
+                            </div>
+                            <ChevronDown size={16} className="text-slate-400 group-open:rotate-180 transition-transform" />
+                          </summary>
+                          <div className="border-t border-slate-100 dark:border-slate-700 divide-y divide-slate-50 dark:divide-slate-700">
+                            {olderArticles.map((article: any, idx: number) => (
+                              <div
+                                key={article.id || idx}
+                                onClick={() => openArticleModal(article)}
+                                className="p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
+                              >
+                                <div className="flex items-start gap-3">
+                                  {article.image_url && (
+                                    <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                                      <img src={article.image_url} alt="" className="w-full h-full object-cover" onError={(e: any) => e.target.style.display = 'none'} />
+                                    </div>
+                                  )}
+                                  <div className="flex-1 min-w-0">
+                                    <p className={`text-xs font-bold line-clamp-2 leading-snug ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{article.title}</p>
+                                    <p className={`text-[10px] mt-1 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>📰 {article.source_name} · {article.published_date}</p>
+                                  </div>
+                                  <ChevronRight size={12} className="text-slate-300 shrink-0 mt-1" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      )}
+
+                      {/* Loading older indicator */}
+                      {loadingOlder && (
+                        <div className="flex items-center justify-center gap-2 py-2 text-xs text-slate-400">
+                          <RefreshCw size={12} className="animate-spin" />
+                          Đang tải thêm...
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               )}
