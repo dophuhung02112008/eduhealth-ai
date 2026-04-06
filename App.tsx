@@ -2044,7 +2044,7 @@ const App: React.FC = () => {
   };
 
   // Countdown: simulate 1 new article per day on homepage
-  const [countdown, setCountdown] = useState(24 * 60 * 60); // seconds until next refresh
+  const [countdown, setCountdown] = useState(0); // seconds until next Vietnam midnight
   // Article detail modal
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [aiSummary, setAiSummary] = useState<string | null>(null);
@@ -2110,13 +2110,31 @@ const App: React.FC = () => {
   const getVietnamMidnightMS = () => {
     const now = new Date();
     // Vietnam is GMT+7
-    const vnOffset = 7 * 60 * 60 * 1000;
-    const vnNow = new Date(now.getTime() + vnOffset);
-    const vnMidnight = new Date(vnOffset + (vnNow.getFullYear(), vnNow.getMonth(), vnNow.getDate(), 0, 0, 0));
-    // Set to next midnight Vietnam time
-    vnMidnight.setHours(0, 0, 0, 0);
-    if (vnMidnight.getTime() <= now.getTime()) vnMidnight.setDate(vnMidnight.getDate() + 1);
-    return vnMidnight.getTime() - now.getTime(); // ms until next midnight
+    const vnNow = new Date(now.getTime() + 7 * 60 * 60 * 1000);
+    vnNow.setHours(0, 0, 0, 0); // Reset to midnight Vietnam today
+    vnNow.setDate(vnNow.getDate() + 1); // Next midnight Vietnam
+    return vnNow.getTime() - now.getTime(); // ms until next midnight Vietnam
+  };
+
+  // Format countdown HH:MM:SS
+  const formatCountdown = (seconds: number) => {
+    if (seconds <= 0) return '00:00:00';
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
+
+  // Get next article date formatted
+  const getNextArticleDate = () => {
+    const now = new Date();
+    const vnNow = new Date(now.getTime() + 7 * 60 * 60 * 1000);
+    vnNow.setHours(0, 0, 0, 0);
+    vnNow.setDate(vnNow.getDate() + 1);
+    const day = vnNow.getDate();
+    const month = vnNow.getMonth() + 1;
+    const year = vnNow.getFullYear();
+    return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
   };
 
   useEffect(() => {
@@ -2329,8 +2347,9 @@ const App: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-1.5 flex flex-col items-center">
-                      <span className="text-[10px] text-white/60 font-medium">Bài tiếp theo</span>
-                      <span className="font-black text-sm font-mono tracking-widest">{formatCountdown(countdown)}</span>
+                      <span className="text-[10px] text-white/60 font-medium">Ngày cập nhật</span>
+                      <span className="font-black text-xs font-mono">{getNextArticleDate()}</span>
+                      <span className="text-[10px] text-white/50 font-medium mt-0.5">⏰ {formatCountdown(countdown)}</span>
                     </div>
                     <div className={`w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-transform duration-300 ${articlesOpen ? 'rotate-180' : ''}`}>
                       <ChevronDown size={20} className="text-white" />
