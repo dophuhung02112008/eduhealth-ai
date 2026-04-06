@@ -2,6 +2,11 @@
    EDUHEALTH AI - Custom Animations & Styles
    ═══════════════════════════════════════════════════════════════ */
 
+/* Global polish */
+html { scroll-behavior: smooth; }
+::selection { background: rgba(244, 63, 94, 0.2); color: inherit; }
+:focus-visible { outline: 2px solid rgba(244, 63, 94, 0.5); outline-offset: 2px; border-radius: 4px; }
+
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 .line-clamp { -webkit-line-clamp: 3; line-clamp: 3; }
@@ -16,25 +21,26 @@
 
 /* ═══ KEYFRAME ANIMATIONS ═══ */
 
-/* Float - gentle drift */
+/* Float - smooth natural drift */
 @keyframes float {
   0% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(-18px) rotate(5deg); }
-  66% { transform: translateY(8px) rotate(-3deg); }
+  25% { transform: translateY(-14px) rotate(4deg); }
+  50% { transform: translateY(-6px) rotate(-2deg); }
+  75% { transform: translateY(-10px) rotate(2deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
 
-/* Pulse ring */
+/* Pulse ring - smooth breathe */
 @keyframes pulseRing {
   0% { transform: scale(1); opacity: 0.6; }
   50% { transform: scale(1.08); opacity: 0.3; }
   100% { transform: scale(1); opacity: 0.6; }
 }
 
-/* Shimmer */
+/* Shimmer - smooth glass reflection */
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(250%) skewX(-15deg); }
 }
 
 /* Glow pulse */
@@ -70,13 +76,13 @@
 /* Spin */
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Heartbeat */
+/* Heartbeat - organic thump feel */
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.2); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.15); }
-  70% { transform: scale(1); }
+  10% { transform: scale(1.15); }
+  20% { transform: scale(1); }
+  35% { transform: scale(1.12); }
+  55% { transform: scale(1); }
 }
 
 /* Ripple */
@@ -92,11 +98,13 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Wave float */
+/* Wave float - smooth organic motion */
 @keyframes waveFloat {
-  0%, 100% { transform: translateY(0px) translateX(0px); }
-  25% { transform: translateY(-12px) translateX(6px); }
-  75% { transform: translateY(6px) translateX(-4px); }
+  0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+  20% { transform: translateY(-10px) translateX(5px) rotate(2deg); }
+  40% { transform: translateY(-6px) translateX(-3px) rotate(-1deg); }
+  60% { transform: translateY(-12px) translateX(4px) rotate(1.5deg); }
+  80% { transform: translateY(-4px) translateX(-2px) rotate(-0.5deg); }
 }
 
 /* Blink */
@@ -133,7 +141,10 @@
 
 /* ═══ UTILITY ANIMATION CLASSES ═══ */
 
-.animate-float { animation: float linear infinite; }
+.animate-float {
+  animation: float 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
 .animate-pulse-ring { animation: pulseRing 2s ease-in-out infinite; }
 .animate-shimmer {
   position: relative;
@@ -143,14 +154,16 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: shimmer 2.5s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: shimmer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
 }
-.animate-glow { animation: glowPulse 2.5s ease-in-out infinite; }
+.animate-glow { animation: glowPulse 2.5s ease-in-out infinite; will-change: box-shadow; }
 .animate-heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
 .animate-spin { animation: spin 0.8s linear infinite; }
 .animate-blink { animation: blink 2s ease-in-out infinite; }
-.animate-wave { animation: waveFloat 4s ease-in-out infinite; }
+.animate-wave { animation: waveFloat 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; will-change: transform; }
 .animate-gradient { background-size: 200% 200%; animation: gradientShift 3s ease infinite; }
 .animate-progress { animation: progressFill 1.5s ease-out forwards; }
 .animate-bounce-in { animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
@@ -185,13 +198,14 @@
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  cursor: pointer;
 }
 .pill-card:hover {
   background: rgba(255, 255, 255, 0.98);
   border-color: rgba(244, 63, 94, 0.3);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(244, 63, 94, 0.12), 0 0 0 1px rgba(244, 63, 94, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(244, 63, 94, 0.12), 0 0 0 1px rgba(244, 63, 94, 0.1);
 }
 .pill-card:active { transform: translateY(-2px) scale(0.99); }
 
@@ -200,13 +214,13 @@
   background: #0f172a;
   backdrop-filter: blur(12px);
   border: 1px solid #1e3a5f;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 .pill-card-dark:hover {
   background: #1e293b;
-  border-color: rgba(244, 63, 94, 0.5);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(244, 63, 94, 0.2);
+  border-color: rgba(244, 63, 94, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(244, 63, 94, 0.15);
 }
 .pill-card-dark:active { transform: translateY(-2px) scale(0.99); }
 

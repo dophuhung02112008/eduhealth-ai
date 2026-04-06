@@ -2211,13 +2211,22 @@ const App: React.FC = () => {
   };
 
   const getCategoryIconBg = (cat: any) => {
-    const bgs: Record<string, string> = {
+    if (darkMode) {
+      const darkBgs: Record<string, string> = {
+        'MỤN & DA LIỄU': 'bg-rose-500/20 text-rose-400',
+        'BỆNH LÂY NHIỄM': 'bg-orange-500/20 text-orange-400',
+        'SỨC KHỎE TÂM LÝ': 'bg-purple-500/20 text-purple-400',
+        'VỆ SINH': 'bg-teal-500/20 text-teal-400',
+      };
+      return darkBgs[cat.category] || 'bg-blue-500/20 text-blue-400';
+    }
+    const lightBgs: Record<string, string> = {
       'MỤN & DA LIỄU': 'bg-rose-100 text-rose-600',
       'BỆNH LÂY NHIỄM': 'bg-orange-100 text-orange-600',
       'SỨC KHỎE TÂM LÝ': 'bg-purple-100 text-purple-600',
       'VỆ SINH': 'bg-teal-100 text-teal-600',
     };
-    return bgs[cat.category] || 'bg-blue-100 text-blue-600';
+    return lightBgs[cat.category] || 'bg-blue-100 text-blue-600';
   };
 
   return (
@@ -2651,12 +2660,12 @@ const App: React.FC = () => {
                   <button
                     key={cat.category}
                     onClick={() => { setSelectedCat(cat.category); setSelectedDisease(null); }}
-                    className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-1 text-left group animate-in slide-in-from-bottom flex flex-col h-full animate-in slide-in-from-bottom`}
+                    className={`rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border text-left group animate-in slide-in-from-bottom flex flex-col h-full animate-in slide-in-from-bottom ${darkMode ? 'bg-slate-800 border-slate-700 hover:border-slate-600' : 'bg-white border-slate-100 hover:-translate-y-1'}`}
                     style={{ animationDelay: `${idx * 100}ms`, animationFillMode: 'both' }}
                   >
                     {/* Color bar */}
-                    <div className={`h-1.5 bg-gradient-to-r ${getCategoryGradient(cat)} relative overflow-hidden shrink-0`}>
-                      <div className="absolute inset-0 bg-white/20 animate-shimmer" />
+                    <div className={`h-1.5 bg-gradient-to-r ${getCategoryGradient(cat)} relative overflow-hidden shrink-0 ${darkMode ? 'opacity-80' : ''}`}>
+                      {!darkMode && <div className="absolute inset-0 bg-white/20 animate-shimmer" />}
                     </div>
 
                     {/* Header */}
@@ -2666,7 +2675,7 @@ const App: React.FC = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className={`font-black text-sm leading-tight truncate group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
-                        <p className={`text-xs mt-0.5 ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
+                        <p className={`text-xs mt-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
                       </div>
                     </div>
 
@@ -2674,7 +2683,7 @@ const App: React.FC = () => {
                     <div className="px-5 pb-1 flex-1">
                       <div className="space-y-1.5">
                         {cat.diseases.slice(0, 5).map((d: any) => (
-                          <p key={d.id} className={`text-xs leading-relaxed truncate flex items-start gap-1.5 ${darkMode ? 'text-slate-200' : 'text-slate-500'}`}>
+                          <p key={d.id} className={`text-xs leading-relaxed truncate flex items-start gap-1.5 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
                             <span className={`shrink-0 mt-0.5 ${darkMode ? 'text-rose-400' : 'text-rose-300'}`}>•</span>
                             <span className="truncate">{d.name}</span>
                           </p>
@@ -2687,7 +2696,7 @@ const App: React.FC = () => {
 
                     {/* Footer */}
                     <div className="px-5 pb-4 pt-2 mt-auto shrink-0">
-                      <div className="flex items-center gap-1 text-rose-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className={`flex items-center gap-1 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity ${darkMode ? 'text-rose-400' : 'text-rose-500'}`}>
                         Xem tất cả <ChevronRight size={12} />
                       </div>
                     </div>
