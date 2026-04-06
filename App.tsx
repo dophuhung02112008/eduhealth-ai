@@ -17,7 +17,7 @@ import {
 import { ActivityPost, PostType, AuthorRole } from './types';
 
 // API Base URL
-const API_BASE = 'https://eduhealth-proxy-production.up.railway.app';
+const API_BASE = 'https://eduhealth-ai-backend-production.up.railway.app';
 
 // ═══════════════════════════════════════════════════════════════
 // DỮ LIỆU CẨM NANG THƯ VIỆN SỨC KHỎE HỌC ĐƯỜNG
