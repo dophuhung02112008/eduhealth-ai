@@ -2107,20 +2107,18 @@ const App: React.FC = () => {
   }, [tab]);
 
   // ── Countdown timer: countdown to next Vietnam midnight (GMT+7) ──
+  // Vietnam = UTC+7, so midnight VN = 17:00 UTC the previous day
   const getVietnamMidnightMs = (): number => {
     const now = new Date();
-    const UTC_HOUR = 7; // Vietnam is GMT+7
-    // Convert to Vietnam time
-    const vnNow = new Date(now.getTime() + UTC_HOUR * 3600000);
-    const vnYear = vnNow.getFullYear();
-    const vnMonth = vnNow.getMonth();
-    const vnDate = vnNow.getDate();
-    // Midnight Vietnam today in UTC timestamp
-    const vnTodayMidnight = Date.UTC(vnYear, vnMonth, vnDate, 0, 0, 0, 0);
-    // Next midnight = today midnight + 24h
-    const vnNextMidnight = vnTodayMidnight + 24 * 3600000;
-    // Return ms from now to next Vietnam midnight
-    return vnNextMidnight - now.getTime();
+    const nowTs = now.getTime(); // ms since epoch (local/browser TZ)
+    const vnTs = nowTs + 7 * 3600000; // shift to Vietnam time
+    const vn = new Date(vnTs);
+    const vnDay = vn.getUTCDate();
+    const vnMon = vn.getUTCMonth();
+    const vnYr = vn.getUTCFullYear();
+    const vnMidnightTs = Date.UTC(vnYr, vnMon, vnDay, 0, 0, 0, 0); // today's midnight VN
+    const nextVnMidnight = vnMidnightTs + 24 * 3600000; // tomorrow midnight VN
+    return nextVnMidnight - nowTs;
   };
 
   // Format countdown HH:MM:SS
@@ -2132,19 +2130,19 @@ const App: React.FC = () => {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   };
 
-  // Get next article date formatted in Vietnam time (GMT+7)
+  // Get next article date formatted (DD/MM/YYYY Vietnam time)
   const getNextArticleDate = (): string => {
     const now = new Date();
-    const UTC_HOUR = 7;
-    const vnNow = new Date(now.getTime() + UTC_HOUR * 3600000);
-    const vnYear = vnNow.getFullYear();
-    const vnMonth = vnNow.getMonth();
-    const vnDate = vnNow.getDate();
-    const vnTodayMidnight = Date.UTC(vnYear, vnMonth, vnDate, 0, 0, 0, 0);
-    const vnNextMidnight = new Date(vnTodayMidnight + 24 * 3600000);
-    const day = vnNextMidnight.getUTCDate();
-    const month = vnNextMidnight.getUTCMonth() + 1;
-    const year = vnNextMidnight.getUTCFullYear();
+    const vnTs = now.getTime() + 7 * 3600000;
+    const vn = new Date(vnTs);
+    const vnDay = vn.getUTCDate();
+    const vnMon = vn.getUTCMonth();
+    const vnYr = vn.getUTCFullYear();
+    const vnMidnightTs = Date.UTC(vnYr, vnMon, vnDay, 0, 0, 0, 0);
+    const nextVn = new Date(vnMidnightTs + 24 * 3600000);
+    const day = nextVn.getUTCDate();
+    const month = nextVn.getUTCMonth() + 1;
+    const year = nextVn.getUTCFullYear();
     return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
   };
 
