@@ -7,6 +7,24 @@ html { scroll-behavior: smooth; }
 ::selection { background: rgba(244, 63, 94, 0.2); color: inherit; }
 :focus-visible { outline: 2px solid rgba(244, 63, 94, 0.5); outline-offset: 2px; border-radius: 4px; }
 
+/* Override Tailwind's default jerky animations with smooth versions */
+@keyframes tailwindPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes tailwindBounce {
+  0%, 100% { transform: translateY(0); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+  50% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+}
+@keyframes tailwindPing {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+/* Apply smooth overrides to Tailwind animation utilities */
+.animate-pulse { animation: tailwindPulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-bounce { animation: tailwindBounce 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-ping { animation: tailwindPing 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.animate-spin { animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 .line-clamp { -webkit-line-clamp: 3; line-clamp: 3; }
@@ -35,6 +53,13 @@ html { scroll-behavior: smooth; }
   0% { transform: scale(1); opacity: 0.6; }
   50% { transform: scale(1.08); opacity: 0.3; }
   100% { transform: scale(1); opacity: 0.6; }
+}
+
+/* Slow orb pulse - ambient background breathing */
+@keyframes slowOrbPulse {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+  33% { transform: scale(1.08) translate(8px, -12px); opacity: 1; }
+  66% { transform: scale(0.96) translate(-6px, 8px); opacity: 0.75; }
 }
 
 /* Shimmer - smooth glass reflection */
@@ -73,8 +98,11 @@ html { scroll-behavior: smooth; }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Spin */
-@keyframes spin { to { transform: rotate(360deg); } }
+/* Smooth spin - no more jerky rotation */
+@keyframes spin { to { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 /* Heartbeat - organic thump feel */
 @keyframes heartbeat {
@@ -146,6 +174,20 @@ html { scroll-behavior: smooth; }
   will-change: transform;
 }
 .animate-pulse-ring { animation: pulseRing 2s ease-in-out infinite; }
+.animate-slow-pulse {
+  animation: slowOrbPulse 10s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform, opacity;
+}
+
+/* Logo gentle glow pulse - subtle heartbeat feel */
+@keyframes logoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4), 0 4px 16px rgba(244, 63, 94, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(244, 63, 94, 0), 0 4px 24px rgba(244, 63, 94, 0.5); }
+}
+.animate-logo-pulse {
+  animation: logoPulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: box-shadow;
+}
 .animate-shimmer {
   position: relative;
   overflow: hidden;
