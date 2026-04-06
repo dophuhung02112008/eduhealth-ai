@@ -2107,13 +2107,20 @@ const App: React.FC = () => {
   }, [tab]);
 
   // ── Countdown timer: countdown to next Vietnam midnight (GMT+7) ──
-  const getVietnamMidnightMS = () => {
+  const getVietnamMidnightMs = (): number => {
     const now = new Date();
-    // Vietnam is GMT+7
-    const vnNow = new Date(now.getTime() + 7 * 60 * 60 * 1000);
-    vnNow.setHours(0, 0, 0, 0); // Reset to midnight Vietnam today
-    vnNow.setDate(vnNow.getDate() + 1); // Next midnight Vietnam
-    return vnNow.getTime() - now.getTime(); // ms until next midnight Vietnam
+    const UTC_HOUR = 7; // Vietnam is GMT+7
+    // Convert to Vietnam time
+    const vnNow = new Date(now.getTime() + UTC_HOUR * 3600000);
+    const vnYear = vnNow.getFullYear();
+    const vnMonth = vnNow.getMonth();
+    const vnDate = vnNow.getDate();
+    // Midnight Vietnam today in UTC timestamp
+    const vnTodayMidnight = Date.UTC(vnYear, vnMonth, vnDate, 0, 0, 0, 0);
+    // Next midnight = today midnight + 24h
+    const vnNextMidnight = vnTodayMidnight + 24 * 3600000;
+    // Return ms from now to next Vietnam midnight
+    return vnNextMidnight - now.getTime();
   };
 
   // Format countdown HH:MM:SS
@@ -2125,15 +2132,19 @@ const App: React.FC = () => {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   };
 
-  // Get next article date formatted
-  const getNextArticleDate = () => {
+  // Get next article date formatted in Vietnam time (GMT+7)
+  const getNextArticleDate = (): string => {
     const now = new Date();
-    const vnNow = new Date(now.getTime() + 7 * 60 * 60 * 1000);
-    vnNow.setHours(0, 0, 0, 0);
-    vnNow.setDate(vnNow.getDate() + 1);
-    const day = vnNow.getDate();
-    const month = vnNow.getMonth() + 1;
-    const year = vnNow.getFullYear();
+    const UTC_HOUR = 7;
+    const vnNow = new Date(now.getTime() + UTC_HOUR * 3600000);
+    const vnYear = vnNow.getFullYear();
+    const vnMonth = vnNow.getMonth();
+    const vnDate = vnNow.getDate();
+    const vnTodayMidnight = Date.UTC(vnYear, vnMonth, vnDate, 0, 0, 0, 0);
+    const vnNextMidnight = new Date(vnTodayMidnight + 24 * 3600000);
+    const day = vnNextMidnight.getUTCDate();
+    const month = vnNextMidnight.getUTCMonth() + 1;
+    const year = vnNextMidnight.getUTCFullYear();
     return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
   };
 
@@ -2149,7 +2160,7 @@ const App: React.FC = () => {
             if (Array.isArray(a.articles)) setHealthArticles(a.articles);
             if (Array.isArray(b.articles)) setOlderArticles(b.articles);
           });
-          return Math.floor(getVietnamMidnightMS() / 1000);
+          return Math.floor(getVietnamMidnightMs() / 1000);
         }
         return prev - 1;
       });
@@ -2160,7 +2171,7 @@ const App: React.FC = () => {
 
   // Set initial countdown to Vietnam midnight
   useEffect(() => {
-    setCountdown(Math.floor(getVietnamMidnightMS() / 1000));
+    setCountdown(Math.floor(getVietnamMidnightMs() / 1000));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
