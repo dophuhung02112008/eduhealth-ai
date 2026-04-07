@@ -16,8 +16,8 @@ import {
 } from 'lucide-react';
 import { ActivityPost, PostType, AuthorRole } from './types';
 
-// API Base URL
-const API_BASE = 'https://eduhealth-ai-backend-production.up.railway.app';
+// API Base URL – dùng relative path để hoạt động trên cả dev & Vercel
+const API_BASE = '';
 
 // ═══════════════════════════════════════════════════════════════
 // DỮ LIỆU CẨM NANG THƯ VIỆN SỨC KHỎE HỌC ĐƯỜNG
