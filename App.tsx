@@ -977,18 +977,39 @@ const downloadResultImage = (imageSrc: string, annotations: ScanAnnotation[], re
   img.src = imageSrc;
 };
 
-// ── Checklist definitions ──────────────────────────────────────
+// ── Checklist definitions (25 questions, 6 groups) ───────────────
 const CHECKLIST_ITEMS = [
-  { key: 'stress_sleep', label: 'Căng thẳng / Thức khuya nhiều', icon: '😰' },
-  { key: 'dairy_sugar', label: 'Ăn nhiều đồ ngọt / sữa', icon: '🍦' },
-  { key: 'sweat_friction', label: 'Đổ mồ hôi nhiều / Ma sát (mũ, khẩu trang, cặp tóc)', icon: '💧' },
-  { key: 'mask_helmet', label: 'Đội mũ bảo hiểm / Đeo khẩu trang >4h/ngày', icon: '⏱️' },
-  { key: 'new_product', label: 'Dùng sản phẩm dưỡng da mới gần đây', icon: '🧴' },
-  { key: 'topical_steroid', label: 'Có bôi kem steroid (hydrocortisone,...)', icon: '💊' },
-  { key: 'touching_picking', label: 'Hay chạm tay / nặn mụn bằng tay', icon: '✋' },
-  { key: 'pet_contact', label: 'Tiếp xúc với thú cưng (chó, mèo)', icon: '🐾' },
-  { key: 'hair_products', label: 'Dùng gel / wax / serum tóc gần đây', icon: '💈' },
-  { key: 'shared_items', label: 'Dùng chung khăn, gối, mũ với người khác', icon: '🤝' },
+  // Nhóm 1: Ăn uống
+  { key: 'q1_sugar_drinks', label: '🍦 Uống trà sữa, nước ngọt gần như mỗi ngày', group: 'food' },
+  { key: 'q2_junk_food', label: '🍔 Fast food / mì tôm / snack ≥3 lần/tuần', group: 'food' },
+  { key: 'q3_dairy_intake', label: '🥛 Uống sữa bò / whey / đồ nền sữa nhiều tuần này', group: 'food' },
+  { key: 'q4_spicy_oily', label: '🌶️ Ăn đồ cay/nóng xong thấy mặt đỏ hoặc nổi lấm tấm', group: 'food' },
+  // Nhóm 2: Giấc ngủ
+  { key: 'q5_late_sleep', label: '🌙 Ngủ sau 11h30 từ 3 ngày trở lên/tuần', group: 'sleep' },
+  { key: 'q6_short_sleep', label: '😴 Ngủ dưới 6-7 tiếng mỗi ngày trong tuần', group: 'sleep' },
+  { key: 'q7_phone_before_sleep', label: '📱 Nằm lướt điện thoại tới lúc ngủ quên', group: 'sleep' },
+  // Nhóm 3: Căng thẳng
+  { key: 'q8_academic_stress', label: '😰 Căng não vì thi cử / deadline / chuyện cá nhân ≥2 tuần', group: 'stress' },
+  { key: 'q9_stress_acne_link', label: '📈 Mỗi lần stress mạnh thấy mụn lên rõ hơn sau vài ngày', group: 'stress' },
+  { key: 'q10_sleep_disturbed', label: '😟 Ngủ không sâu, tỉnh giấc hoặc mơ nhiều vì căng thẳng', group: 'stress' },
+  // Nhóm 4: Skincare & làm sạch
+  { key: 'q11_over_wash', label: '🧼 Rửa mặt >2 lần/ngày hoặc chà kỳ mạnh để "sạch mụn"', group: 'routine' },
+  { key: 'q12_sleep_without_cleansing', label: '😴 Đi ngủ chưa tẩy trang hoặc rửa mặt kỹ', group: 'routine' },
+  { key: 'q13_new_skincare', label: '🧴 Đổi sữa rửa mặt / kem chống nắng / serum mới trong 2 tuần', group: 'routine' },
+  { key: 'q14_too_many_products', label: '💊 Bôi nhiều món trị mụn cùng lúc để "đánh nhanh"', group: 'routine' },
+  { key: 'q15_heavy_products', label: '💧 Dùng kem nền / kem chống nắng / kem dưỡng khá dày, không rõ có bí da không', group: 'routine' },
+  { key: 'q16_hair_fringe', label: '💇 Để tóc mái hoặc tóc bết chạm trán gần như cả ngày', group: 'routine' },
+  { key: 'q17_hair_products_skin', label: '💈 Dùng sáp / gel / dầu dưỡng tóc hay xịt tóc chạm trán hoặc gáy', group: 'routine' },
+  // Nhóm 5: Tay chạm mặt
+  { key: 'q18_resting_hand_face', label: '✋ Hay chống cằm, sờ mặt hoặc tì má vào tay khi học', group: 'touch' },
+  { key: 'q19_picking_acne', label: '🔴 Hay nặn mụn vì "nhìn ngứa mắt"', group: 'touch' },
+  { key: 'q20_picking_skin', label: '🩹 Hay bóc da, cạy mụn hoặc sờ nốt mụn liên tục', group: 'touch' },
+  // Nhóm 6: Mồ hôi & môi trường
+  { key: 'q21_sweat_not_rinse', label: '💧 Đổ mồ hôi sau thể thao / đi đường mà để khô luôn trên da', group: 'sweat' },
+  { key: 'q22_helmet_mask', label: '⏱️ Đội mũ bảo hiểm / khẩu trang / quai cặp cọ da ≥4h/ngày', group: 'sweat' },
+  { key: 'q23_dirty_gear', label: '🧼 Ít giặt nón / mũ bảo hiểm / headband hoặc thay gối khi tóc dầu', group: 'sweat' },
+  { key: 'q24_hot_humid_env', label: '🌡️ Chỗ học/ngủ nóng bí, ẩm hoặc bụi nhiều', group: 'sweat' },
+  { key: 'q25_ac_on_face', label: '❄️ Ngồi điều hòa thổi thẳng vào mặt lâu, da hay căng rít hoặc châm chích', group: 'sweat' },
 ];
 
 const SYMPTOM_ITEMS = [
@@ -1191,17 +1212,80 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
             )}
           </div>
 
-          {/* Checklist */}
+          {/* Checklist - 25 questions in 6 groups */}
           <div className={`${bgCard} rounded-2xl p-4 shadow-lg border`}>
             <h3 className={`font-black text-sm flex items-center gap-2 mb-3 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}><Layers size={16} />Yếu tố nguy cơ (Checklist)</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {CHECKLIST_ITEMS.map(item => (
-                <label key={item.key} className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all text-sm ${checklist[item.key] ? (darkMode ? 'bg-purple-900/40 border border-purple-500' : 'bg-purple-50 border border-purple-200') : (darkMode ? 'bg-slate-700 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
-                  <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-4 h-4 accent-purple-500 rounded" />
-                  <span>{item.icon}</span>
-                  <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
-                </label>
-              ))}
+            {/* Group 1: Ăn uống */}
+            <div className="mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-amber-500 mb-1.5">🍽️ Chuyện ăn uống</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {CHECKLIST_ITEMS.filter(i => i.group === 'food').map(item => (
+                  <label key={item.key} className={`flex items-center gap-2 p-2.5 rounded-lg cursor-pointer transition-all text-xs ${checklist[item.key] ? (darkMode ? 'bg-amber-900/30 border border-amber-500/60' : 'bg-amber-50 border border-amber-200') : (darkMode ? 'bg-slate-700/50 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                    <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-3.5 h-3.5 accent-amber-500 rounded" />
+                    <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {/* Group 2: Giấc ngủ */}
+            <div className="mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-blue-500 mb-1.5">😴 Chuyện ngủ nghỉ</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {CHECKLIST_ITEMS.filter(i => i.group === 'sleep').map(item => (
+                  <label key={item.key} className={`flex items-center gap-2 p-2.5 rounded-lg cursor-pointer transition-all text-xs ${checklist[item.key] ? (darkMode ? 'bg-blue-900/30 border border-blue-500/60' : 'bg-blue-50 border border-blue-200') : (darkMode ? 'bg-slate-700/50 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                    <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-3.5 h-3.5 accent-blue-500 rounded" />
+                    <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {/* Group 3: Căng thẳng */}
+            <div className="mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-rose-500 mb-1.5">😰 Chuyện căng não</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {CHECKLIST_ITEMS.filter(i => i.group === 'stress').map(item => (
+                  <label key={item.key} className={`flex items-center gap-2 p-2.5 rounded-lg cursor-pointer transition-all text-xs ${checklist[item.key] ? (darkMode ? 'bg-rose-900/30 border border-rose-500/60' : 'bg-rose-50 border border-rose-200') : (darkMode ? 'bg-slate-700/50 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                    <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-3.5 h-3.5 accent-rose-500 rounded" />
+                    <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {/* Group 4: Skincare & làm sạch */}
+            <div className="mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-teal-500 mb-1.5">🧴 Skincare & làm sạch</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {CHECKLIST_ITEMS.filter(i => i.group === 'routine').map(item => (
+                  <label key={item.key} className={`flex items-center gap-2 p-2.5 rounded-lg cursor-pointer transition-all text-xs ${checklist[item.key] ? (darkMode ? 'bg-teal-900/30 border border-teal-500/60' : 'bg-teal-50 border border-teal-200') : (darkMode ? 'bg-slate-700/50 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                    <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-3.5 h-3.5 accent-teal-500 rounded" />
+                    <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {/* Group 5: Tay chạm mặt */}
+            <div className="mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-orange-500 mb-1.5">✋ Chuyện tay chân với mặt</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {CHECKLIST_ITEMS.filter(i => i.group === 'touch').map(item => (
+                  <label key={item.key} className={`flex items-center gap-2 p-2.5 rounded-lg cursor-pointer transition-all text-xs ${checklist[item.key] ? (darkMode ? 'bg-orange-900/30 border border-orange-500/60' : 'bg-orange-50 border border-orange-200') : (darkMode ? 'bg-slate-700/50 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                    <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-3.5 h-3.5 accent-orange-500 rounded" />
+                    <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {/* Group 6: Mồ hôi & môi trường */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-cyan-500 mb-1.5">💧 Mồ hôi & môi trường</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {CHECKLIST_ITEMS.filter(i => i.group === 'sweat').map(item => (
+                  <label key={item.key} className={`flex items-center gap-2 p-2.5 rounded-lg cursor-pointer transition-all text-xs ${checklist[item.key] ? (darkMode ? 'bg-cyan-900/30 border border-cyan-500/60' : 'bg-cyan-50 border border-cyan-200') : (darkMode ? 'bg-slate-700/50 border border-transparent hover:border-slate-600' : 'bg-slate-50 border border-transparent hover:border-slate-200')}`}>
+                    <input type="checkbox" checked={!!checklist[item.key]} onChange={e => setChecklist(p => ({ ...p, [item.key]: e.target.checked }))} className="w-3.5 h-3.5 accent-cyan-500 rounded" />
+                    <span className={darkMode ? 'text-slate-200' : 'text-slate-700'}>{item.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
 
