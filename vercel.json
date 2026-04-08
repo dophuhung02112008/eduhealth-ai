@@ -12,8 +12,8 @@
     { "src": "/api/scan", "dest": "/api/scan.js" },
     { "src": "/api/chat", "dest": "/api/chat.js" },
     { "src": "/api/articles", "dest": "/api/articles.js" },
-    { "src": "/api/articles/(.*)", "dest": "/api/articles.js" },
-    { "src": "/api/activity/(.*)", "dest": "/api/activity.js" },
+    { "src": "/api/articles/(?<path>.*)", "dest": "/api/articles.js" },
+    { "src": "/api/activity/(?<path>.*)", "dest": "/api/activity.js" },
     { "src": "/health", "dest": "/api/health.js" },
     { "handle": "filesystem" },
     {
