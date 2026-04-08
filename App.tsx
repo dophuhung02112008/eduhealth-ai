@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { ActivityPost, PostType, AuthorRole } from './types';
 
-// API Base URL – dùng relative path để hoạt động trên cả dev & Vercel
+// API Base URL – proxy qua Vercel API routes (dùng relative URL tránh CORS)
 const API_BASE = '';
 
 // ═══════════════════════════════════════════════════════════════
@@ -74,11 +74,10 @@ const HEALTH_LIBRARY = [
         schoolContext: 'Stress thi cử, thiếu ngủ, da bí do khẩu trang, mũ bảo hiểm bẩn hoặc dùng nhiều sản phẩm trị mụn quá mạnh cùng lúc.',
         treatment: ['NGỪNG: Ngừng nặn bằng móng tay, bôi kem đánh răng hoặc mẹo mạng chưa kiểm chứng.', 'RỬA: Giữ da sạch, rửa mặt dịu nhẹ sau khi đổ mồ hôi.', 'DỊU: Chườm mát nhẹ nếu đau và giữ routine tối giản.', 'KHÁM: Đi khám nếu mụn bọc sâu, đau nhiều, dày đặc hoặc có nguy cơ sẹo.'],
         dangerSigns: ['Mụn sưng to, đau dữ, nghi có ổ mủ', 'Mụn dày đặc ở mặt, ngực hoặc lưng', 'Đã bắt đầu có sẹo hoặc ảnh hưởng mạnh đến giao tiếp, tâm trạng'],
-        images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084300.png', caption: 'Mụn viêm đỏ sưng to trên da – dạng papule có đầu mủ', source: 'Hình ảnh minh họa mụn viêm bọc trên da mặt' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20153833.png', caption: 'Mụn mủ nhiều điểm trên da mặt – cần được khám da liễu', source: 'Hình ảnh minh họa mụn mủ lan rộng' }
-        ],
-        sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
+                images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20153833.png', caption: 'Mụn viêm bọc trên da mặt – nốt đỏ sưng to có đầu mủ trắng', source: 'Hình ảnh minh họa mụn viêm bọc' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084300.png', caption: 'Mụn viêm đỏ sưng nhiều điểm trên da – cần khám da liễu sớm', source: 'Hình ảnh minh họa mụn viêm trên da' }
+        ],sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       },
       {
         id: 'dal-3',
@@ -120,11 +119,10 @@ const HEALTH_LIBRARY = [
         schoolContext: 'Dùng chung khăn, quần áo, lược, mũ; mặc đồ thể dục ẩm; phòng ở bí hoặc có tiếp xúc thú cưng bị nấm.',
         treatment: ['NGỪNG: Ngừng dùng chung đồ cá nhân và đừng bôi kem trộn, thuốc lạ.', 'RỬA: Giữ vùng da sạch, khô; thay đồ sau khi đổ mồ hôi.', 'DỊU: Giặt sạch đồ tiếp xúc trực tiếp với vùng da bệnh.', 'KHÁM: Đi khám nếu tổn thương ở da đầu, móng, lan rộng hoặc tái phát.'],
         dangerSigns: ['Nấm lan nhanh hoặc có nhiều vị trí cùng lúc', 'Da đầu rụng tóc thành mảng', 'Có mủ, đau, sưng nóng hoặc đã bôi thuốc mà lan rộng hơn'],
-        images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/hinh-anh-benh-nam-aspergillus.jpg', caption: 'Nấm da hình tròn với vòng đồng tâm đặc trưng', source: 'Hình ảnh minh họa nấm da Dermatophytosis' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084536.png', caption: 'Nấm da ở vùng cổ với tổn thương đỏ ngứa, có vảy', source: 'Hình ảnh minh họa nấm da ở cổ' }
-        ],
-        sources: [{ title: 'CDC', url: 'https://cdc.gov/fungal/diseases/ringworm.html' }]
+                images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/hinh-anh-benh-nam-da-o-nguoi-do-nam-candida.jpg', caption: 'Nấm da hình tròn với vòng đồng tâm đặc trưng – nhiễm nấm Dermatophytes', source: 'Hình ảnh minh họa nấm da Ringworm' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084536.png', caption: 'Nấm da ở vùng cổ với tổn thương đỏ ngứa, có vảy tròn lan rộng', source: 'Hình ảnh minh họa nấm da ở cổ' }
+        ],sources: [{ title: 'CDC', url: 'https://cdc.gov/fungal/diseases/ringworm.html' }]
       },
       {
         id: 'dal-6',
@@ -136,12 +134,11 @@ const HEALTH_LIBRARY = [
         schoolContext: 'Ngủ chung chăn chiếu, ở phòng đông người, dùng chung áo khoác hoặc tiếp xúc da kề da kéo dài.',
         treatment: ['NGỪNG: Ngừng dùng chung chăn gối, đồ mặc sát người và hạn chế tiếp xúc gần kéo dài.', 'RỬA: Giặt ga giường, khăn, quần áo và xử lý đồ dùng cá nhân sạch sẽ.', 'DỊU: Cắt móng tay ngắn, tránh gãi và giữ da sạch.', 'KHÁM: Ghẻ thường cần thuốc đặc trị, nên đi khám thay vì tự bôi linh tinh.'],
         dangerSigns: ['Ngứa dữ dội đến mất ngủ', 'Da có mủ, lở loét, nghi bội nhiễm', 'Nhiều người trong phòng cùng ngứa'],
-        images: [
+                images: [
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-boc-la-gi.png', caption: 'Ký sinh trùng ghẻ Sarcoptes scabiei dưới kính hiển vi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20175223.png', caption: 'Tổn thương ghẻ trên da với đường hang đặc trưng', source: 'Hình ảnh minh họa ghẻ trên da' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/benh-ghe-la-gi.jpg', caption: 'Tổn thương ghẻ trên da – nốt đỏ và sẩn ngứa đặc trưng', source: 'Hình ảnh minh họa bệnh ghẻ ở người' },
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20183232.png', caption: 'Đường hang ghẻ dưới da tại vị trí kẽ ngón tay', source: 'Hình ảnh minh họa đường hang ghẻ' }
-        ],
-        sources: [{ title: 'CDC', url: 'https://cdc.gov/parasites/scabies' }]
+        ],sources: [{ title: 'CDC', url: 'https://cdc.gov/parasites/scabies' }]
       },
       {
         id: 'dal-7',
@@ -153,11 +150,11 @@ const HEALTH_LIBRARY = [
         schoolContext: 'Cạo lông sai cách, mặc đồ chật khi tập, dùng khăn bẩn, da ẩm mồ hôi lâu hoặc ma sát liên tục.',
         treatment: ['NGỪNG: Ngừng cạo nhổ lông liên tục và đừng nặn mụn mủ.', 'RỬA: Giữ vùng da sạch và khô, thay đồ sau khi đổ mồ hôi.', 'DỊU: Mặc đồ thoáng hơn và giảm ma sát vùng tổn thương.', 'KHÁM: Đi khám nếu nốt lan rộng, đau hơn, tái phát hoặc không đỡ sau vài ngày.'],
         dangerSigns: ['Có ổ mủ to như nhọt', 'Sưng nóng đau rõ hoặc đỏ lan rộng', 'Kèm sốt hoặc khó vận động'],
-        images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-viem-o-tran-acc-1.webp', caption: 'Nốt đỏ viêm nang lông quanh sợi lông trên da', source: 'Hình ảnh minh họa viêm nang lông' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/bat_mi_nhung_cach_tri_mun_boc_sung_do_don_gian_va_hieu_qua_1_a290bd216b.jpg', caption: 'Viêm nang lông trên da vùng cẳng chân – nốt đỏ và mụn mủ', source: 'Hình ảnh minh họa viêm nang lông ở cẳng chân' }
-        ],
-        sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
+                                images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/cac-loai-viem-nang-long.jpg', caption: 'Viêm nang lông – nốt đỏ và mụn mủ quanh chân lông trên da', source: 'Hình ảnh minh họa viêm nang lông ở người' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/tinh-trang-viem-nang-long.webp', caption: 'Tổn thương viêm nang lông trên da – nốt đỏ sưng viêm', source: 'Hình ảnh minh họa tình trạng viêm nang lông' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-viem-o-tran-acc-1.webp', caption: 'Viêm nang lông – nốt đỏ viêm quanh chân lông trên da', source: 'Hình ảnh minh họa viêm nang lông' }
+        ],sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       }
     ]
   },
@@ -291,7 +288,10 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng cố chịu mờ hoặc mượn kính của bạn đeo tạm.', 'RỬA: Cho mắt nghỉ đúng cách giữa các giờ học.', 'DỊU: Điều chỉnh khoảng cách học và ánh sáng.', 'KHÁM: Đi khám mắt khi bắt đầu nhìn xa mờ hoặc đang đeo kính mà vẫn không rõ.'],
         dangerSigns: ['Thị lực giảm nhanh', 'Đeo kính rồi vẫn mờ', 'Đau đầu lặp lại khi học hoặc nhìn mờ đột ngột'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Myopia.jpg/600px-Myopia.jpg', caption: 'Minh họa cơ chế cận thị – hình ảnh hội tụ trước võng mạc thay vì trên võng mạc', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://cdn.tgdd.vn/Files/2022/07/28/1450968/can-thi-la-gi-nguyen-nhan-dau-hieu-va-cach-phong-tranh-can-thi-202207280759221037.jpg', caption: 'Cận thị ở học sinh – nhìn xa mờ, cần đeo kính', source: 'The Gioi Di Dong' },
+          { url: 'https://www.vinmec.com/static/uploads/20190827_084628_761520_phan_loai_can_thi_max_1800x1800_jpg_2ea9669a4c.jpg', caption: 'Phân loại tật cận thị và mức độ ảnh hưởng', source: 'Vinmec' },
+          { url: 'https://photo.znews.vn/w660/Uploaded/sgorvz/2025_07_26/can_thi_o_tre.jpg', caption: 'Cận thị ngày càng phổ biến ở học sinh THPT', source: 'Znews' },
+          { url: 'https://matthienthanh.com/wp-content/uploads/2026/01/can-thi-4-do.webp', caption: 'Mắt cận thị cần được khám và đeo kính đúng độ', source: 'Mắt Thiên Thanh' }
         ],
         sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
       },
@@ -306,7 +306,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng cố chịu đựng hoặc tự đoán là do mệt thông thường.', 'RỬA: Cho mắt nghỉ định kỳ giữa các hoạt động nhìn gần.', 'DỊU: Điều chỉnh khoảng cách học và ánh sáng.', 'KHÁM: Khám mắt để đo khúc xạ khi triệu chứng lặp lại.'],
         dangerSigns: ['Đau đầu kéo dài, nhìn mờ thường xuyên', 'Học tập bị ảnh hưởng rõ', 'Có nhìn đôi hoặc đau mắt bất thường'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Hypermetropia_-_hyperopia.svg/600px-Hypermetropia_-_hyperopia.svg.png', caption: 'Minh họa cơ chế viễn thị – ánh sáng hội tụ sau võng mạc', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://medlatec.vn/media/10927/content/20210518_phan-biet-vien-thi-va-lao-thi-1.jpg', caption: 'Viễn thị ở học sinh – nhìn gần mờ, đau mắt khi đọc sách', source: 'Medlatec' },
+          { url: 'https://vivision.vn/wp-content/uploads/2024/07/IMG_1864-1.jpeg', caption: 'Loạn thị ở tuổi học đường – mắt điều tiết kém', source: 'ViVision' },
+          { url: 'https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2020/04/vi%E1%BB%85n-th%E1%BB%8B.jpg', caption: 'Viễn thị và loạn thị – tật khúc xạ ở học sinh', source: 'YouMed' }
         ],
         sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
       },
@@ -321,7 +323,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng cày màn hình liên tục không nghỉ.', 'RỬA: Không cần rửa mắt bằng đủ loại dung dịch; cho mắt nghỉ là quan trọng nhất.', 'DỊU: Áp dụng quy tắc 20-20-20, giảm chói, chớp mắt chủ động.', 'KHÁM: Đi khám nếu nghỉ rồi vẫn không đỡ hoặc nghi đeo kính sai độ.'],
         dangerSigns: ['Mờ mắt kéo dài không hết sau nghỉ', 'Đau đầu dai dẳng', 'Nhìn đôi hoặc đau mắt rõ'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Eye_digital_strain.jpg/600px-Eye_digital_strain.jpg', caption: 'Tư thế nhìn màn hình sai – ngồi quá gần gây mỏi mắt', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://medlatec.vn/media/3562/content/20221119_nhuc-moi-mat-1.jpg', caption: 'Mỏi mắt do nhìn màn hình lâu ở học sinh', source: 'Medlatec' },
+          { url: 'https://sunny-eco.vn/wp-content/uploads/2019/11/nhuc-moi-mat.jpg', caption: 'Đau mỏi mắt khi học online và dùng điện thoại nhiều', source: 'Sunny Eco' },
+          { url: 'https://giaan115.com/uploads/files/2024/12/11/tinh-trang-moi-mat-do-ngoi-may-tinh-nhieu-o-nguoi-tre.jpg', caption: 'Tình trạng mỏi mắt khi ngồi máy tính nhiều ở người trẻ', source: 'Gia An' }
         ],
         sources: [{ title: 'AAO', url: 'https://aao.org' }]
       },
@@ -351,12 +355,14 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng dụi mắt và không tự nặn vùng mí mắt.', 'RỬA: Rửa tay sạch trước khi chạm vào mắt.', 'DỊU: Chườm ấm nhẹ theo hướng dẫn an toàn.', 'KHÁM: Đi khám nếu sưng to, đau nhiều hoặc kéo dài không đỡ.'],
         dangerSigns: ['Mí mắt sưng to nhanh, đau nhiều', 'Đỏ lan, sốt hoặc nhìn mờ', 'Cục tái đi tái lại nhiều lần'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Stye.jpg/600px-Stye.jpg', caption: 'Lẹo ở mí mắt – nốt đỏ sưng tại gốc lông mi', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://matquocte.vn/wp-content/uploads/2022/06/leo-mat-bao-lau-thi-khoi.jpg', caption: 'Lẹo ở mí mắt – nốt sưng đỏ gây khó chịu ở học sinh', source: 'Mắt Quốc Tế' },
+          { url: 'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2025/4/27/20230116leo-mat-17457659741851857890668.jpg', caption: 'Lẹo mắt tái phát ở vị thành niên – cần vệ sinh mắt đúng cách', source: 'Sức khỏe & Đời sống' },
+          { url: 'https://cdn.tgdd.vn//News/0//benh-chap-va-leo5-800x450.jpg', caption: 'Chắp và lẹo ở mí mắt – phân biệt và cách xử lý', source: 'The Gioi Di Dong' }
         ],
         sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
       }
     ]
-  },,
+  },
 // ═══════════════════════════════════════════════════════════════
   // IV. SỨC KHỎE TINH THẦN VÀ GIẤC NGỦ
   // Không phải mọi vấn đề sức khỏe đều nhìn thấy bằng mắt thường.
@@ -381,7 +387,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng học liền nhiều giờ không nghỉ và ngừng so sánh bản thân 24/7.', 'RỬA: Dọn bớt overload bằng cách chia việc theo mức ưu tiên.', 'DỊU: Hít thở chậm, vận động nhẹ, ăn bữa tử tế và giữ giờ ngủ ổn định.', 'KHÁM: Tìm hỗ trợ nếu stress kéo dài, ảnh hưởng học, ăn, ngủ hoặc khiến bạn thấy quá sức.'],
         dangerSigns: ['Triệu chứng gần như ngày nào cũng có', 'Ảnh hưởng rõ tới học tập, ăn, ngủ, giao tiếp', 'Có cảm giác tuyệt vọng hoặc muốn làm đau bản thân'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg/600px-Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg.png', caption: 'Minh họa stress và các yếu tố ảnh hưởng đến giấc ngủ tuổi học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://www.iowaclinic.com/Content/cms/images/news/stress_side_effects_800X533.jpg', caption: 'Biểu hiện stress ở học sinh – căng thẳng khi học tập', source: 'Hình ảnh minh họa stress học đường' },
+          { url: 'https://thanhnien.mediacdn.vn/Uploaded/ngocquy/2022_03_24/3-cang-thang-shutterstock-8843.jpg', caption: 'Học sinh căng thẳng trước kỳ thi – áp lực học tập', source: 'Hình ảnh minh họa áp lực học tập' },
+          { url: 'https://www.health.com/thmb/7zsgIp-vbPNr7yerP39cPNtcAj4=/6240x0/filters:no_upscale():max_bytes(150000):strip_icc()/stress-GettyImages-1469453659-ed795ae1f55b43a8a0a4118ebd2c5d6a.jpg', caption: 'Teenager stressed about school exams and grades', source: 'Health.com / Getty Images' }
         ],
         sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }, { title: 'Đường dây 1800-9090', url: 'https://hoisongtructuyen.gov.vn' }]
       },
@@ -396,7 +404,8 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng tự ép mình phải chịu một mình mọi thứ.', 'RỬA: Viết ra điều đang lo để phân loại việc nào thật sự cần xử lý.', 'DỊU: Tập thở chậm, nghỉ ngắn, nói chuyện với người tin cậy.', 'KHÁM: Tìm hỗ trợ chuyên môn nếu lo âu kéo dài hoặc ảnh hưởng rõ chức năng hằng ngày.'],
         dangerSigns: ['Lo âu gần như mỗi ngày và không tự dịu xuống', 'Có hoảng loạn, khó thở, run nhiều', 'Kèm ý nghĩ làm hại bản thân hoặc tuyệt vọng'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Minh họa thay đổi giấc ngủ và học tập ở tuổi vị thành niên do rối loạn giấc ngủ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://glints.com/vn/blog/wp-content/uploads/2022/04/ca%CC%86ng-tha%CC%86%CC%89ng-vi%CC%80-co%CC%82ng-vie%CC%A3%CC%82c.jpg', caption: 'Biểu hiện lo âu ở người trẻ – căng thẳng tâm lý', source: 'Glints Vietnam' },
+          { url: 'https://vcdn1-suckhoe.vnecdn.net/2022/05/26/stress-jpeg-1653551449-6686-1653551576.jpg', caption: 'Tâm lý lo âu kéo dài ở học sinh – stress và lo lắng', source: 'VnExpress Sức khỏe' }
         ],
         sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
       },
@@ -411,7 +420,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng tự nhốt mình hoàn toàn và nghĩ rằng mình phải ổn ngay lập tức.', 'RỬA: Nhờ người tin cậy giúp sắp xếp lại lịch học – nghỉ – sinh hoạt cơ bản.', 'DỊU: Giữ kết nối tối thiểu với một người lớn hoặc một bạn đáng tin.', 'KHÁM: Tìm hỗ trợ chuyên môn khi tình trạng kéo dài hoặc ảnh hưởng rõ tới cuộc sống.'],
         dangerSigns: ['Có ý nghĩ muốn biến mất hoặc làm hại bản thân', 'Bỏ ăn, mất ngủ nhiều ngày hoặc kiệt sức rõ', 'Hoàn toàn không muốn đi học, không muốn giao tiếp'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pediatric_polysomnogram.jpg/600px-Pediatric_polysomnogram.jpg', caption: 'Đo giấc ngủ Polysomnography – phát hiện rối loạn giấc ngủ ở trẻ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2023/6/23/tram-cam-1687483443047477702281.jpg', caption: 'Biểu hiện trầm buồn và cô lập xã hội ở vị thành niên', source: 'Sức khỏe & Đời sống' },
+          { url: 'https://tamlynhc.vn/wp-content/uploads/2024/10/co-lap-5.jpg', caption: 'Học sinh cô lập xã hội – thu mình trong cuộc sống học đường', source: 'Tam Ly NHC' },
+          { url: 'https://i2-vnexpress.vnecdn.net/2020/10/06/photo1573605516670157360551700-8800-2402-1601945135.jpg', caption: 'Dấu hiệu trầm buồn kéo dài ở tuổi học đường', source: 'VnExpress' }
         ],
         sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
       },
@@ -426,7 +437,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng mang điện thoại lên giường và xem nốt 5 phút thành 2 tiếng.', 'RỬA: Cố định giờ ngủ – giờ dậy, giảm caffeine tối muộn.', 'DỊU: Tạo khoảng wind-down: tắt màn hình, đèn dịu, giãn cơ, nghe nhạc nhẹ.', 'KHÁM: Đi khám nếu mất ngủ kéo dài và bắt đầu ảnh hưởng mạnh đến học tập, tâm trạng.'],
         dangerSigns: ['Mất ngủ nhiều ngày/tuần kéo dài', 'Ban ngày mệt đến mức học không nổi', 'Kèm lo âu, chán nản hoặc lệ thuộc chất kích thích/thuốc'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pediatric_polysomnogram.jpg/600px-Pediatric_polysomnogram.jpg', caption: 'Đo giấc ngủ Polysomnography – phát hiện rối loạn giấc ngủ ở trẻ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://www.vinmec.com/static/uploads/20190620_053117_185066_mat_ngu_max_1800x1800_jpg_8ecb193206.jpg', caption: 'Mất ngủ ở học sinh – rối loạn giấc ngủ vị thành niên', source: 'Vinmec' },
+          { url: 'https://prod-cdn.pharmacity.io/blog/roi-loan-mat-ngu.jpg', caption: 'Rối loạn giấc ngủ ở người trẻ – không ngủ được', source: 'Pharmacity' },
+          { url: 'https://login.medlatec.vn//ImagePath/images/20210622/20210622_roi-loan-giac-ng%E1%BB%A7-2.png', caption: 'Mất ngủ kéo dài ảnh hưởng đến sức khỏe học đường', source: 'Medlatec' }
         ],
         sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
       },
@@ -441,7 +454,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Ngừng để điện thoại trên giường hoặc cạnh bàn học suốt cả buổi.', 'RỬA: Đặt mốc thời gian dùng máy rõ ràng và tắt thông báo không cần thiết.', 'DỊU: Thay một phần thời gian màn hình bằng vận động, đi bộ, nói chuyện trực tiếp.', 'KHÁM: Tìm hỗ trợ nếu việc dùng thiết bị ảnh hưởng mạnh đến học tập, ngủ và quan hệ trong gia đình.'],
         dangerSigns: ['Không kiểm soát nổi thời gian dùng máy', 'Mất ngủ kéo dài, bỏ ăn, bỏ học hoặc cáu gắt mạnh', 'Dùng game/điện thoại để né hoàn toàn cuộc sống thật'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Eye_digital_strain.jpg/600px-Eye_digital_strain.jpg', caption: 'Tư thế dùng điện thoại sai – ngồi quá gần, cúi đầu lâu gây hại mắt và cổ', source: 'Hình ảnh minh họa nghiện điện thoại' }
+          { url: 'https://benhviennhitrunguong.gov.vn/wp-content/uploads/2019/05/addiction-recovery-ebulletin-kids-videogame-addiction.jpg', caption: 'Nghiện game online ở học sinh – lạm dụng thiết bị số', source: 'BV Nhi TW' },
+          { url: 'https://tramcam.org/upload/files/2023/7/25/5/Chuyen-gia-canh-bao-Tac-hai-cua-nghien-game-online-khong-thua-gi-nghien-ma-tuy.jpg', caption: 'Tác hại của nghiện game online đối với học sinh', source: 'Trà Căm' },
+          { url: 'https://tramcam.org/upload/files/2023/7/25/2/Nhung-hau-hoa-khon-luong-den-tu-tram-cam-do-nghien-game-online.jpg', caption: 'Hậu quả nghiện game online ảnh hưởng đến học tập và sức khỏe', source: 'Trà Căm' }
         ],
         sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
       }
@@ -890,6 +905,7 @@ const PostForm: React.FC<{ onClose: () => void; onSuccess: (p: ActivityPost) => 
   const [desc, setDesc] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
+  const [visibility, setVisibility] = useState<'public' | 'private'>('public');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -904,7 +920,7 @@ const PostForm: React.FC<{ onClose: () => void; onSuccess: (p: ActivityPost) => 
     try {
       const res = await fetch(`${API_BASE}/api/activity`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: postType, title: title.trim(), description: desc.trim(), content: content.trim(), authorName: authorName.trim(), authorRole: role, tags: tags.split(',').map(t => t.trim()).filter(Boolean) }),
+        body: JSON.stringify({ type: postType, title: title.trim(), description: desc.trim(), content: content.trim(), authorName: authorName.trim(), authorRole: role, tags: tags.split(',').map(t => t.trim()).filter(Boolean), visibility }),
       });
       if (res.ok) onSuccess(await res.json());
       else setError((await res.json()).error || 'Lỗi');
@@ -969,6 +985,19 @@ const PostForm: React.FC<{ onClose: () => void; onSuccess: (p: ActivityPost) => 
               {postType === 'article' && <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Nội dung bài viết..." rows={4} className="w-full border rounded-xl px-3 py-2 text-sm resize-none" />}
               {postType === 'infographic' && <input value={content} onChange={e => setContent(e.target.value)} placeholder="Link ảnh..." className="w-full border rounded-xl px-3 py-2 text-sm" />}
               <input value={tags} onChange={e => setTags(e.target.value)} placeholder="Tags: phòng chống, dinh dưỡng..." className="w-full border rounded-xl px-3 py-2 text-sm" />
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-medium text-slate-500">Phạm vi đăng bài</span>
+                <div className="flex bg-slate-100 rounded-xl p-0.5">
+                  <button type="button" onClick={() => setVisibility('public')}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${visibility === 'public' ? 'bg-white shadow text-rose-500' : 'text-slate-400'}`}>
+                    🌐 Công khai
+                  </button>
+                  <button type="button" onClick={() => setVisibility('private')}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${visibility === 'private' ? 'bg-white shadow text-rose-500' : 'text-slate-400'}`}>
+                    🔒 Riêng tư
+                  </button>
+                </div>
+              </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <button onClick={handleSubmit} disabled={submitting} className="w-full bg-gradient-to-r from-rose-500 to-purple-500 text-white py-3 rounded-xl font-bold disabled:opacity-50">
                 {submitting ? 'Đang đăng...' : 'Đăng bài ngay'}
@@ -1281,11 +1310,23 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     setError(null);
     setResult(null);
     try {
+      // Build text for scan API
+      const checklistEntries = Object.entries(checklist).filter(([, v]) => v === true).map(([k]) => k);
+      const checklistText = checklistEntries.length > 0
+        ? `\nTriệu chứng đã chọn: ${checklistEntries.join(", ")}`
+        : "";
+      const durationText = duration ? `\nThời gian: ${duration}` : "";
+      const symptomEntries = Object.entries(symptoms).filter(([, v]) => v === true).map(([k]) => k);
+      const symptomText = symptomEntries.length > 0
+        ? `\nTriệu chứng: ${symptomEntries.join(", ")}`
+        : "";
       const payload: any = {
+        text: `${textDescription || ""}${checklistText}${symptomText}${durationText}`.trim(),
+        ...(imageBase64 ? { imageBase64 } : {}),
         checklist,
-        symptoms: { ...symptoms, description: textDescription, duration },
+        symptoms,
+        ...(duration ? { duration } : {}),
       };
-      if (imageBase64) payload.imageBase64 = imageBase64;
 
       const res = await fetch(`${API_BASE}/api/scan`, {
         method: 'POST',
@@ -1298,17 +1339,18 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
       }
       const data = await res.json();
       const parsed: ScanResult = {
-        title: data.title || 'Cần khám để xác định',
+        title: data.title || data.most_likely_condition?.name || 'Cần khám để xác định',
         category: data.category || 'MỤN & DA LIỄU',
         analysis: Array.isArray(data.analysis) ? data.analysis : [],
         causes: Array.isArray(data.causes) ? data.causes : [],
         urgency: data.urgency || 'Nên tham vấn Y tế học đường',
         dangerSigns: Array.isArray(data.dangerSigns) ? data.dangerSigns : [],
         safetyAdvice: Array.isArray(data.safetyAdvice) ? data.safetyAdvice : [],
-        confidence: data.confidence || 'low',
-        confidence_score: typeof data.confidence_score === 'number' ? data.confidence_score : (data.confidence === 'high' ? 8 : data.confidence === 'moderate' ? 6 : 3),
-        confidence_note: data.confidence_note || 'Dữ liệu hạn chế, cần thêm thông tin để tăng độ chắc chắn.',
-        severity: data.severity || 'moderate',
+        confidence: data.most_likely_condition?.confidence || data.confidence || 'low',
+        confidence_score: typeof data.confidence_score === 'number' ? data.confidence_score
+          : (data.most_likely_condition?.confidence === 'high' ? 8 : data.most_likely_condition?.confidence === 'moderate' ? 6 : 3),
+        confidence_note: data.confidence_note || data.most_likely_condition?.reason_for || 'Dữ liệu hạn chế, cần thêm thông tin để tăng độ chắc chắn.',
+        severity: data.most_likely_condition?.severity || data.severity || 'moderate',
         image_findings: Array.isArray(data.image_findings) && data.image_findings.length > 0
           ? data.image_findings
           : ['Chưa phát hiện tổn thương đặc trưng rõ ràng — nên khám trực tiếp tại cơ sở y tế'],
@@ -1707,12 +1749,12 @@ const AIScanView: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
 
           {/* Danger Signs */}
           {result.dangerSigns.length > 0 && (
-            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 shadow-lg">
-              <h3 className="font-black text-sm flex items-center gap-2 mb-3 text-red-600"><ShieldAlert size={16} />Dấu hiệu nguy hiểm — Cần đi khám ngay!</h3>
+            <div className="bg-red-50 border-2 border-red-300 rounded-2xl p-4 shadow-lg shadow-red-200/50">
+              <h3 className="font-black text-sm flex items-center gap-2 mb-3 text-red-700"><ShieldAlert size={16} />Dấu hiệu nguy hiểm — Cần đi khám ngay!</h3>
               <ul className="space-y-2">
                 {result.dangerSigns.map((d, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-red-700">
-                    <span className="text-red-500 mt-0.5">⚠</span>{d}
+                  <li key={i} className="flex items-start gap-2 text-sm text-red-800">
+                    <span className="font-bold text-red-600 mt-0.5">⚠</span>{d}
                   </li>
                 ))}
               </ul>
@@ -2632,10 +2674,10 @@ const App: React.FC = () => {
                       <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl shadow">📚</div>
                       <div>
                         <h2 className="text-base font-black tracking-tight">Cẩm nang thư viện học đường</h2>
-                        <p className="text-white/70 text-[10px]">{totalDiseases} bài viết · 4 danh mục · 30+ bệnh lý</p>
+                        <p className="text-white/70 text-[10px]">{totalDiseases} bài viết · 6 danh mục · 30+ bệnh lý</p>
                       </div>
                     </div>
-                    <p className="text-white/70 text-xs leading-relaxed mt-2">Thông tin y khoa cập nhật giúp nhận biết, phòng ngừa và xử lý các vấn đề sức khỏe thường gặp trong môi trường học đường.</p>
+                    <p className="text-white/70 text-xs leading-relaxed mt-2">Cẩm nang sức khỏe bỏ túi cho học sinh và phụ huynh. Chia sẻ những thông tin hữu ích về các dấu hiệu sức khỏe thường gặp và cách bảo vệ bản thân trong môi trường học đường.</p>
                   </div>
                 </div>
 
@@ -2653,7 +2695,7 @@ const App: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-slate-400 hidden sm:block">4 danh mục</span>
+                      <span className="text-xs text-slate-400 hidden sm:block">6 danh mục</span>
                       <div className={`w-8 h-8 ${darkMode ? 'bg-slate-700' : 'bg-purple-50'} rounded-lg flex items-center justify-center transition-all duration-300 ${catOpen ? 'rotate-180 bg-purple-100' : ''}`}>
                         <ChevronDown size={18} className={darkMode ? 'text-slate-300' : 'text-purple-500'} />
                       </div>
@@ -3086,11 +3128,35 @@ const App: React.FC = () => {
               {/* Content Section */}
               <div className="p-6 space-y-5">
 
-                {/* Description with pill style */}
-                <div className={`rounded-2xl p-4 border transition-all duration-300 hover:shadow-lg ${darkMode ? 'bg-slate-700/50 border-slate-600' : 'bg-rose-50/50 border-rose-100'}`}>
-                  <p className={`text-base leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>
-                    {selectedDisease.description}
-                  </p>
+                {/* Description - 3 labeled rows */}
+                <div className={`rounded-2xl p-4 border space-y-3 ${darkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-white border-slate-100'}`}>
+
+                  {/* Row 1: Cái tên "sang chảnh" */}
+                  <div className="flex items-start gap-3">
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm shrink-0 mt-0.5 ${darkMode ? 'bg-purple-900/60 text-purple-300' : 'bg-purple-100 text-purple-600'}`}>💜</div>
+                    <div>
+                      <p className={`text-xs font-bold mb-0.5 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>Cái tên "sang chảnh":</p>
+                      <p className={`text-sm italic ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{selectedDisease.otherNames || '—'}</p>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Nó là gì thế? */}
+                  <div className="flex items-start gap-3">
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm shrink-0 mt-0.5 ${darkMode ? 'bg-rose-900/60 text-rose-300' : 'bg-rose-100 text-rose-600'}`}>🔬</div>
+                    <div>
+                      <p className={`text-xs font-bold mb-0.5 ${darkMode ? 'text-rose-400' : 'text-rose-600'}`}>Nó là gì thế?:</p>
+                      <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{selectedDisease.description}</p>
+                    </div>
+                  </div>
+
+                  {/* Row 3: "Drama" dễ gặp tại trường */}
+                  <div className="flex items-start gap-3">
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm shrink-0 mt-0.5 ${darkMode ? 'bg-amber-900/60 text-amber-300' : 'bg-amber-100 text-amber-600'}`}>🎒</div>
+                    <div>
+                      <p className={`text-xs font-bold mb-0.5 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>"Drama" dễ gặp tại trường:</p>
+                      <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{selectedDisease.schoolContext}</p>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Info Grid - 2 columns with pill cards */}
@@ -3100,12 +3166,12 @@ const App: React.FC = () => {
                     onMouseEnter={(e: any) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(244,63,94,0.15)'; }}
                     onMouseLeave={(e: any) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center text-blue-500">
+                      <div className="w-10 h-10 bg-blue-200 dark:bg-blue-800 rounded-xl flex items-center justify-center text-blue-600">
                         <AlertTriangle size={18} />
                       </div>
-                      <h4 className="font-bold text-blue-600 dark:text-blue-400 text-sm">Nguyên nhân</h4>
+                      <h4 className="font-bold text-blue-700 dark:text-blue-300 text-sm">Nguyên nhân</h4>
                     </div>
-                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{selectedDisease.causes}</p>
+                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{selectedDisease.causes}</p>
                   </div>
 
                   {/* Symptoms */}
@@ -3113,12 +3179,12 @@ const App: React.FC = () => {
                     onMouseEnter={(e: any) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(244,63,94,0.15)'; }}
                     onMouseLeave={(e: any) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-rose-100 dark:bg-rose-900/50 rounded-xl flex items-center justify-center text-rose-500">
+                      <div className="w-10 h-10 bg-rose-200 dark:bg-rose-800 rounded-xl flex items-center justify-center text-rose-600">
                         <ActivityIcon size={18} />
                       </div>
-                      <h4 className="font-bold text-rose-600 dark:text-rose-400 text-sm">Triệu chứng</h4>
+                      <h4 className="font-bold text-rose-700 dark:text-rose-300 text-sm">Triệu chứng</h4>
                     </div>
-                    <ul className={`text-sm space-y-2 ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>
+                    <ul className={`text-sm space-y-2 ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
                       {selectedDisease.symptoms.map((s: string, i: number) => (
                         <li key={i} className="flex items-start gap-2">
                           <span className="text-rose-400 mt-0.5 shrink-0">•</span>
@@ -3129,26 +3195,13 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* School Context */}
-                <div className={`step-pill rounded-2xl border ${darkMode ? 'bg-amber-900/20 border-amber-700/50' : 'bg-amber-50 border-amber-100'}`}
-                  onMouseEnter={(e: any) => { e.currentTarget.style.transform = 'translateX(4px)'; }}
-                  onMouseLeave={(e: any) => { e.currentTarget.style.transform = ''; }}>
-                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/50 rounded-xl flex items-center justify-center text-amber-500 shrink-0">
-                    <School size={18} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-amber-600 dark:text-amber-400 text-sm mb-1">Bối cảnh học đường</h4>
-                    <p className={`text-sm ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}>{selectedDisease.schoolContext}</p>
-                  </div>
-                </div>
-
                 {/* Treatment Steps - Pill style */}
                 <div>
                   <h4 className="font-bold text-green-600 dark:text-green-400 mb-3 flex items-center gap-2">
                     <div className="w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center">
                       <ShieldCheck size={16} />
                     </div>
-                    Xử lý & Điều trị
+                    Bí kíp xử lý tại chỗ (4 bước thần thánh)
                   </h4>
                   <div className="space-y-3">
                     {selectedDisease.treatment.map((t: string, i: number) => (
@@ -3175,15 +3228,15 @@ const App: React.FC = () => {
                     style={{ animation: 'glowPulse 3s ease-in-out infinite' }}>
                     <div className="flex items-center gap-3 mb-3">
                       <div className="notif-dot" />
-                      <div className="w-10 h-10 bg-red-100 dark:bg-red-900/50 rounded-xl flex items-center justify-center text-red-500 animate-heartbeat">
+                      <div className="w-10 h-10 bg-red-200 dark:bg-red-900 rounded-xl flex items-center justify-center text-red-600 animate-heartbeat">
                         <AlertTriangle size={18} />
                       </div>
-                      <h4 className="font-black text-red-600 dark:text-red-400 text-sm">Dấu hiệu nguy hiểm – Cần đi khám ngay</h4>
+                      <h4 className="font-black text-red-700 dark:text-red-300 text-sm">Dấu hiệu nguy hiểm – Cần đi khám ngay</h4>
                     </div>
                     <ul className="space-y-2">
                       {selectedDisease.dangerSigns.map((s: string, i: number) => (
-                        <li key={i} className="flex items-start gap-2 text-red-700 dark:text-red-300 text-sm">
-                          <span className="text-red-500 mt-0.5 shrink-0 animate-blink">⚠️</span>
+                        <li key={i} className="flex items-start gap-2 text-red-800 dark:text-red-200 text-sm">
+                          <span className="font-bold text-red-600 mt-0.5 shrink-0 animate-blink">⚠️</span>
                           <span>{s}</span>
                         </li>
                       ))}
