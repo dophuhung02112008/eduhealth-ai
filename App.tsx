@@ -35,9 +35,11 @@ const ACNE_TYPES = [
 ];
 
 const HEALTH_LIBRARY = [
-  // ── MỤN & DA LIỄU ──
+// ═══════════════════════════════════════════════════════════════
+  // I. DA LIỄU HỌC ĐƯỜNG
+  // ═══════════════════════════════════════════════════════════════
   {
-    category: 'MỤN & DA LIỄU HỌC ĐƯỜNG',
+    category: 'I. DA LIỄU HỌC ĐƯỜNG',
     icon: '🧴',
     color: 'rose',
     bgLight: 'bg-rose-50',
@@ -46,15 +48,15 @@ const HEALTH_LIBRARY = [
     gradient: 'from-rose-500 to-pink-500',
     diseases: [
       {
-        id: 'mun-1',
-        name: 'Kẻ chấm đen lì lợm - Mụn đầu đen / Mụn đầu trắng',
-        otherNames: 'Acne Vulgaris.',
-        description: 'Nó là gì thế? Là tình trạng lỗ chân lông bị kẹt dầu và tế bào chết, tạo thành các chấm đen hoặc nốt trắng nhỏ khiến da sần và dễ mất tự tin.',
+        id: 'dal-1',
+        name: 'Kẻ chấm đen lì lợm – Mụn đầu đen / Mụn đầu trắng',
+        otherNames: 'Acne vulgaris – open comedo / closed comedo',
+        description: 'Là tình trạng lỗ chân lông bị bít bởi dầu da và tế bào chết, tạo thành đầu đen hoặc đầu trắng nhỏ, khiến da sần và dễ mất tự tin.',
         causes: 'Hormone testosterone tăng tuổi dậy thì → tuyến bã nhờn hoạt động mạnh → lỗ chân lông bị bít tắc.',
-        symptoms: ['Chấm đen nhỏ ở mũi, cằm, trán', 'Nốt trắng li ti hơi sần khi sờ', 'Da đổ dầu nhiều cuối buổi học', 'Lỗ chân lông to, bề mặt da không mịn'],
-        schoolContext: 'Đội mũ bảo hiểm/khẩu trang bí cả ngày, học thể dục xong không rửa mặt, hay chống tay lên má, tối về cạy mụn trước gương, stress thi cử làm tăng tiết bã nhờn.',
-        treatment: ['NGỪNG: Không nặn, không cạy, không lột mụn liên tục. Dừng đổi skincare lung tung.', 'RỬA: Rửa mặt nhẹ nhàng tối đa 2 lần/ngày và sau khi đổ mồ hôi – dùng sữa rửa mặt dịu nhẹ (pH 5.5).', 'DỊU: Kem/sữa dưỡng ẩm không gây bít tắc (oil-free). Tránh scrub hoặc chà khăn mạnh.', 'KHÁM: Nếu mụn viêm, kéo dài >4 tuần hoặc có nguy cơ sẹo → đến da liễu.'],
-        dangerSigns: ['Mụn ngày càng dày, lan xuống lưng/ngực', 'Để lại nhiều thâm, sẹo lõm rõ', 'Tự ti rõ rệt, bỏ giao tiếp, bỏ ăn'],
+        symptoms: ['Nhiều chấm đen nhỏ ở mũi, cằm, trán', 'Có nốt trắng li ti làm bề mặt da sần', 'Da đổ dầu nhiều hơn vào cuối ngày', 'Ít đau, ít đỏ, chưa viêm rõ'],
+        schoolContext: 'Đội mũ bảo hiểm lâu, thức khuya, chạm tay lên mặt, skincare thất thường hoặc để tóc mái chạm trán suốt ngày.',
+        treatment: ['NGỪNG: Ngừng nặn, cạy, lột mụn và đừng đổi sản phẩm liên tục.', 'RỬA: Rửa mặt dịu nhẹ tối đa 2 lần/ngày và sau khi đổ mồ hôi nhiều.', 'DỊU: Ưu tiên sản phẩm không gây bít tắc, tránh chà xát mạnh.', 'KHÁM: Đi khám nếu mụn kéo dài, lan rộng hoặc chuyển sang mụn viêm.'],
+        dangerSigns: ['Mụn ngày càng dày và lan xuống ngực/lưng', 'Da để lại nhiều thâm, sẹo hoặc ảnh hưởng tâm lý rõ', 'Chăm sóc đúng mà nhiều tuần vẫn không cải thiện'],
         images: [
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-03-31%20200846.png', caption: 'Mụn đầu đen – lỗ chân lông bị tắc chứa dầu và tế bào chết', source: 'Hình ảnh minh họa da có mụn đầu đen' },
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-03-31%20201049.png', caption: 'Mụn đầu trắng – nốt trắng li ti ở vùng mũi và má', source: 'Hình ảnh minh họa da có mụn đầu trắng' },
@@ -63,95 +65,107 @@ const HEALTH_LIBRARY = [
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }, { title: 'AAD', url: 'https://aad.org' }]
       },
       {
-        id: 'mun-2',
-        name: 'Cục đau khó ưa- Mụn viêm / Mụn bọc',
-        otherNames: 'Papules, Pustules, Cystic Acne',
-        description: 'Nốt đỏ sưng đau, nặng hơn thì nằm sâu dưới da. Dễ để lại sẹo nếu xử lý sai cách.',
+        id: 'dal-2',
+        name: 'Cục đau khó ưa – Mụn viêm / Mụn bọc',
+        otherNames: 'Papules, pustules, nodules, cystic acne',
+        description: 'Là các nốt mụn đỏ, sưng, đau; nặng hơn có thể nằm sâu dưới da và dễ để lại sẹo nếu tự nặn.',
         causes: 'Mụn đầu đen/trắng không được xử lý → vi khuẩn P. acnes phát triển → viêm → mụn mủ, mụn bọc.',
-        symptoms: ['Nốt đỏ đau khi chạm, có thể có đầu mủ trắng/vàng', 'Nốt to nằm sâu dưới da, nhức rõ', 'Mụn xẹp để lại thâm hoặc lõm', 'Da sờ thấy cứng ở vùng có mụn bọc'],
-        schoolContext: 'Stress thi cử, thức khuya kéo dài, da bí do khẩu trang hoặc mũ bảo hiểm, vừa có mụn là đưa tay nặn ngay.',
-        treatment: ['NGỪNG: Không nặn bằng móng tay, không bôi kem đánh răng hay "mẹo mạng" lên mụn.', 'RỬA: Rửa mặt dịu nhẹ, nhất là sau khi đổ mồ hôi.', 'DỊU: Chườm mát giảm sưng. Dùng benzoyl peroxide hoặc adapalene đúng cách.', 'KHÁM: Nếu mụn bọc sâu, đau nhiều → đến da liễu sớm.'],
-        dangerSigns: ['Mụn sưng to, đau dữ, có dấu hiệu áp xe (mủ vàng tụ)', 'Mụn dày đặc ở mặt, ngực, lưng', 'Ảnh hưởng mạnh đến tâm trạng, giao tiếp'],
+        symptoms: ['Nốt đỏ đau khi chạm vào', 'Có thể có đầu mủ trắng hoặc vàng', 'Một số nốt to, nằm sâu, đau nhức rõ', 'Mụn xẹp xong để thâm hoặc lõm sẹo'],
+        schoolContext: 'Stress thi cử, thiếu ngủ, da bí do khẩu trang, mũ bảo hiểm bẩn hoặc dùng nhiều sản phẩm trị mụn quá mạnh cùng lúc.',
+        treatment: ['NGỪNG: Ngừng nặn bằng móng tay, bôi kem đánh răng hoặc mẹo mạng chưa kiểm chứng.', 'RỬA: Giữ da sạch, rửa mặt dịu nhẹ sau khi đổ mồ hôi.', 'DỊU: Chườm mát nhẹ nếu đau và giữ routine tối giản.', 'KHÁM: Đi khám nếu mụn bọc sâu, đau nhiều, dày đặc hoặc có nguy cơ sẹo.'],
+        dangerSigns: ['Mụn sưng to, đau dữ, nghi có ổ mủ', 'Mụn dày đặc ở mặt, ngực hoặc lưng', 'Đã bắt đầu có sẹo hoặc ảnh hưởng mạnh đến giao tiếp, tâm trạng'],
         images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20210726_nguyen-nhan-gay-mun-boc-2.jpg', caption: 'Mụn viêm đỏ sưng to trên da – dạng papule có đầu mủ', source: 'Hình ảnh minh họa mụn viêm bọc trên da mặt' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084300.png', caption: 'Mụn viêm đỏ có mủ ở vùng má – mụn bọc nông dưới da', source: 'Hình ảnh minh họa mụn viêm có mủ trên má' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084300.png', caption: 'Mụn viêm đỏ sưng to trên da – dạng papule có đầu mủ', source: 'Hình ảnh minh họa mụn viêm bọc trên da mặt' },
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20153833.png', caption: 'Mụn mủ nhiều điểm trên da mặt – cần được khám da liễu', source: 'Hình ảnh minh họa mụn mủ lan rộng' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       },
       {
-        id: 'mun-3',
-        name: 'Chiếc áo ngứa phiền phức- Viêm da cơ địa',
-        otherNames: 'Eczema, Atopic Dermatitis',
-        description: 'Da khô, ngứa, đỏ bùng phát theo đợt. Cơ địa di truyền hoặc do tiếp xúc chất không hợp.',
-        causes: 'Gen di truyền + rào cản da suy yếu → da khô, dễ kích ứng → viêm khi gặp tác nhân triggers.',
-        symptoms: ['Da khô, ngứa, đỏ bùng phát theo đợt', 'Vùng khuỷu tay, đầu gối (học sinh lớn) hoặc má, trán (trẻ nhỏ)', 'Da dày, vằn vằn (lichen hóa) do gãi mạn', 'Da nhạy cảm, dễ bị kích ứng'],
-        schoolContext: 'Dùng xà phòng thơm, nước giặt đậm mùi, áo đồng phục bí, phòng máy lạnh khô, hoặc đeo phụ kiện kim loại (niken) đều có thể làm bùng phát.',
-        treatment: ['NGỪNG: Gãi, dùng xà phòng thơm, nước giặt mùi hắc.', 'RỬA: Tắm nước ấm vừa. Thoa kem dưỡng ẩm NGAY SAU KHI TẮM còn ẩm.', 'DỊU: Kem steroid nhẹ (hydrocortisone 1%) tối đa 7 ngày cho đợt bùng phát.', 'KHÁM: Đến da liễu để được kê kem ức chế miễn dịch.'],
-        dangerSigns: ['Da đỏ rực, ngứa không ngủ được nhiều đêm', 'Có mủ, vảy vàng, sốt (nhiễm trùng thứ phát)', 'Da bong tróc rộng, có dấu hiệu nhiễm Herpes'],
+        id: 'dal-3',
+        name: 'Da phản ứng mạnh – Viêm da tiếp xúc / Dị ứng da',
+        otherNames: 'Contact dermatitis / allergic skin reaction',
+        description: 'Là tình trạng da đỏ, ngứa, rát hoặc bong sau khi tiếp xúc với sản phẩm, mỹ phẩm, nước giặt, kim loại hay chất gây kích ứng.',
+        causes: 'Tiếp xúc với sản phẩm mới, mỹ phẩm, xà phòng, nước giặt hoặc kim loại (niken) → phản ứng dị ứng trên da.',
+        symptoms: ['Da đỏ, ngứa hoặc rát nhiều hơn bình thường', 'Có thể bong, khô, châm chích hoặc hơi phù', 'Thường xuất hiện sau khi dùng sản phẩm mới', 'Vùng da tổn thương khá khớp nơi tiếp xúc'],
+        schoolContext: 'Đổi sữa rửa mặt, serum, kem chống nắng, xà phòng, nước giặt hoặc đeo phụ kiện kim loại quá lâu.',
+        treatment: ['NGỪNG: Ngừng ngay sản phẩm nghi gây kích ứng và ngừng gãi.', 'RỬA: Rửa nhẹ bằng nước sạch hoặc sản phẩm dịu nhẹ.', 'DỊU: Dưỡng ẩm đơn giản, tránh makeup hoặc hoạt chất mạnh.', 'KHÁM: Đi khám nếu tổn thương lan rộng, tái phát hoặc không rõ nguyên nhân.'],
+        dangerSigns: ['Da sưng nhiều, rỉ dịch, có mủ hoặc đóng mày vàng', 'Càng bôi càng rát, đỏ hoặc lan nhanh', 'Tổn thương ở quanh mắt, môi hoặc kèm khó thở, sưng môi'],
         images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20155359.png', caption: 'Da khô đỏ bùng phát viêm da cơ địa ở vùng má', source: 'Hình ảnh minh họa viêm da cơ địa trên da' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20172402.png', caption: 'Tổn thương viêm da cơ địa – da đỏ ngứa, khô bong tróc', source: 'Hình ảnh minh họa viêm da cơ địa bùng phát' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20175216.png', caption: 'Viêm da cơ địa ở vùng cổ – da đỏ rực và khô rát', source: 'Hình ảnh minh họa viêm da cơ địa ở cổ' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20155359.png', caption: 'Da đỏ ngứa do viêm da tiếp xúc – vùng da bị kích ứng', source: 'Hình ảnh minh họa viêm da tiếp xúc' }
         ],
-        sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }, { title: 'AAD', url: 'https://aad.org' }]
+        sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       },
       {
-        id: 'mun-4',
-        name: 'Vòng tròn đáng ghét- Nấm da',
-        otherNames: 'Tinea, Ringworm, Dermatophytosis',
-        description: 'Nhiễm nấm bề mặt da, tóc, móng. Đặc trưng bởi tổn thương hình tròn, vòng đồng tâm, ngứa dữ dội.',
-        causes: 'Nấm Dermatophytes lây qua tiếp xúc da-da hoặc dùng chung đồ dùng cá nhân (khăn, mũ, lược, đồ thể thao).',
-        symptoms: ['Tổn thương hình tròn, vòng đồng tâm (rìa đỏ cao, giữa lành)', 'Vảy trắng, bong tróc ở rìa tổn thương', 'Ngứa dữ dội', 'Có thể rụng tóc từng mảng (nấm da đầu)'],
-        schoolContext: 'Lây qua dùng chung khăn tắm, ga giường, đồ thể thao. Phổ biến trong phòng gym, lớp bơi, ký túc xá. Trẻ bán trú dùng chung gối, mũ, lược.',
-        treatment: ['NGỪNG: Dùng chung khăn, mũ, lược, đồ thể thao. Để da thoáng.', 'RỬA: Giữ da KHÔ RÁO sạch sẽ. Thay vớ, quần áo thấm mồ hôi ngay.', 'DỊU: Thoa kem chống nấm clotrimazole 1% – 2 lần/ngày, liên tục 2-4 tuần.', 'KHÁM: Nếu không cải thiện sau 2 tuần → cần thuốc uống từ da liễu.'],
-        dangerSigns: ['Tổn thương lan rộng khắp cơ thể', 'Nấm móng lan rộng, móng biến dạng nặng', 'Có mủ, sưng đỏ quanh tổn thương'],
+        id: 'dal-4',
+        name: 'Da dầu bong nhẹ – Viêm da tiết bã',
+        otherNames: 'Seborrhoeic dermatitis',
+        description: 'Là tình trạng đỏ nhẹ kèm vảy nhờn hoặc bong trắng mịn ở vùng tiết dầu như chân mày, rãnh mũi má, da đầu hoặc sau tai.',
+        causes: 'Nấm Malassezia trên da + tăng tiết bã nhờn + stress/thời tiết → viêm da tiết bã.',
+        symptoms: ['Có vảy trắng hoặc vàng nhạt ở chân mày, cánh mũi, da đầu', 'Da hơi đỏ, hơi ngứa hoặc khó chịu', 'Hay tái đi tái lại', 'Có thể đi kèm gàu ở da đầu'],
+        schoolContext: 'Dầu da nhiều, gàu, thức khuya, stress hoặc thời tiết nóng ẩm làm vùng da này dễ bùng lên.',
+        treatment: ['NGỪNG: Ngừng cào gãi hoặc chà mạnh vùng da bong vảy.', 'RỬA: Giữ da đầu và vùng mặt sạch, rửa dịu nhẹ.', 'DỊU: Dưỡng ẩm mỏng nhẹ, tránh sản phẩm gây bí.', 'KHÁM: Đi khám nếu đỏ nhiều, ngứa kéo dài hoặc lan rộng.'],
+        dangerSigns: ['Vùng da đỏ rát nhiều, sưng đau hoặc bội nhiễm', 'Da đầu bong vảy dày, rụng tóc nhiều', 'Không cải thiện sau thời gian chăm sóc cơ bản'],
         images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/hinh-anh-benh-nam-aspergillus.jpg', caption: 'Tổn thương nấm da hình tròn với vòng đồng tâm đặc trưng', source: 'Hình ảnh minh họa nấm da Dermatophytosis' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/hinh-anh-benh-nam-da-o-nguoi-do-nam-candida.jpg', caption: 'Nấm da ở vùng mặt – tổn thương đỏ có vảy trắng', source: 'Hình ảnh minh họa nấm da Candida trên da người' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20172402.png', caption: 'Viêm da tiết bã – da đỏ có vảy trắng ở vùng mặt', source: 'Hình ảnh minh họa viêm da tiết bã' }
+        ],
+        sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
+      },
+      {
+        id: 'dal-5',
+        name: 'Vòng tròn đáng ghét – Nấm da',
+        otherNames: 'Tinea / Ringworm',
+        description: 'Là nhiễm nấm ngoài da, thường tạo thành mảng tròn hoặc bầu dục, ngứa, có rìa rõ và dễ lan nếu chủ quan.',
+        causes: 'Nấm Dermatophytes lây qua tiếp xúc da-da hoặc dùng chung đồ dùng cá nhân (khăn, mũ, lược, đồ thể thao).',
+        symptoms: ['Mảng tròn hoặc bầu dục, rìa đỏ hơn', 'Ngứa, bong vảy nhẹ', 'Tổn thương có xu hướng lan dần', 'Ở da đầu có thể ngứa và rụng tóc thành mảng'],
+        schoolContext: 'Dùng chung khăn, quần áo, lược, mũ; mặc đồ thể dục ẩm; phòng ở bí hoặc có tiếp xúc thú cưng bị nấm.',
+        treatment: ['NGỪNG: Ngừng dùng chung đồ cá nhân và đừng bôi kem trộn, thuốc lạ.', 'RỬA: Giữ vùng da sạch, khô; thay đồ sau khi đổ mồ hôi.', 'DỊU: Giặt sạch đồ tiếp xúc trực tiếp với vùng da bệnh.', 'KHÁM: Đi khám nếu tổn thương ở da đầu, móng, lan rộng hoặc tái phát.'],
+        dangerSigns: ['Nấm lan nhanh hoặc có nhiều vị trí cùng lúc', 'Da đầu rụng tóc thành mảng', 'Có mủ, đau, sưng nóng hoặc đã bôi thuốc mà lan rộng hơn'],
+        images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/hinh-anh-benh-nam-aspergillus.jpg', caption: 'Nấm da hình tròn với vòng đồng tâm đặc trưng', source: 'Hình ảnh minh họa nấm da Dermatophytosis' },
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084536.png', caption: 'Nấm da ở vùng cổ với tổn thương đỏ ngứa, có vảy', source: 'Hình ảnh minh họa nấm da ở cổ' }
         ],
         sources: [{ title: 'CDC', url: 'https://cdc.gov/fungal/diseases/ringworm.html' }]
       },
       {
-        id: 'mun-5',
-        name: 'Con ngứa về đêm-Ghẻ',
-        otherNames: 'Scabies',
-        description: 'Do ký sinh trùng Sarcoptes scabiei đào đường hang dưới da. Ngứa dữ dội NHẤT LÀ VỀ ĐÊM. Lây qua tiếp xúc da-da kéo dài.',
+        id: 'dal-6',
+        name: 'Con ngứa về đêm – Ghẻ',
+        otherNames: 'Scabies – Sarcoptes scabiei',
+        description: 'Là tình trạng ký sinh trùng ngoài da gây ngứa dữ dội, đặc biệt về đêm, và dễ lây trong môi trường sống tập thể.',
         causes: 'Ký sinh trùng ghẻ đào đường hang trong lớp sừng da, đẻ trứng. Lây qua tiếp xúc da-da kéo dài hoặc dùng chung khăn, ga giường.',
-        symptoms: ['NGỨA DỮ DỘI VỀ ĐÊM – đặc trưng nhất của ghẻ', 'Đường hang xám nhạt dưới da ở kẽ ngón, cổ tay, nách, thắt lưng', 'Nốt đỏ nhỏ rải rác, có thể có mụn nước nhỏ', 'Da trầy do gãi, có thể nhiễm trùng'],
-        schoolContext: 'Lây qua tiếp xúc da-da kéo dài (khó xảy ra trong lớp học thông thường, phổ biến trong gia đình, ký túc xá).',
-        treatment: ['NGỪNG: Tiếp xúc da-da với người bệnh. Dùng chung khăn, ga giường.', 'RỬA: Giặt KHĂN, GA GIƯỜNG, VỚ bằng NƯỚC SÔI (>60°C) hoặc cho vào túi nilon đậy kín 72 giờ.', 'DỊU: Thoa permethrin 5% lên toàn thân từ cổ trở xuống – để qua đêm 8-12h rồi rửa sạch. Lặp lại sau 7 ngày.', 'KHÁM + TẤT CẢ NGƯỜI TRONG GIA ĐÌNH cùng điều trị đồng thời.'],
-        dangerSigns: ['Ngứa không ngủ được nhiều đêm liên tiếp', 'Tổn thương lan rộng toàn thân, có mủ', 'Da trầy sâu, chảy máu, hình thành vảy dày'],
+        symptoms: ['Ngứa nhiều về đêm', 'Nổi sẩn nhỏ ở kẽ tay, cổ tay, khuỷu tay, nách, eo', 'Có thể thấy vệt nhỏ như đường hầm', 'Gãi nhiều gây trầy xước'],
+        schoolContext: 'Ngủ chung chăn chiếu, ở phòng đông người, dùng chung áo khoác hoặc tiếp xúc da kề da kéo dài.',
+        treatment: ['NGỪNG: Ngừng dùng chung chăn gối, đồ mặc sát người và hạn chế tiếp xúc gần kéo dài.', 'RỬA: Giặt ga giường, khăn, quần áo và xử lý đồ dùng cá nhân sạch sẽ.', 'DỊU: Cắt móng tay ngắn, tránh gãi và giữ da sạch.', 'KHÁM: Ghẻ thường cần thuốc đặc trị, nên đi khám thay vì tự bôi linh tinh.'],
+        dangerSigns: ['Ngứa dữ dội đến mất ngủ', 'Da có mủ, lở loét, nghi bội nhiễm', 'Nhiều người trong phòng cùng ngứa'],
         images: [
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-boc-la-gi.png', caption: 'Ký sinh trùng ghẻ Sarcoptes scabiei dưới kính hiển vi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20175223.png', caption: 'Tổn thương ghẻ trên da với đường hang đặc trưng', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20183232.png', caption: 'Đường hang ghẻ dưới da tại vị trí kẽ ngón tay', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20175223.png', caption: 'Tổn thương ghẻ trên da với đường hang đặc trưng', source: 'Hình ảnh minh họa ghẻ trên da' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20183232.png', caption: 'Đường hang ghẻ dưới da tại vị trí kẽ ngón tay', source: 'Hình ảnh minh họa đường hang ghẻ' }
         ],
         sources: [{ title: 'CDC', url: 'https://cdc.gov/parasites/scabies' }]
       },
       {
-        id: 'mun-7',
+        id: 'dal-7',
         name: 'Nốt đỏ quanh sợi lông – Viêm nang lông',
         otherNames: 'Folliculitis',
-        description: 'Viêm nang lông là tình trạng viêm nhiễm ở phần gốc (nang) sợi lông, tạo ra các nốt đỏ nhỏ hoặc mụn mủ quanh lỗ chân lông. Phổ biến ở vùng da đầu gối, cẳng chân, mặt và lưng.',
-        causes: 'Vi khuẩn tụ cầu vàng (S. aureus) xâm nhập vào nang lông qua vết xước nhỏ, cạo râu, hoặc do cọ xát quần áo. Tình trạng bít tắc nang lông + mồ hôi + vệ sinh kém cũng là yếu tố.',
-        symptoms: ['Nốt đỏ nhỏ hoặc mụn mủ quanh lỗ chân lông', 'Sợi lông mọc xoắn ốc hoặc không mọc được (lông quặn)', 'Vùng da quanh nang lông sưng đỏ, có thể ngứa hoặc đau nhẹ', 'Mủ trắng ở đầu nốt, vỡ ra khi gãi hoặc cạy', 'Có thể lan rộng thành nhiều nốt liên tiếp'],
-        schoolContext: 'Học sinh mặc đồng phục bó sát, đạp xe, chơi thể thao → cọ xát da đầu gối, cẳng chân. Tắm muộn sau giờ sinh hoạt thể chất, mồ hôi tích tụ → vi khuẩn theo mồ hôi vào nang lông. Học sinh hay cạy mụn ở chân.',
-        treatment: ['NGỪNG: Cạy, nặn, gãi vùng viêm nang lông. Mặc đồ bó sát gây cọ xát.', 'RỬA: Rửa sạch vùng da bị viêm bằng xà phòng diệt khuẩn 2 lần/ngày. Giữ da khô ráo, thay vớ sau khi đổ mồ hôi.', 'DỊU: Thoa dung dịch sát khuẩn (povidone iodine) hoặc kem kháng sinh (mupirocin) lên nốt viêm. Tránh cạo râu/lông vùng bị viêm.', 'KHÁM: Nếu viêm lan rộng, có nhiều mủ, sốt → đến da liễu cần kháng sinh uống.'],
-        dangerSigns: ['Nốt đỏ lan rộng thành mảng lớn trên da đầu hoặc lưng', 'Có mủ vàng, sưng đỏ nóng quanh vùng viêm', 'Sốt kèm theo viêm nang lông', 'Lông quặn sâu dưới da, tạo u nhọt (boil/carbuncle)'],
+        description: 'Là tình trạng viêm quanh chân lông, nhìn như mụn nhỏ hoặc mụn mủ quanh sợi lông, có thể ngứa hoặc châm chích.',
+        causes: 'Vi khuẩn tụ cầu vàng (S. aureus) xâm nhập vào nang lông qua vết xước nhỏ, cạo lông sai cách, mồ hôi tích tụ.',
+        symptoms: ['Nốt đỏ nhỏ hoặc mụn mủ quanh chân lông', 'Ngứa hoặc châm chích', 'Hay gặp ở gáy, đùi, mông, bẹn', 'Có thể đóng vảy nhẹ'],
+        schoolContext: 'Cạo lông sai cách, mặc đồ chật khi tập, dùng khăn bẩn, da ẩm mồ hôi lâu hoặc ma sát liên tục.',
+        treatment: ['NGỪNG: Ngừng cạo nhổ lông liên tục và đừng nặn mụn mủ.', 'RỬA: Giữ vùng da sạch và khô, thay đồ sau khi đổ mồ hôi.', 'DỊU: Mặc đồ thoáng hơn và giảm ma sát vùng tổn thương.', 'KHÁM: Đi khám nếu nốt lan rộng, đau hơn, tái phát hoặc không đỡ sau vài ngày.'],
+        dangerSigns: ['Có ổ mủ to như nhọt', 'Sưng nóng đau rõ hoặc đỏ lan rộng', 'Kèm sốt hoặc khó vận động'],
         images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-viem-o-tran-acc-1.webp', caption: 'Nốt đỏ viêm nang lông quanh sợi lông trên da – tổn thương Folliculitis', source: 'Hình ảnh minh họa bệnh Viêm nang lông' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/bat_mi_nhung_cach_tri_mun_boc_sung_do_don_gian_va_hieu_qua_1_a290bd216b.jpg', caption: 'Viêm nang lông trên da vùng cẳng chân – nốt đỏ và mụn mủ quanh nang lông', source: 'Hình ảnh minh họa viêm nang lông ở cẳng chân' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20210726_nguyen-nhan-gay-mun-boc-2.jpg', caption: 'Viêm nang lông mãn tính – da sần, nốt đỏ li ti rải rác quanh chân lông', source: 'Hình ảnh minh họa viêm nang lông mãn tính trên da' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-viem-o-tran-acc-1.webp', caption: 'Nốt đỏ viêm nang lông quanh sợi lông trên da', source: 'Hình ảnh minh họa viêm nang lông' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/bat_mi_nhung_cach_tri_mun_boc_sung_do_don_gian_va_hieu_qua_1_a290bd216b.jpg', caption: 'Viêm nang lông trên da vùng cẳng chân – nốt đỏ và mụn mủ', source: 'Hình ảnh minh họa viêm nang lông ở cẳng chân' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       }
     ]
   },
-  // ── BỆNH LÂY NHIỄM ──
+  // ═══════════════════════════════════════════════════════════════
+  // II. BỆNH TRUYỀN NHIỄM THƯỜNG GẶP TRONG HỌC ĐƯỜNG
+  // ═══════════════════════════════════════════════════════════════
   {
-    category: 'BỆNH LÂY NHIỄM',
+    category: 'II. BỆNH TRUYỀN NHIỄM THƯỜNG GẶP',
     icon: '🤒',
     color: 'orange',
     bgLight: 'bg-orange-50',
@@ -160,78 +174,195 @@ const HEALTH_LIBRARY = [
     gradient: 'from-orange-500 to-amber-500',
     diseases: [
       {
-        id: 'tcm-1',
-        name: 'Tay - Chân - Miệng',
-        otherNames: 'Hand, Foot and Mouth Disease (HFMD)',
-        description: 'Sốt + loét miệng + phỏng nước lòng bàn tay/chân. Phổ biến ở trẻ dưới 10 tuổi, đặc biệt tiểu học.',
-        causes: 'Virus Coxsackie A (chủ yếu) và Enterovirus EV71. Lây qua giọt bắn, phân, nước bọt, dịch tiết từ mụn nước.',
-        symptoms: ['Sốt nhẹ đến sốt cao 2-3 ngày', 'Loét miệng đau, khó ăn', 'Phỏng nước ở lòng bàn tay, bàn chân, đôi khi mông, đầu gối', 'Biếng ăn, quấy khóc ở trẻ nhỏ'],
-        schoolContext: 'Virus tồn tại lâu trên bề mặt (bàn ghế, đồ chơi, tay nắm cửa). Lây qua ăn uống chung, tiếp xúc dịch tiết. Cần cách ly trẻ ngay khi phát hiện.',
-        treatment: ['NGỪNG: Cho trẻ đến trường khi đang bệnh. Dùng chung đồ ăn uống, khăn.', 'RỬA: Cách ly tại nhà. Rửa tay thường xuyên bằng xà phòng.', 'DỊU: Cho ăn đồ lỏng, mềm, nguội (cháo, súp, sữa). Hạ sốt nếu cần.', 'KHÁM NGAY nếu sốt cao >39°C không hạ, co giật, biếng ăn dữ dội.'],
-        dangerSigns: ['Sốt cao >39°C không hạ dù thuốc', 'Giật mình, run tay chân, quấy khóc vô cớ (dấu hiệu thần kinh)', 'Đi đứng loạng choạng, nôn ói, khó thở', 'Da nổi vân tím, vã mồ hôi lạnh (dấu hiệu sốc)'],
-        images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20200727_071459_231570_tcm_max_1800x1800_png_96162025f3.png', caption: 'Sơ đồ minh họa tổn thương bệnh Tay - Chân - Miệng trên da', source: 'Hình ảnh minh họa bệnh Tay Chân Miệng' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20220604_125430_223335_tre_bi_tay_chan_mie_max_1800x1800_png_174dcc6bc8.png', caption: 'Phỏng nước đặc trưng của bệnh Tay - Chân - Miệng trên bàn chân', source: 'Hình ảnh minh họa bệnh Tay Chân Miệng ở trẻ em' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-tay-chan-mieng_0003301_710.jpeg', caption: 'Tổn thương phỏng nước trên lòng bàn tay do bệnh HFMD', source: 'Hình ảnh minh họa bệnh Tay Chân Miệng trên tay' }
-        ],
-        sources: [{ title: 'CDC', url: 'https://cdc.gov' }, { title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
-      },
-      {
-        id: 'tcm-2',
-        name: 'Nốt nước lắm drama-Thủy đậu',
-        otherNames: 'Chickenpox, Varicella',
-        description: 'Virus Varicella-Zoster. Mụn nước TRONG trên nền da ĐỎ, ngứa, sốt nhẹ. Để lại sẹo nếu gãi nhiều.',
-        causes: 'Virus Varicella-Zoster lây qua giọt bắn và tiếp xúc dịch mụn nước. Một trẻ bệnh có thể lây cho nhiều bạn trong lớp.',
-        symptoms: ['Sốt nhẹ, mệt mỏi, đau đầu 1-2 ngày', 'Phát ban đỏ rải rác, sau đó hình thành MỤN NƯỚC TRONG trong vài giờ', 'Mụn xuất hiện ở mặt, da đầu, thân mình, tay chân', 'Mụn khô thành vảy trong 5-10 ngày'],
-        schoolContext: 'Lây rất nhanh trong trường học. Một học sinh bệnh có thể lây cho cả lớp. Cần nghỉ học ít nhất 7 ngày sau phát ban.',
-        treatment: ['NGỪNG: Gãi mụn nước – để lại sẹo. Đến trường khi còn vảy chưa khô hẳn.', 'RỬA: Tắm nước ấm nhẹ nhàng. Cắt móng ngắn. Mặc đồ mềm, thoáng.', 'DỊU: Thuốc chống ngứa theo chỉ định. Chườm mát giảm ngứa.', 'KHÁM NGAY nếu sốt cao liên tục, khó thở, đau đầu dữ dội.'],
-        dangerSigns: ['Sốt cao liên tục không hạ', 'Mụn nước có mủ, sưng đỏ lan rộng (nhiễm trùng da)', 'Trẻ khó thở, ho nhiều (viêm phổi)', 'Đau đầu dữ dội, cứng cổ, lú lẫn (viêm não)'],
-        images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-thuy-dau-2-1427963655144-484x360.jpg', caption: 'Mụn nước trong suốt đặc trưng thủy đậu trên da', source: 'Hình ảnh minh họa bệnh Thủy đậu trên da' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-thuy-dau-3.webp', caption: 'Mụn nước thủy đậu chickenpox trên thân mình với nhiều vết phồng rộp', source: 'Hình ảnh minh họa bệnh Thủy đậu trên cơ thể' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/z4694962895999_7f09f119c9ab64b0374672e34e8f4b1e.jpg', caption: 'Mụn nước đặc trưng thủy đậu varicella trên da vai bệnh nhân', source: 'Hình ảnh minh họa bệnh Thủy đậu varicella' }
-        ],
-        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
-      },
-      {
-        id: 'tcm-3',
-        name: 'Cơn sốt nhập trường-Cúm',
+        id: 'btn-1',
+        name: 'Cơn sốt nhập trường – Cúm mùa',
         otherNames: 'Influenza',
-        description: 'Virus Influenza A/B. Sốt cao ĐỘT BIẾN + đau cơ + ho + mệt MẤT ĂN NGỦ. Nặng hơn cảm thường rất nhiều.',
-        causes: 'Virus Influenza lây qua giọt bắn khi ho, hắt hơi, nói chuyện. Bùng phát theo mùa (mùa lạnh, giao mùa, mùa thi).',
-        symptoms: ['Sốt cao ĐỘT BIẾN 39-40°C, run rẩy, ớn lạnh', 'Đau đầu dữ dội, đau cơ toàn thân', 'Ho dữ dội, đau ngực khi ho', 'Mệt mỏi nặng, nằm liệt giường 3-5 ngày'],
-        schoolContext: 'Một học sinh bệnh có thể lây cho cả lớp trong vài ngày. Phổ biến giai đoạn giao mùa, lúc thi cử.',
-        treatment: ['NGỪNG: Đến trường khi đang sốt, ho, đau mỏi. Đeo khẩu trang nếu bắt buộc ra ngoài.', 'RỬA: Rửa tay thường xuyên. Dùng khăn giấy che miệng khi ho/hắt hơi.', 'DỊU: Hạ sốt bằng paracetamol. Uống nhiều nước, oresol, nước hoa quả.', 'KHÁM: Nếu sốt cao >3 ngày, khó thở, đau ngực.'],
-        dangerSigns: ['Khó thở, thở nhanh, thở gấp (viêm phổi)', 'Sốt không hạ hoặc sốt lại sau 3-4 ngày', 'Đau ngực dữ dội, ho ra máu', 'Lú lẫn, không tỉnh táo, co giật'],
+        description: 'Là các bệnh nhiễm virus đường hô hấp có thể khởi phát nhanh với sốt, đau họng, ho, mệt nhiều và dễ lây trong môi trường lớp học.',
+        causes: 'Virus Influenza A/B lây qua giọt bắn khi ho, hắt hơi, nói chuyện. Bùng phát theo mùa (mùa lạnh, giao mùa, mùa thi).',
+        symptoms: ['Sốt hoặc ớn lạnh', 'Ho, đau họng, nghẹt mũi hoặc sổ mũi', 'Đau đầu, đau cơ, mệt nhiều', 'Có thể hụt hơi, mất vị giác/khứu giác hoặc buồn nôn'],
+        schoolContext: 'Lớp học kín, tiếp xúc gần, ngủ ít, dùng chung chai nước hoặc đi học dù đang sốt.',
+        treatment: ['NGỪNG: Ngừng cố đi học khi còn sốt hoặc mệt nhiều.', 'RỬA: Rửa tay kỹ, đeo khẩu trang khi ho và lau bề mặt hay chạm.', 'DỊU: Nghỉ ngơi, uống đủ nước, ăn nhẹ dễ tiêu.', 'KHÁM: Đi khám nếu triệu chứng nặng nhanh, kéo dài hoặc có bệnh nền.'],
+        dangerSigns: ['Khó thở, đau ngực', 'Lơ mơ, co giật, môi tím', 'Nôn nhiều, mất nước hoặc sốt đỡ rồi lại nặng lên'],
         images: [
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/viruscum1-crop-1738918501629.webp', caption: 'Virus cúm Influenza H1N1 qua kính hiển vi điện tử', source: 'Hình ảnh minh họa virus cúm Influenza' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-cum-mua-do-virus-cum-influenza-chung-a-va-b-gay-ra.webp', caption: 'Virus cúm Influenza A và B gây bệnh cúm mùa', source: 'Hình ảnh minh họa bệnh cúm Influenza' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/cum-01-1.png', caption: 'Người bệnh cúm Influenza với các triệu chứng mệt mỏi đau đầu toàn thân', source: 'Hình ảnh minh họa bệnh cúm mùa' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/cum-01-1.png', caption: 'Người bệnh cúm với các triệu chứng mệt mỏi đau đầu toàn thân', source: 'Hình ảnh minh họa bệnh cúm mùa' }
         ],
         sources: [{ title: 'WHO', url: 'https://who.int/influenza' }]
       },
       {
-        id: 'tcm-4',
-        name: 'Mắt hồng hờn dỗi-Đau mắt đỏ',
-        otherNames: 'Viêm kết mạc, Conjunctivitis',
-        description: 'Viêm kết mạc do virus (Adenovirus) hoặc vi khuẩn. Mắt đỏ rực + ghèn/đục nhiều + chảy nước mắt. Lây LAN NHANH trong lớp.',
+        id: 'btn-2',
+        name: 'Nốt nước lắm drama – Thủy đậu',
+        otherNames: 'Varicella (Chickenpox)',
+        description: 'Là bệnh do virus gây sốt, mệt và ban ngứa tiến triển thành mụn nước rồi đóng vảy; dễ lây trong môi trường trường lớp.',
+        causes: 'Virus Varicella-Zoster lây qua giọt bắn và tiếp xúc dịch mụn nước. Một học sinh bệnh có thể lây cho cả lớp.',
+        symptoms: ['Sốt, đau đầu, chán ăn', 'Ban ngứa rồi nổi mụn nước', 'Nốt thường bắt đầu ở thân mình rồi lan', 'Nhiều nốt tồn tại ở các giai đoạn khác nhau'],
+        schoolContext: 'Cùng lớp có người mắc nhưng vẫn đi học, dùng chung không gian kín hoặc chủ quan vì nghĩ chỉ trẻ nhỏ mới bị.',
+        treatment: ['NGỪNG: Ngừng đi học, đi chơi khi đang sốt hoặc còn nổi nốt mới.', 'RỬA: Giữ da sạch, rửa tay sau khi chạm vào nốt.', 'DỊU: Cắt móng tay ngắn, chườm mát, nghỉ ngơi.', 'KHÁM: Tuổi teen bị thủy đậu nên được theo dõi kỹ hơn, cần đi khám khi nặng.'],
+        dangerSigns: ['Sốt cao kéo dài', 'Nốt đỏ nóng đau, rỉ mủ', 'Khó thở, nôn nhiều hoặc lơ mơ'],
+        images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-thuy-dau-2-1427963655144-484x360.jpg', caption: 'Mụn nước trong suốt đặc trưng thủy đậu trên da', source: 'Hình ảnh minh họa bệnh Thủy đậu trên da' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-thuy-dau-3.webp', caption: 'Mụn nước thủy đậu chickenpox trên thân mình với nhiều vết phồng rộp', source: 'Hình ảnh minh họa bệnh Thủy đậu trên cơ thể' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'btn-3',
+        name: 'Má sưng bất ngờ – Quai bị',
+        otherNames: 'Mumps',
+        description: 'Là bệnh do virus có thể gây sốt và sưng đau vùng mang tai, làm khuôn mặt trông phồng một hoặc hai bên.',
+        causes: 'Virus Rubulavirus lây qua giọt bắn và tiếp xúc nước bọt. Chưa tiêm phòng là yếu tố nguy cơ cao.',
+        symptoms: ['Sưng đau vùng góc hàm hoặc trước tai', 'Đau khi nhai, nuốt hoặc há miệng', 'Sốt, mệt, chán ăn', 'Có thể sưng một hoặc hai bên'],
+        schoolContext: 'Tiếp xúc gần trong lớp, ký túc xá, dùng chung đồ ăn uống hoặc chưa tiêm phòng đầy đủ.',
+        treatment: ['NGỪNG: Ngừng đi học khi đang sốt hoặc sưng đau rõ.', 'RỬA: Giữ vệ sinh tay và đồ dùng cá nhân.', 'DỊU: Nghỉ ngơi, ăn đồ mềm, uống đủ nước.', 'KHÁM: Đi khám sớm để được đánh giá và hướng dẫn theo dõi.'],
+        dangerSigns: ['Sưng đau tăng nhanh, khó ăn uống', 'Đau tinh hoàn, đau bụng hoặc đau đầu nhiều', 'Sốt cao kéo dài hoặc mệt lả rõ'],
+        images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20175223.png', caption: 'Sưng tuyến mang tai do quai bị – khuôn mặt phồng một bên', source: 'Hình ảnh minh họa bệnh Quai bị' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'btn-4',
+        name: 'Ban đỏ cần cảnh giác – Sởi',
+        otherNames: 'Measles',
+        description: 'Là bệnh truyền nhiễm do virus có thể gây sốt cao, ho, chảy mũi, mắt đỏ rồi nổi ban toàn thân.',
+        causes: 'Virus Measles lây qua giọt bắn. Tiếp xúc với người mắc trong môi trường đông người, chưa tiêm phòng đầy đủ.',
+        symptoms: ['Sốt cao, mệt nhiều', 'Ho, chảy mũi, đỏ mắt', 'Ban đỏ lan từ mặt xuống thân người', 'Toàn thân mệt, chán ăn'],
+        schoolContext: 'Tiếp xúc với người mắc trong môi trường đông người, chưa tiêm phòng đầy đủ hoặc đang có dịch lây lan.',
+        treatment: ['NGỪNG: Ngừng đi học và tránh tiếp xúc gần khi nghi mắc bệnh lây.', 'RỬA: Giữ vệ sinh hô hấp, rửa tay thường xuyên.', 'DỊU: Nghỉ ngơi, uống nước, theo dõi sốt và ban.', 'KHÁM: Đi khám sớm ngay khi nghi ngờ để được đánh giá trực tiếp.'],
+        dangerSigns: ['Sốt cao khó hạ', 'Khó thở, lừ đừ, co giật', 'Mất nước, ăn uống rất kém hoặc ban lan nhanh kèm mệt nhiều'],
+        images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20155359.png', caption: 'Ban đỏ đặc trưng của bệnh sởi lan từ mặt xuống thân', source: 'Hình ảnh minh họa bệnh Sởi' }
+        ],
+        sources: [{ title: 'CDC', url: 'https://cdc.gov/measles' }]
+      },
+      {
+        id: 'btn-5',
+        name: 'Muỗi không báo trước – Sốt xuất huyết Dengue',
+        otherNames: 'Dengue fever',
+        description: 'Là bệnh do virus lây qua muỗi, thường gây sốt cao, mệt nhiều, đau đầu, đau cơ và có thể diễn tiến nặng nếu theo dõi không kỹ.',
+        causes: 'Virus Dengue lây qua vết đốt của muỗi Aedes aegypti. Mùa mưa, nhiều muỗi, ngủ không màn là điều kiện thuận lợi.',
+        symptoms: ['Sốt cao đột ngột', 'Đau đầu, đau hốc mắt, đau cơ khớp', 'Mệt lả, buồn nôn', 'Có thể nổi chấm xuất huyết hoặc chảy máu chân răng'],
+        schoolContext: 'Mùa mưa, nhiều muỗi, ngủ không màn hoặc khu vực sống có ca sốt xuất huyết.',
+        treatment: ['NGỪNG: Ngừng vận động gắng sức và đừng tự dùng thuốc bừa bãi.', 'RỬA: Giữ vệ sinh môi trường sống, tránh muỗi đốt thêm.', 'DỊU: Nghỉ ngơi, uống đủ nước, theo dõi nhiệt độ và dấu hiệu bất thường.', 'KHÁM: Đi khám sớm khi sốt cao, mệt nhiều hoặc nghi đang ở vùng có dịch.'],
+        dangerSigns: ['Đau bụng nhiều, nôn nhiều', 'Lừ đừ, tay chân lạnh, chảy máu bất thường', 'Tiểu ít, khát nhiều hoặc mệt tăng sau vài ngày sốt'],
+        images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084300.png', caption: 'Chấm xuất huyết trên da – dấu hiệu cảnh báo sốt xuất huyết', source: 'Hình ảnh minh họa sốt xuất huyết Dengue' }
+        ],
+        sources: [{ title: 'WHO', url: 'https://who.int/health-topics/dengue' }]
+      },
+      {
+        id: 'btn-6',
+        name: 'Mắt hồng hờn dỗi – Đau mắt đỏ',
+        otherNames: 'Conjunctivitis / Pink eye',
+        description: 'Là viêm kết mạc khiến mắt đỏ, cộm, chảy nước hoặc ghèn; có thể lây nếu vệ sinh kém.',
         causes: 'Adenovirus (phổ biến nhất) hoặc vi khuẩn (Staph, Strep). Lây qua dùng chung khăn, gối, kính, hoặc chạm tay vào dịch tiết mắt.',
-        symptoms: ['Lòng trắng mắt đỏ rực, đỏ tươi hoặc hồng', 'Cảm giác cộm, rát như có cát trong mắt', 'Ghèn (đục) nhiều, buổi sáng dính mắt khó mở', 'Chảy nước mắt, sưng mí mắt, nhạy cảm ánh sáng'],
-        schoolContext: 'Một ca trong lớp có thể lây cho NHIỀU BẠN trong vài ngày. Dùng chung khăn mặt, gối, kính bơi là nguy cơ cao.',
-        treatment: ['NGỪNG: Dùng chung khăn, gối, kính, thuốc nhỏ mắt. Đến trường khi đang đỏ mắt nhiều ghèn.', 'RỬA: Nhỏ nước muối sinh lý (NaCl 0.9%) thường xuyên. Rửa tay xà phòng ngay sau khi chạm vào mắt.', 'DỊU: Thuốc nhỏ mắt kháng virus hoặc kháng sinh theo đơn bác sĩ.', 'KHÁM: Nếu đỏ nặng, mờ mắt, đau nhiều, hoặc không cải thiện sau 3 ngày.'],
-        dangerSigns: ['Đau nhức mắt dữ dội, đau sâu vào hốc mắt', 'Nhìn mờ, suy giảm thị lực đột ngột', 'Mắt rất sợ ánh sáng, không thể mở mắt', 'Chảy mủ đặc hoặc có máu từ kết mạc'],
+        symptoms: ['Mắt đỏ hoặc hồng', 'Mi mắt hơi sưng', 'Có ghèn hoặc chảy nước mắt', 'Cộm, rát, ngứa, muốn dụi mắt liên tục'],
+        schoolContext: 'Dụi mắt bằng tay bẩn, dùng chung khăn mặt, gối, mỹ phẩm mắt hoặc đồ cá nhân trong phòng.',
+        treatment: ['NGỪNG: Ngừng dụi mắt và dùng chung khăn, mỹ phẩm mắt.', 'RỬA: Rửa tay thường xuyên, lau ghèn bằng khăn sạch riêng.', 'DỊU: Cho mắt nghỉ, giảm màn hình và giữ vệ sinh vật dụng cá nhân.', 'KHÁM: Đi khám nếu mắt đỏ nhiều, kéo dài hoặc không rõ nguyên nhân.'],
+        dangerSigns: ['Đau mắt rõ, sợ ánh sáng', 'Nhìn mờ không cải thiện sau khi lau ghèn', 'Mắt đỏ rực dữ dội hoặc triệu chứng nặng lên'],
         images: [
           { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-dau-mat-do4-min.jpg', caption: 'Viêm kết mạc đỏ rực – mắt đỏ đặc trưng của bệnh đau mắt đỏ', source: 'Hình ảnh minh họa bệnh Đau mắt đỏ' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mat-do.webp', caption: 'Mắt bị viêm kết mạc hồng đỏ từng vùng trên lòng trắng mắt', source: 'Hình ảnh minh họa mắt đỏ do viêm kết mạc' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/bi_dau_mat_do_bao_lau_thi_khoi_nhung_luu_y_can_biet_de_phuc_hoi_nhanh_4_b381ff7e32.png', caption: 'Đau mắt đỏ kết mạc với mạch máu đỏ tập trung quanh giác mạc', source: 'Hình ảnh minh họa đau mắt đỏ kết mạc' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mat-do.webp', caption: 'Mắt bị viêm kết mạc hồng đỏ từng vùng trên lòng trắng mắt', source: 'Hình ảnh minh họa mắt đỏ do viêm kết mạc' }
         ],
         sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
       }
     ]
   },
-  // ── SỨC KHỎE TÂM LÝ ──
+  // ═══════════════════════════════════════════════════════════════
+  // III. SỨC KHỎE MẮT VÀ THỊ LỰC HỌC ĐƯỜNG
+  // ═══════════════════════════════════════════════════════════════
   {
-    category: 'SỨC KHỎE TÂM LÝ',
+    category: 'III. SỨC KHỎE MẮT VÀ THỊ LỰC',
+    icon: '👁️',
+    color: 'blue',
+    bgLight: 'bg-blue-50',
+    borderLight: 'border-blue-200',
+    textColor: 'text-blue-600',
+    gradient: 'from-blue-500 to-cyan-500',
+    diseases: [
+      {
+        id: 'mt-1',
+        name: 'Tầm xa mờ mịt – Cận thị',
+        otherNames: 'Myopia / Nearsightedness',
+        description: 'Là tình trạng nhìn gần vẫn ổn nhưng nhìn xa bị mờ, như bảng cuối lớp tự động bật chế độ blur.',
+        causes: 'Trục nhãn cầu dài hơn bình thường hoặc công suất khúc xạ tăng. Yếu tố: di truyền, nhìn gần nhiều, ít ra ngoài trời.',
+        symptoms: ['Nhìn bảng, biển số, màn chiếu bị mờ', 'Hay nheo mắt để nhìn rõ hơn', 'Mỏi mắt hoặc đau đầu sau giờ học', 'Ngày càng thích ngồi gần bảng'],
+        schoolContext: 'Đọc sách quá gần, dùng điện thoại sát mặt, ít ra ngoài trời, đeo kính sai độ hoặc ngại đeo kính.',
+        treatment: ['NGỪNG: Ngừng cố chịu mờ hoặc mượn kính của bạn đeo tạm.', 'RỬA: Cho mắt nghỉ đúng cách giữa các giờ học.', 'DỊU: Điều chỉnh khoảng cách học và ánh sáng.', 'KHÁM: Đi khám mắt khi bắt đầu nhìn xa mờ hoặc đang đeo kính mà vẫn không rõ.'],
+        dangerSigns: ['Thị lực giảm nhanh', 'Đeo kính rồi vẫn mờ', 'Đau đầu lặp lại khi học hoặc nhìn mờ đột ngột'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Myopia.jpg/600px-Myopia.jpg', caption: 'Minh họa cơ chế cận thị – hình ảnh hội tụ trước võng mạc thay vì trên võng mạc', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
+      },
+      {
+        id: 'mt-2',
+        name: 'Nhìn gần cũng không êm – Viễn thị / Loạn thị',
+        otherNames: 'Hyperopia / Astigmatism',
+        description: 'Là các tật khúc xạ khiến mắt phải điều tiết nhiều hơn hoặc nhìn hình ảnh bị nhòe, méo, gây mỏi mắt và đau đầu khi học.',
+        causes: 'Viễn thị: trục nhãn cầu ngắn hơn bình thường. Loạn thị: bề mặt giác mạc hoặc thủy tinh thể không đều.',
+        symptoms: ['Đọc gần nhanh mỏi, nhức mắt', 'Đau đầu sau giờ học hoặc khi nhìn lâu', 'Chữ có thể bị nhòe, méo hoặc khó tập trung', 'Nheo mắt nhưng vẫn thấy không thật rõ'],
+        schoolContext: 'Đọc viết lâu, ánh sáng không phù hợp hoặc dùng thiết bị số kéo dài khiến triệu chứng dễ lộ rõ hơn.',
+        treatment: ['NGỪNG: Ngừng cố chịu đựng hoặc tự đoán là do mệt thông thường.', 'RỬA: Cho mắt nghỉ định kỳ giữa các hoạt động nhìn gần.', 'DỊU: Điều chỉnh khoảng cách học và ánh sáng.', 'KHÁM: Khám mắt để đo khúc xạ khi triệu chứng lặp lại.'],
+        dangerSigns: ['Đau đầu kéo dài, nhìn mờ thường xuyên', 'Học tập bị ảnh hưởng rõ', 'Có nhìn đôi hoặc đau mắt bất thường'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Hypermetropia_-_hyperopia.svg/600px-Hypermetropia_-_hyperopia.svg.png', caption: 'Minh họa cơ chế viễn thị – ánh sáng hội tụ sau võng mạc', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
+      },
+      {
+        id: 'mt-3',
+        name: 'Đôi mắt overtime – Mỏi mắt do màn hình',
+        otherNames: 'Digital eye strain',
+        description: 'Là trạng thái mắt quá tải sau khi nhìn màn hình lâu, nhất là khi học online, làm bài hoặc lướt điện thoại liên tục.',
+        causes: 'Điều tiết mắt liên tục khi nhìn gần, giảm tần số chớp mắt, ánh sáng màn hình không phù hợp.',
+        symptoms: ['Mắt nhức, mỏi, khó chịu', 'Nhìn mờ sau thời gian dài dùng màn hình', 'Khô, châm chích hoặc chảy nước mắt', 'Kèm đau đầu, mỏi cổ vai gáy'],
+        schoolContext: 'Ôm điện thoại 24/7, học thêm online tối muộn, màn hình quá chói, ngồi quá gần và quên chớp mắt.',
+        treatment: ['NGỪNG: Ngừng cày màn hình liên tục không nghỉ.', 'RỬA: Không cần rửa mắt bằng đủ loại dung dịch; cho mắt nghỉ là quan trọng nhất.', 'DỊU: Áp dụng quy tắc 20-20-20, giảm chói, chớp mắt chủ động.', 'KHÁM: Đi khám nếu nghỉ rồi vẫn không đỡ hoặc nghi đeo kính sai độ.'],
+        dangerSigns: ['Mờ mắt kéo dài không hết sau nghỉ', 'Đau đầu dai dẳng', 'Nhìn đôi hoặc đau mắt rõ'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Eye_digital_strain.jpg/600px-Eye_digital_strain.jpg', caption: 'Tư thế nhìn màn hình sai – ngồi quá gần gây mỏi mắt', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'AAO', url: 'https://aao.org' }]
+      },
+      {
+        id: 'mt-4',
+        name: 'Mắt sa mạc – Khô mắt',
+        otherNames: 'Dry eye',
+        description: 'Là khi mắt không có đủ nước mắt hoặc nước mắt hoạt động kém, khiến mắt cộm, rát và nhanh mệt.',
+        causes: 'Ngồi điều hòa lâu, đeo kính áp tròng, thức khuya, dùng màn hình liên tục, môi trường khô.',
+        symptoms: ['Cộm như có cát trong mắt', 'Rát, châm chích, đỏ nhẹ', 'Sợ ánh sáng hoặc nhìn mờ thoáng qua', 'Mắt nhanh mỏi khi đọc bài lâu'],
+        schoolContext: 'Ngồi điều hòa lâu, đeo kính áp tròng, thức khuya và dùng màn hình liên tục.',
+        treatment: ['NGỪNG: Ngừng đeo lens quá lâu và tránh để quạt/máy lạnh thổi thẳng vào mặt.', 'RỬA: Giữ vệ sinh mắt và tay, không tự nhỏ quá nhiều loại thuốc.', 'DỊU: Nghỉ mắt, chớp mắt nhiều hơn và hạn chế gió thổi.', 'KHÁM: Đi khám nếu khô mắt kéo dài, ảnh hưởng học tập hoặc đỏ rát nhiều.'],
+        dangerSigns: ['Mắt đỏ-rát-mờ kéo dài', 'Đau mắt rõ', 'Đeo lens mà mắt đỏ nhiều hoặc khó mở mắt'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Dry_eye_syndrome.jpg/600px-Dry_eye_syndrome.jpg', caption: 'Biểu hiện khô mắt – bề mặt giác mạc thiếu nước mắt bôi trơn', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'AAO', url: 'https://aao.org' }]
+      },
+      {
+        id: 'mt-5',
+        name: 'Cục nhỏ ở mí mắt – Chắp / Lẹo',
+        otherNames: 'Chalazion / Stye',
+        description: 'Là tình trạng sưng nhỏ ở mí mắt; lẹo thường đau và đỏ hơn, còn chắp hay to dần chậm hơn và ít đau hơn.',
+        causes: 'Lẹo: viêm nhiễm gốc lông mi (thường do tụ cầu). Chắp: ống dẫn nhầy bị tắc, nhầy tích tụ tạo u nhỏ.',
+        symptoms: ['Mí mắt có cục sưng nhỏ', 'Có thể đau, đỏ hoặc cộm khi chớp mắt', 'Mắt hơi khó chịu, nặng mí', 'Có thể xuất hiện một bên mắt'],
+        schoolContext: 'Dụi mắt bằng tay bẩn, vệ sinh mi mắt kém hoặc đã từng có viêm bờ mi.',
+        treatment: ['NGỪNG: Ngừng dụi mắt và không tự nặn vùng mí mắt.', 'RỬA: Rửa tay sạch trước khi chạm vào mắt.', 'DỊU: Chườm ấm nhẹ theo hướng dẫn an toàn.', 'KHÁM: Đi khám nếu sưng to, đau nhiều hoặc kéo dài không đỡ.'],
+        dangerSigns: ['Mí mắt sưng to nhanh, đau nhiều', 'Đỏ lan, sốt hoặc nhìn mờ', 'Cục tái đi tái lại nhiều lần'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Stye.jpg/600px-Stye.jpg', caption: 'Lẹo ở mí mắt – nốt đỏ sưng tại gốc lông mi', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
+      }
+    ]
+  },,
+// ═══════════════════════════════════════════════════════════════
+  // IV. SỨC KHỎE TINH THẦN VÀ GIẤC NGỦ
+  // Không phải mọi vấn đề sức khỏe đều nhìn thấy bằng mắt thường.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    category: 'IV. SỨC KHỎE TINH THẦN VÀ GIẤC NGỦ',
     icon: '🧠',
     color: 'purple',
     bgLight: 'bg-purple-50',
@@ -240,45 +371,88 @@ const HEALTH_LIBRARY = [
     gradient: 'from-purple-500 to-violet-500',
     diseases: [
       {
-        id: 'tl-1',
-        name: 'Kẻ cướp đêm – Rối loạn giấc ngủ',
-        otherNames: 'Sleep Disorder, Insomnia',
-        description: 'Rối loạn giấc ngủ là tình trạng khó ngủ, ngủ không sâu giấc, hoặc thức dậy quá sớm/quá muộn. Ngủ không đủ giấc khiến học sinh mệt mỏi, khó tập trung, giảm hiệu quả học tập.',
-        causes: 'Áp lực học tập, thi cử, sử dụng điện thoại/máy tính trước giờ ngủ, môi trường ồn ào, chế độ ăn uống không đều đặn, căng thẳng tâm lý.',
-        symptoms: ['Khó chìm vào giấc ngủ, thức giấc nhiều lần trong đêm', 'Ngủ không sâu giấc, thức dậy vẫn mệt mỏi', 'Ngủ quá ít (<7h) hoặc quá nhiều (>10h)', 'Buồn ngủ vào giờ học, khó tập trung, nhớ kém', 'Cáu gắt, lo âu, đau đầu vào buổi sáng'],
-        schoolContext: 'Học sinh thức khuya ôn bài, lướt mạng xã hội trước giờ ngủ, uống trà/cà phê buổi chiều. Áp lực thi cử khiến stress → mất ngủ. Ngủ muộn dậy sớm → thiếu ngủ mãn tính.',
-        treatment: ['NGỪNG: Dùng điện thoại, xem phim, chơi game trước giờ ngủ 1 tiếng. Ăn no trước giờ ngủ.', 'RỬA: Tắt đèn, giữ phòng yên tĩnh, mát mẻ (20-22°C). Tập thở sâu hoặc thiền 5-10 phút trước khi ngủ.', 'DỊU: Ngủ đúng giờ cố định mỗi ngày (kể cả cuối tuần). Hạn chế caffeine sau 14h. Đọc sách giấy nhẹ nhàng.', 'KHÁM: Ngủ không được >3 lần/tuần kéo dài >2 tuần → gặp bác sĩ. Gọi 1800-9090 nếu cần hỗ trợ tâm lý.'],
-        dangerSigns: ['Không ngủ được >3 đêm liên tiếp mà không có lý do', 'Ngủ nói mê, hoảng sợ tột độ về đêm (night terror)', 'Buồn ngủ gục trong giờ học, ngủ gật liên tục (có thể là narcolepsy)', 'Có ý nghĩ tự hại do mất ngủ kéo dài'],
+        id: 'tt-1',
+        name: 'Boss deadline – Stress học tập',
+        otherNames: 'Academic stress',
+        description: 'Là cảm giác quá tải khi não phải gồng lên vì bài vở, thi cử, kỳ vọng và áp lực so sánh.',
+        causes: 'Áp lực học tập, thi cử, kỳ vọng gia đình, so sánh bản thân với người khác và mạng xã hội.',
+        symptoms: ['Lo âu, bồn chồn, khó tập trung', 'Đau đầu, căng cơ, mệt mỏi', 'Khó ngủ hoặc ngủ không sâu', 'Dễ cáu, muốn né việc học'],
+        schoolContext: 'Lịch học kín mít, thi thử dồn dập, sợ không đạt kỳ vọng, bị so sánh điểm số và áp lực từ mạng xã hội.',
+        treatment: ['NGỪNG: Ngừng học liền nhiều giờ không nghỉ và ngừng so sánh bản thân 24/7.', 'RỬA: Dọn bớt overload bằng cách chia việc theo mức ưu tiên.', 'DỊU: Hít thở chậm, vận động nhẹ, ăn bữa tử tế và giữ giờ ngủ ổn định.', 'KHÁM: Tìm hỗ trợ nếu stress kéo dài, ảnh hưởng học, ăn, ngủ hoặc khiến bạn thấy quá sức.'],
+        dangerSigns: ['Triệu chứng gần như ngày nào cũng có', 'Ảnh hưởng rõ tới học tập, ăn, ngủ, giao tiếp', 'Có cảm giác tuyệt vọng hoặc muốn làm đau bản thân'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pediatric_polysomnogram.jpg/600px-Pediatric_polysomnogram.jpg', caption: 'Đo giấc ngủ Polysomnography – phát hiện rối loạn giấc ngủ ở trẻ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg/600px-Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg.png', caption: 'Biểu đồ minh họa stress và các yếu tố ảnh hưởng đến giấc ngủ tuổi học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Thay đổi giấc ngủ và học tập ở tuổi vị thành niên do rối loạn giấc ngủ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg/600px-Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg.png', caption: 'Minh họa stress và các yếu tố ảnh hưởng đến giấc ngủ tuổi học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
-        sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }, { title: 'Đường dây hỗ trợ 1800-9090', url: 'https://hoisongtructuyen.gov.vn' }]
+        sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }, { title: 'Đường dây 1800-9090', url: 'https://hoisongtructuyen.gov.vn' }]
       },
       {
-        id: 'tl-2',
-        name: 'Cơn bão hormone-dậy thì/thay đổi nội tiết',
-        otherNames: 'Puberty Changes',
-        description: 'Giai đoạn chuyển tiếp sinh lý mạnh mẽ: thay đổi hormone → mụn, chiều cao, cảm xúc thất thường. Nữ 8-13 tuổi, Nam 9-14 tuổi.',
-        causes: 'Tuyến sinh dục bắt đầu hoạt động → hormone (estrogen, testosterone) tăng mạnh → thay đổi cơ thể và tâm lý.',
-        symptoms: ['Phát triển chiều cao nhanh, thay đổi hình dạng cơ thể', 'Nổi MỤN (do tăng hormone androgen)', 'Cảm xúc thất thường, dễ kích động, dễ buồn', 'Bắt đầu kinh nguyệt (nữ), thay đổi cơ thể (nam)'],
-        schoolContext: 'Học sinh tự ti về ngoại hình thay đổi, so sánh với bạn bè. Áp lực mạng xã hội làm trầm trọng thêm.',
-        treatment: ['NGỪNG: So sánh ngoại hình với người khác. Xem mạng xã hội quá nhiều về body image.', 'RỬA: Cha mẹ trò chuyện CỞI MỞ với con về thay đổi cơ thể. Giáo dục giới tính phù hợp lứa tuổi.', 'DỊU: Chăm sóc da đúng cách (rửa mặt, dưỡng ẩm). Vệ sinh kinh nguyệt đúng cách (nữ).', 'KHÁM: Nếu rối loạn ăn uống, trầm cảm, tự ti quá mức → gặp chuyên gia tâm lý.'],
-        dangerSigns: ['Rối loạn ăn uống: nhịn ăn, ăn quá nhiều để kiểm soát cân nặng', 'Tự ti quá mức dẫn đến trầm cảm, cô lập', 'Hành vi tự hại: cắt tay, tổn thương bản thân'],
+        id: 'tt-2',
+        name: 'Nỗi lo không chịu tắt – Lo âu kéo dài',
+        otherNames: 'Anxiety symptoms',
+        description: 'Là trạng thái lo lắng dai dẳng, suy nghĩ quá mức và khó thư giãn, không chỉ xuất hiện vào lúc thi cử mà kéo dài cả trong sinh hoạt hằng ngày.',
+        causes: 'Áp lực học tập, lo về tương lai, các mối quan hệ, áp lực gia đình hoặc mạng xã hội làm đầu óc luôn căng như dây đàn.',
+        symptoms: ['Hay lo quá mức dù việc chưa xảy ra', 'Tim đập nhanh, bồn chồn, khó thả lỏng', 'Khó tập trung, dễ giật mình, dễ mệt', 'Lo lắng làm ảnh hưởng học tập hoặc giấc ngủ'],
+        schoolContext: 'Lo chuyện điểm số, tương lai, các mối quan hệ, áp lực gia đình hoặc mạng xã hội làm đầu óc luôn căng như dây đàn.',
+        treatment: ['NGỪNG: Ngừng tự ép mình phải chịu một mình mọi thứ.', 'RỬA: Viết ra điều đang lo để phân loại việc nào thật sự cần xử lý.', 'DỊU: Tập thở chậm, nghỉ ngắn, nói chuyện với người tin cậy.', 'KHÁM: Tìm hỗ trợ chuyên môn nếu lo âu kéo dài hoặc ảnh hưởng rõ chức năng hằng ngày.'],
+        dangerSigns: ['Lo âu gần như mỗi ngày và không tự dịu xuống', 'Có hoảng loạn, khó thở, run nhiều', 'Kèm ý nghĩ làm hại bản thân hoặc tuyệt vọng'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Sự phát triển thể chất khác nhau ở tuổi dậy thì sớm và muộn', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png/600px-Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png', caption: 'Biểu đồ mức hormone estrogen thay đổi qua các giai đoạn dậy thì ở nữ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Axillary_Hair_in_Puberty.jpg/600px-Axillary_Hair_in_Puberty.jpg', caption: 'Dấu hiệu dậy thì – lông nách phát triển ở tuổi vị thành niên', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Minh họa thay đổi giấc ngủ và học tập ở tuổi vị thành niên do rối loạn giấc ngủ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
-        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+        sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
+      },
+      {
+        id: 'tt-3',
+        name: 'Cảm giác tách khỏi mọi người – Cô lập xã hội / Dấu hiệu trầm buồn',
+        otherNames: 'Social withdrawal / low mood',
+        description: 'Là khi một bạn dần thu mình, không còn hứng thú với việc quen thuộc, ít nói chuyện và cảm thấy buồn, trống rỗng hoặc vô giá trị kéo dài.',
+        causes: 'Áp lực học tập, mâu thuẫn bạn bè, bị bắt nạt, tự ti hoặc thất bại lặp lại có thể khiến một người muốn tránh né mọi kết nối.',
+        symptoms: ['Ít nói chuyện, ít giao tiếp hơn trước', 'Không còn hứng thú với hoạt động từng thích', 'Buồn bã, dễ khóc hoặc cảm thấy vô giá trị', 'Học sa sút, ngủ thất thường hoặc ăn uống thay đổi rõ'],
+        schoolContext: 'Áp lực học tập, mâu thuẫn bạn bè, bị bắt nạt, tự ti hoặc thất bại lặp lại có thể khiến một người muốn tránh né mọi kết nối.',
+        treatment: ['NGỪNG: Ngừng tự nhốt mình hoàn toàn và nghĩ rằng mình phải ổn ngay lập tức.', 'RỬA: Nhờ người tin cậy giúp sắp xếp lại lịch học – nghỉ – sinh hoạt cơ bản.', 'DỊU: Giữ kết nối tối thiểu với một người lớn hoặc một bạn đáng tin.', 'KHÁM: Tìm hỗ trợ chuyên môn khi tình trạng kéo dài hoặc ảnh hưởng rõ tới cuộc sống.'],
+        dangerSigns: ['Có ý nghĩ muốn biến mất hoặc làm hại bản thân', 'Bỏ ăn, mất ngủ nhiều ngày hoặc kiệt sức rõ', 'Hoàn toàn không muốn đi học, không muốn giao tiếp'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pediatric_polysomnogram.jpg/600px-Pediatric_polysomnogram.jpg', caption: 'Đo giấc ngủ Polysomnography – phát hiện rối loạn giấc ngủ ở trẻ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
+      },
+      {
+        id: 'tt-4',
+        name: 'Kẻ cướp đêm – Rối loạn giấc ngủ',
+        otherNames: 'Sleep problems / Insomnia',
+        description: 'Là khi bạn khó ngủ, hay tỉnh giữa đêm hoặc ngủ xong vẫn mệt như chưa hề được nghỉ.',
+        causes: 'Học khuya, lướt mạng trước giờ ngủ, uống trà sữa/cà phê tối muộn hoặc não quá căng sau một ngày dài.',
+        symptoms: ['Nằm lâu mà không ngủ được', 'Đêm tỉnh nhiều lần hoặc dậy quá sớm', 'Sáng dậy mệt, khó tập trung', 'Dễ cáu, uể oải cả ngày'],
+        schoolContext: 'Học khuya, lướt mạng trước giờ ngủ, uống trà sữa/cà phê tối muộn hoặc não quá căng sau một ngày dài.',
+        treatment: ['NGỪNG: Ngừng mang điện thoại lên giường và xem nốt 5 phút thành 2 tiếng.', 'RỬA: Cố định giờ ngủ – giờ dậy, giảm caffeine tối muộn.', 'DỊU: Tạo khoảng wind-down: tắt màn hình, đèn dịu, giãn cơ, nghe nhạc nhẹ.', 'KHÁM: Đi khám nếu mất ngủ kéo dài và bắt đầu ảnh hưởng mạnh đến học tập, tâm trạng.'],
+        dangerSigns: ['Mất ngủ nhiều ngày/tuần kéo dài', 'Ban ngày mệt đến mức học không nổi', 'Kèm lo âu, chán nản hoặc lệ thuộc chất kích thích/thuốc'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pediatric_polysomnogram.jpg/600px-Pediatric_polysomnogram.jpg', caption: 'Đo giấc ngủ Polysomnography – phát hiện rối loạn giấc ngủ ở trẻ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
+      },
+      {
+        id: 'tt-5',
+        name: 'Khó rời màn hình – Nghiện điện thoại / game',
+        otherNames: 'Problematic phone or gaming use',
+        description: 'Là khi việc dùng điện thoại hoặc chơi game vượt khỏi mức giải trí, bắt đầu chiếm thời gian học, ngủ, vận động và các mối quan hệ.',
+        causes: 'Cầm máy mọi lúc, học cũng cầm, ngủ cũng cầm, càng mệt càng muốn lướt hoặc chơi tiếp để trốn áp lực.',
+        symptoms: ['Khó dừng dù đã biết đang dùng quá nhiều', 'Thức khuya vì điện thoại hoặc game', 'Học giảm tập trung, trì hoãn công việc', 'Cáu gắt khi bị nhắc giảm thời gian dùng'],
+        schoolContext: 'Cầm máy mọi lúc, học cũng cầm, ngủ cũng cầm, càng mệt càng muốn lướt hoặc chơi tiếp để trốn áp lực.',
+        treatment: ['NGỪNG: Ngừng để điện thoại trên giường hoặc cạnh bàn học suốt cả buổi.', 'RỬA: Đặt mốc thời gian dùng máy rõ ràng và tắt thông báo không cần thiết.', 'DỊU: Thay một phần thời gian màn hình bằng vận động, đi bộ, nói chuyện trực tiếp.', 'KHÁM: Tìm hỗ trợ nếu việc dùng thiết bị ảnh hưởng mạnh đến học tập, ngủ và quan hệ trong gia đình.'],
+        dangerSigns: ['Không kiểm soát nổi thời gian dùng máy', 'Mất ngủ kéo dài, bỏ ăn, bỏ học hoặc cáu gắt mạnh', 'Dùng game/điện thoại để né hoàn toàn cuộc sống thật'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Eye_digital_strain.jpg/600px-Eye_digital_strain.jpg', caption: 'Tư thế dùng điện thoại sai – ngồi quá gần, cúi đầu lâu gây hại mắt và cổ', source: 'Hình ảnh minh họa nghiện điện thoại' }
+        ],
+        sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }]
       }
     ]
   },
-  // ── VỆ SINH ──
+  // ═══════════════════════════════════════════════════════════════
+  // V. SỨC KHỎE TUỔI DẬY THÌ VÀ SỨC KHỎE SINH SẢN VỊ THÀNH NIÊN
+  // ═══════════════════════════════════════════════════════════════
   {
-    category: 'VỆ SINH',
-    icon: '🧼',
+    category: 'V. SỨC KHỎE TUỔI DẬY THÌ',
+    icon: '🩺',
     color: 'teal',
     bgLight: 'bg-teal-50',
     borderLight: 'border-teal-200',
@@ -286,41 +460,187 @@ const HEALTH_LIBRARY = [
     gradient: 'from-teal-500 to-emerald-500',
     diseases: [
       {
-        id: 'vs-1',
-        name: 'Sốt tinh hồng nhiệt',
-        otherNames: 'Scarlet Fever',
-        description: 'Streptococcus nhóm A gây ra. Sốt cao + đau họng + phát ban đỏ như giấy nhám + lưỡi dâu tây.',
-        causes: 'Streptococcus pyogenes (Strep A) lây qua giọt bắn. Phổ biến ở trẻ 5-15 tuổi, đặc biệt trong mùa lạnh.',
-        symptoms: ['Sốt cao đột ngột', 'Đau họng, amidan đỏ, có mủ trắng', 'Phát ban đỏ như giấy nhám toàn thân', 'Lưỡi đỏ gồ ghề "lưỡi dâu tây"', 'Da bong tróc ở đầu ngón tay/chân sau 1-2 tuần'],
-        schoolContext: 'Lây qua giọt bắn trong lớp học, nhất là khi trẻ ho, hắt hơi. Cần nghỉ học và điều trị kháng sinh đủ liệu trình.',
-        treatment: ['NGỪNG: Đến trường khi đang sốt, đau họng. Dùng chung bát đũa, khăn.', 'RỬA: Rửa tay thường xuyên. Che miệng khi ho/hắt hơi.', 'DỊU: Hạ sốt bằng paracetamol. Uống nhiều nước.', 'KHÁM VÀ DÙNG KHÁNG SINH ĐỦ LIỆU TRÌNH (10-14 ngày) theo chỉ định.'],
-        dangerSigns: ['Khó thở, thở nhanh (viêm phổi, viêm màng tim)', 'Sốt không hạ dù đã uống thuốc', 'Tiểu ít, môi khô, khóc không nước mắt (mất nước)', 'Cổ sưng to, nuốt khó (áp xe quanh amidan)'],
+        id: 'dt-1',
+        name: 'Cơn bão hormone – Những thay đổi bình thường tuổi dậy thì',
+        otherNames: 'Puberty / normal body changes',
+        description: 'Là giai đoạn cơ thể update phiên bản mới, nên chuyện da dầu hơn, nổi mụn, thay đổi cơ thể và cảm xúc là rất bình thường.',
+        causes: 'Tuyến sinh dục bắt đầu hoạt động → hormone (estrogen, testosterone) tăng mạnh → thay đổi cơ thể và tâm lý.',
+        symptoms: ['Da dầu hơn, dễ nổi mụn', 'Cơ thể thay đổi nhanh về chiều cao, lông, vóc dáng', 'Tâm trạng nhạy hơn, dễ ngại ngùng hoặc bối rối', 'Bạn nữ có thể bắt đầu có kinh; bạn nam có thể vỡ giọng, tăng cơ'],
+        schoolContext: 'So sánh mình với bạn, tự ti vì phát triển sớm hoặc muộn hơn, lo về mùi cơ thể, kinh nguyệt hoặc thay đổi giọng nói.',
+        treatment: ['NGỪNG: Ngừng so sánh cơ thể mình với người khác như một cuộc đua.', 'RỬA: Giữ vệ sinh cơ thể, da mặt, vùng kín đúng cách và thay đồ sau vận động.', 'DỊU: Tìm hiểu kiến thức đúng từ người lớn, tài liệu chuẩn hoặc nhân viên y tế.', 'KHÁM: Đi khám nếu nghi dậy thì quá sớm, quá muộn hoặc có biểu hiện bất thường.'],
+        dangerSigns: ['Dấu hiệu dậy thì xuất hiện quá sớm hoặc quá muộn', 'Đau dữ, ngất hoặc chảy máu bất thường', 'Ngứa rát nhiều, mùi hôi bất thường hoặc triệu chứng kéo dài'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Scarlet_fever_rash.jpg/600px-Scarlet_fever_rash.jpg', caption: 'Phát ban đỏ đặc trưng của sốt tinh hồng nhiệt Scarlet Fever toàn thân', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Scarlatina_tongue.JPG/600px-Scarlatina_tongue.JPG', caption: 'Lưỡi dâu tây – dấu hiệu đặc trưng của sốt tinh hồng nhiệt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Child_with_scarlet_fever.jpg/600px-Child_with_scarlet_fever.jpg', caption: 'Trẻ em mắc sốt tinh hồng nhiệt với biểu hiện mệt mỏi', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Sự phát triển thể chất khác nhau ở tuổi dậy thì sớm và muộn', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png/600px-Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png', caption: 'Biểu đồ mức hormone estrogen thay đổi qua các giai đoạn dậy thì ở nữ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
-        sources: [{ title: 'CDC', url: 'https://cdc.gov' }, { title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
       },
       {
-        id: 'vs-2',
-        name: 'Nhiễm trùng da do tụ cầu/nhọt',
-        otherNames: 'Impetigo (Staphylococcal)',
-        description: 'Nhiễm trùng da do tụ cầu vàng và liên cầu. Đặc trưng bởi viêm tróc da và VÀNG NHẠT MỦ NẶNG. Phổ biến ở trẻ 2–6 tuổi, có thể tiếp tục bị ở học sinh tiểu học.',
-        causes: 'Vi khuẩn tụ cầu vàng (Staphylococcus aureus) hoặc liên cầu (Streptococcus pyogenes) xâm nhập qua vết xước, mẩn đỏ, da ướt.',
-        symptoms: ['Mụn nước nhỏ phát triển, vỡ dễ tạo VÀNG NHẠT MỦ nặng', 'Vi sinh vật quanh quanh mụn, ẩm nhẹ', 'Thường quanh mặt, miệng', 'Những cụm đỏ nổi, mụn, sẩn', 'Ngứa nhẹ, nổi mẩn ngứa'],
-        schoolContext: 'Lây qua tiếp xúc trực tiếp trong lớp học, dùng chung khăn, gối, vật dụng cá nhân. Thời tiết nóng ẩm, mùa hè là điều kiện thuận lợi. Trẻ hay cào gãi vết thương → lan rộng.',
-        treatment: ['NGỪNG: Chạm tay bẩn vào vết loét. Dùng chung khăn, gối, vật dụng.', 'RỬA: Rửa tay sạch sạch sày bằng xà phòng diệt khuẩn. Rửa vết loét 2 lần/ngày bằng nước muối sinh lý hoặc dung dịch phòng ngừa trùng.', 'DỊU: Thoa kháng sinh bôi (mupirocin) theo chỉ định. Giữ da khô ráo.', 'KHÁM: Nếu lan rộng, có sốt → cần kháng sinh uống. Nghỉ học nếu cần.'],
-        dangerSigns: ['Vết loét ăn rộng nhanh, có da đen hoại tử', 'Sốt cao, mệt mỏi, đau ỉa', 'Da đỏ nóng rực, phồng rộp lớn', 'Nhiễm trùng lan rộng toàn thân ở trẻ em, da đầu'],
+        id: 'dt-2',
+        name: 'Chu kỳ không ổn định – Rối loạn kinh nguyệt',
+        otherNames: 'Menstrual irregularity',
+        description: 'Là khi kinh nguyệt đến quá thưa, quá dày, quá ít hoặc quá nhiều, làm bạn khó theo dõi cơ thể và dễ lo lắng.',
+        causes: 'Thức khuya, stress, thay đổi cân nặng, vận động quá mức hoặc cơ địa nội tiết có thể làm chu kỳ rối loạn.',
+        symptoms: ['Kinh đến quá thưa hoặc kéo dài không đều', 'Lượng máu kinh thay đổi nhiều bất thường', 'Mệt, chóng mặt khi hành kinh nhiều', 'Chu kỳ rối loạn kéo dài nhiều tháng'],
+        schoolContext: 'Thức khuya, stress, thay đổi cân nặng, vận động quá mức hoặc cơ địa nội tiết có thể làm chu kỳ rối loạn.',
+        treatment: ['NGỪNG: Ngừng chủ quan nếu kinh nguyệt rối loạn lặp lại nhiều lần.', 'RỬA: Theo dõi chu kỳ bằng lịch hoặc ứng dụng ghi chú.', 'DỊU: Ăn uống, ngủ nghỉ đều hơn và giữ vệ sinh kinh nguyệt.', 'KHÁM: Đi khám nếu rối loạn kéo dài, ra máu quá nhiều hoặc kèm đau dữ dội.'],
+        dangerSigns: ['Ra máu quá nhiều, chóng mặt, ngất', 'Kỳ kinh kéo dài bất thường hoặc đau tăng dần', 'Kèm sốt, khí hư bất thường hoặc đau bụng nhiều'],
         images: [
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20210607_022440_259276_nhiem_khuan_da_tu_c_max_1800x1800_jpg_766b1ed24d.jpg', caption: 'Tổn thương nhiễm trùng da do tụ cầu với vảy vàng đặc trưng', source: 'Hình ảnh minh họa bệnh Nhiễm khuẩn da' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/choc-lo-1448202947970.webp', caption: 'Nhiễm trùng da ở vùng khuỷu tay với mụn nước và vảy vàng', source: 'Hình ảnh minh họa bệnh Nhiễm khuẩn da do tụ cầu' },
-          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-03-31%20201436.png', caption: 'Nhiễm trùng da do tụ cầu trên da chân với vảy mật ong', source: 'Hình ảnh minh họa bệnh Nhiễm khuẩn da ở chân' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png/600px-Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png', caption: 'Biểu đồ mức hormone estrogen thay đổi qua các giai đoạn dậy thì ở nữ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
-        sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'dt-3',
+        name: 'Những ngày đau quặn – Đau bụng kinh',
+        otherNames: 'Dysmenorrhea',
+        description: 'Là tình trạng đau bụng trong kỳ kinh, có thể nhẹ đến vừa ở nhiều bạn, nhưng nếu đau quá mức thì cần được theo dõi.',
+        causes: 'Prostaglandin tăng trong kỳ kinh nguyệt → tử cung co bóp mạnh → đau bụng. Có thể nặng hơn khi stress, ít vận động.',
+        symptoms: ['Đau bụng dưới theo kỳ kinh', 'Có thể đau lưng, mỏi người, buồn nôn nhẹ', 'Đau thường tăng trong 1-2 ngày đầu kỳ', 'Ảnh hưởng đến việc học hoặc sinh hoạt'],
+        schoolContext: 'Học vẫn phải đi học, ngồi lâu, thiếu ngủ hoặc stress làm cảm giác đau càng khó chịu hơn.',
+        treatment: ['NGỪNG: Ngừng cố chịu đau dữ dội mà không nói với người lớn.', 'RỬA: Giữ vệ sinh kinh nguyệt và nghỉ ngơi phù hợp.', 'DỊU: Chườm ấm nhẹ, uống nước ấm, vận động nhẹ nếu thấy dễ chịu.', 'KHÁM: Đi khám nếu đau quá nhiều, kéo dài hoặc ngày càng nặng.'],
+        dangerSigns: ['Đau dữ dội, vã mồ hôi, nôn nhiều', 'Đau làm ngất hoặc không thể đi học', 'Đau tăng dần qua từng kỳ hoặc kèm ra máu bất thường'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Axillary_Hair_in_Puberty.jpg/600px-Axillary_Hair_in_Puberty.jpg', caption: 'Dấu hiệu dậy thì – lông nách phát triển ở tuổi vị thành niên', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'dt-4',
+        name: 'Vùng kín cần để ý – Viêm nhiễm phụ khoa thường gặp',
+        otherNames: 'Common vulvovaginal irritation/infection',
+        description: 'Là tình trạng ngứa, rát, khí hư bất thường hoặc mùi khó chịu ở vùng kín; không nên ngại mà tự chịu đựng kéo dài.',
+        causes: 'Mặc đồ lót ẩm, vệ sinh chưa đúng cách, dùng dung dịch quá mạnh hoặc để vùng kín bí nóng lâu.',
+        symptoms: ['Ngứa, rát hoặc khó chịu vùng kín', 'Khí hư nhiều, đổi màu hoặc có mùi hôi', 'Cảm giác rát khi tiểu hoặc khi vận động', 'Triệu chứng kéo dài hoặc tái phát'],
+        schoolContext: 'Mặc đồ lót ẩm, vệ sinh chưa đúng cách, dùng dung dịch quá mạnh hoặc để vùng kín bí nóng lâu.',
+        treatment: ['NGỪNG: Ngừng tự thụt rửa sâu hoặc dùng sản phẩm có mùi thơm quá mạnh.', 'RỬA: Giữ vệ sinh nhẹ nhàng, thay đồ lót sạch và khô.', 'DỊU: Mặc đồ thoáng, tránh để vùng kín ẩm lâu.', 'KHÁM: Đi khám nếu triệu chứng kéo dài, nặng lên hoặc khí hư bất thường rõ.'],
+        dangerSigns: ['Ngứa rát nhiều, đau rõ', 'Khí hư hôi, vàng/xanh, có máu bất thường', 'Kèm sốt, đau bụng dưới hoặc đau khi tiểu kéo dài'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png/600px-Estrogen_levels_in_the_Tanner_stages_during_normal_puberty_in_girls.png', caption: 'Minh họa vệ sinh vùng kín đúng cách cho nữ vị thành niên', source: 'Hình ảnh minh họa giáo dục sức khỏe' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'dt-5',
+        name: 'Chuyện của bạn nam – Mộng tinh / Viêm hoặc hẹp bao quy đầu',
+        otherNames: 'Nocturnal emission / foreskin issues',
+        description: 'Mộng tinh là hiện tượng có thể gặp ở tuổi dậy thì và thường là bình thường. Tuy nhiên, đau, sưng, rát hoặc hẹp bao quy đầu lại là chuyện khác và cần theo dõi kỹ hơn.',
+        causes: 'Mộng tinh: ban đêm cơ thể tự xả tinh dịch khi mơ ngủ (bình thường). Đau/sưng/rát/hẹp bao quy đầu: vệ sinh kém, nhiễm trùng hoặc dị dạng bẩm sinh.',
+        symptoms: ['Mộng tinh thỉnh thoảng, không đau – thường là bình thường', 'Đỏ, sưng, rát hoặc ngứa vùng đầu dương vật là bất thường hơn', 'Khó kéo bao quy đầu hoặc đau khi vệ sinh', 'Có thể có mùi khó chịu hoặc tiết dịch'],
+        schoolContext: 'Ngại hỏi, ngại nói, thiếu kiến thức chăm sóc cơ quan sinh dục khiến nhiều bạn nam lo lắng hoặc xử lý sai.',
+        treatment: ['NGỪNG: Ngừng tự xấu hổ hoặc nghe mẹo mạng thiếu kiểm chứng.', 'RỬA: Giữ vệ sinh cơ quan sinh dục đúng cách, nhẹ nhàng.', 'DỊU: Mặc đồ lót sạch, khô, thoáng.', 'KHÁM: Đi khám nếu đau, sưng, rát, khó tiểu hoặc nghi hẹp bao quy đầu.'],
+        dangerSigns: ['Đau nhiều, sưng đỏ rõ', 'Khó tiểu, tiểu buốt hoặc có dịch bất thường', 'Bao quy đầu quá chật, không vệ sinh được hoặc kẹt đau'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Axillary_Hair_in_Puberty.jpg/600px-Axillary_Hair_in_Puberty.jpg', caption: 'Dấu hiệu dậy thì ở nam – thay đổi cơ thể tuổi vị thành niên', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
       }
     ]
-  }
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // VI. TIÊU HÓA – DINH DƯỠNG – THỂ CHẤT HỌC ĐƯỜNG
+  // ═══════════════════════════════════════════════════════════════
+  {
+    category: 'VI. TIÊU HÓA – DINH DƯỠNG – THỂ CHẤT',
+    icon: '🍽️',
+    color: 'green',
+    bgLight: 'bg-green-50',
+    borderLight: 'border-green-200',
+    textColor: 'text-green-600',
+    gradient: 'from-green-500 to-emerald-500',
+    diseases: [
+      {
+        id: 'th-1',
+        name: 'Bụng biểu tình – Đau bụng / Viêm dạ dày',
+        otherNames: 'Abdominal pain / gastritis-like symptoms',
+        description: 'Là cảm giác đau hoặc quặn vùng bụng; có thể liên quan bỏ bữa, ăn thất thường, căng thẳng hoặc viêm dạ dày.',
+        causes: 'Bỏ bữa sáng, ăn cay lúc khuya, trà sữa thay cơm, uống ít nước hoặc stress trước kiểm tra.',
+        symptoms: ['Đau âm ỉ hoặc quặn cơn', 'Đầy hơi, buồn nôn hoặc xót bụng', 'Có thể đau tăng khi đói, khi ăn quá nhanh hoặc lúc stress', 'Đau tái đi tái lại nhiều lần'],
+        schoolContext: 'Bỏ bữa sáng, ăn cay lúc khuya, trà sữa thay cơm, uống ít nước hoặc stress trước kiểm tra.',
+        treatment: ['NGỪNG: Ngừng ăn thêm đồ dầu cay ngọt khi bụng đang khó chịu.', 'RỬA: Nghỉ ngơi, uống nước và theo dõi vị trí – thời điểm đau.', 'DỊU: Ăn nhẹ dễ tiêu khi đỡ hơn.', 'KHÁM: Đi khám nếu đau kéo dài, tái phát hoặc không rõ nguyên nhân.'],
+        dangerSigns: ['Đau bụng rất dữ hoặc đột ngột', 'Nôn ra máu, đi ngoài phân đen hoặc có máu', 'Bụng đau kèm khó thở, ngất hoặc sốt cao'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Minh họa ảnh hưởng của stress đến hệ tiêu hóa ở tuổi học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'th-2',
+        name: 'Đường ruột cáu kỉnh – Táo bón / Tiêu chảy',
+        otherNames: 'Constipation / Diarrhea',
+        description: 'Là hai tình trạng rối loạn tiêu hóa rất hay gặp khi ăn uống thất thường, uống ít nước, ít vận động hoặc vệ sinh ăn uống chưa tốt.',
+        causes: 'Nhịn đi vệ sinh, ăn ít rau, uống ít nước, thức ăn không hợp hoặc căng thẳng kéo dài.',
+        symptoms: ['Đi ngoài khó, phân cứng hoặc nhiều ngày không đi', 'Hoặc đi ngoài lỏng nhiều lần trong ngày', 'Có thể kèm đau bụng, đầy hơi', 'Mệt, khó chịu, học tập bị ảnh hưởng'],
+        schoolContext: 'Nhịn đi vệ sinh, ăn ít rau, uống ít nước, thức ăn không hợp hoặc căng thẳng kéo dài.',
+        treatment: ['NGỪNG: Ngừng ăn uống thất thường và đừng nhịn đi vệ sinh.', 'RỬA: Rửa tay kỹ và giữ vệ sinh ăn uống.', 'DỊU: Uống đủ nước, tăng rau quả, nghỉ ngơi phù hợp.', 'KHÁM: Đi khám nếu táo bón kéo dài hoặc tiêu chảy nhiều ngày không đỡ.'],
+        dangerSigns: ['Tiêu chảy có máu hoặc nôn nhiều', 'Đau bụng dữ dội, bụng chướng nhiều', 'Táo bón kéo dài kèm đau nhiều, nôn hoặc sụt cân'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Minh họa ảnh hưởng của chế độ ăn đến hệ tiêu hóa học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'th-3',
+        name: 'Combo ăn xong toang – Ngộ độc thực phẩm',
+        otherNames: 'Food poisoning / Foodborne illness',
+        description: 'Là tình trạng cơ thể phản ứng với thức ăn hoặc nước uống có mầm bệnh/độc tố, thường gây đau bụng, nôn hoặc tiêu chảy.',
+        causes: 'Ăn hàng quán không đảm bảo, đồ ăn để ngoài quá lâu, chia nhau đồ ăn nhưng không rõ cách bảo quản.',
+        symptoms: ['Tiêu chảy', 'Đau bụng hoặc quặn bụng', 'Buồn nôn, nôn', 'Có thể kèm sốt hoặc mệt lả'],
+        schoolContext: 'Ăn hàng quán không đảm bảo, đồ ăn để ngoài lâu, chia nhau đồ ăn nhưng không rõ cách bảo quản.',
+        treatment: ['NGỪNG: Ngừng ăn tiếp món nghi gây bệnh và ngừng uống đồ quá ngọt/ngấy khi đang nôn.', 'RỬA: Rửa tay, giữ vệ sinh nhà vệ sinh và vật dụng cá nhân để tránh lây chéo.', 'DỊU: Uống nước từng ngụm nhỏ, nghỉ ngơi và theo dõi số lần nôn/tiêu chảy.', 'KHÁM: Đi khám nếu triệu chứng nặng, kéo dài hoặc có dấu hiệu mất nước.'],
+        dangerSigns: ['Tiêu chảy có máu', 'Tiêu chảy hơn 3 ngày', 'Sốt cao, nôn liên tục, tiểu ít, khô miệng, chóng mặt'],
+        images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084300.png', caption: 'Hình minh họa ngộ độc thực phẩm – đau bụng và nôn sau khi ăn đồ không đảm bảo', source: 'Hình ảnh minh họa ngộ độc thực phẩm' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'th-4',
+        name: 'Kẻ ăn ké thầm lặng – Giun sán',
+        otherNames: 'Helminth infections',
+        description: 'Là tình trạng nhiễm ký sinh trùng đường ruột; có thể gây đau bụng lâm râm, ngứa hậu môn, ăn kém hoặc mệt mỏi.',
+        causes: 'Ăn uống không rửa tay, ăn quà vặt thiếu vệ sinh, cắn móng tay hoặc không tẩy giun định kỳ.',
+        symptoms: ['Đau bụng lâm râm', 'Ngứa hậu môn, nhất là ban đêm', 'Ăn nhiều mà vẫn gầy hoặc chán ăn', 'Mệt mỏi, thiếu năng lượng'],
+        schoolContext: 'Ăn uống không rửa tay, ăn quà vặt thiếu vệ sinh, cắn móng tay hoặc không tẩy giun định kỳ.',
+        treatment: ['NGỪNG: Ngừng ăn bẩn, cắn móng tay và không rửa tay.', 'RỬA: Rửa tay trước ăn – sau đi vệ sinh.', 'DỊU: Giữ vệ sinh cá nhân, cắt móng tay gọn.', 'KHÁM: Đi khám khi nghi có giun hoặc triệu chứng kéo dài.'],
+        dangerSigns: ['Đau bụng kéo dài', 'Nôn, tiêu chảy nhiều', 'Sụt cân rõ hoặc nhiều người trong nhà có dấu hiệu tương tự'],
+        images: [
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20172402.png', caption: 'Hình minh họa giun sán đường ruột ảnh hưởng đến hệ tiêu hóa học sinh', source: 'Hình ảnh minh họa giun sán' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'th-5',
+        name: 'Cân nặng lên tiếng – Thừa cân / Béo phì hoặc chán ăn kéo dài',
+        otherNames: 'Overweight/obesity or persistent poor appetite',
+        description: 'Là khi cơ thể lệch khỏi trạng thái cân bằng ăn – ngủ – vận động: có bạn tăng cân quá nhanh, có bạn ăn rất kém kéo dài và thiếu năng lượng học tập.',
+        causes: 'Ăn đồ ngọt, thức ăn nhanh, ít vận động; hoặc bỏ bữa, stress, thức khuya làm ăn uống thất thường.',
+        symptoms: ['Tăng cân nhanh, dễ mệt khi vận động', 'Hoặc ăn kém kéo dài, sụt cân, thiếu sức sống', 'Tự ti về cơ thể hoặc thay đổi thói quen ăn uống rõ', 'Ảnh hưởng đến học tập, vận động, tâm trạng'],
+        schoolContext: 'Ăn đồ ngọt, thức ăn nhanh, ít vận động; hoặc bỏ bữa, stress, thức khuya làm ăn uống thất thường.',
+        treatment: ['NGỪNG: Ngừng so sánh cơ thể kiểu cực đoan hoặc nhịn ăn/ăn bù thất thường.', 'RỬA: Xem lại lịch ăn – ngủ – vận động trong tuần.', 'DỊU: Ăn đủ bữa, tăng vận động phù hợp và giảm đồ uống quá ngọt.', 'KHÁM: Đi khám hoặc tư vấn khi cân nặng thay đổi rõ, ăn kém kéo dài hoặc có dấu hiệu rối loạn ăn uống.'],
+        dangerSigns: ['Sụt cân nhanh, mệt lả', 'Tăng cân nhiều kèm khó thở, vận động rất khó', 'Ăn uống rối loạn kéo dài, nôn ói sau ăn hoặc ám ảnh quá mức về cân nặng'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Minh họa thay đổi thể chất và dinh dưỡng ở tuổi học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      },
+      {
+        id: 'th-6',
+        name: 'Lưng cổ lên tiếng – Tư thế xấu / Cong vẹo cột sống / Chấn thương thể thao',
+        otherNames: 'Posture problems / scoliosis / sports injury',
+        description: 'Là nhóm vấn đề thể chất học đường liên quan ngồi sai tư thế, đeo cặp nặng, ít vận động hoặc chấn thương khi chơi thể thao.',
+        causes: 'Ngồi học cúi gập người, đeo cặp lệch một bên, dùng điện thoại cúi lâu hoặc vận động mạnh không khởi động kỹ.',
+        symptoms: ['Đau cổ vai gáy, đau lưng hoặc mỏi lâu', 'Vai lệch, lưng lệch hoặc dáng ngồi không cân đối', 'Sưng đau sau va chạm, bong gân, khó vận động', 'Đau tăng khi ngồi lâu hoặc sau thể thao'],
+        schoolContext: 'Ngồi học cúi gập người, đeo cặp lệch một bên, dùng điện thoại cúi lâu hoặc vận động mạnh không khởi động kỹ.',
+        treatment: ['NGỪNG: Ngừng cố chơi tiếp khi đang đau hoặc sưng sau chấn thương.', 'RỬA: Cho cơ thể nghỉ, kiểm tra vùng đau và theo dõi mức độ sưng đau.', 'DỊU: Chỉnh tư thế ngồi học, đeo cặp cân hai vai, khởi động trước khi chơi thể thao.', 'KHÁM: Đi khám khi đau kéo dài, nghi cong vẹo cột sống hoặc chấn thương nặng.'],
+        dangerSigns: ['Đau nhiều, sưng to, không đi lại được hoặc cử động được', 'Đau sau chấn thương đầu, nôn, chóng mặt hoặc lơ mơ', 'Lưng lệch rõ, đau cột sống kéo dài hoặc tê yếu tay chân'],
+        images: [
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Minh họa tư thế ngồi học đúng – giảm đau lưng cổ cho học sinh', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+        ],
+        sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
+      }
+    ]
+  },
 ];
 
 // Reaction config
