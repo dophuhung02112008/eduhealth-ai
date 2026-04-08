@@ -56,15 +56,15 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Không nặn, không cạy, không lột mụn liên tục. Dừng đổi skincare lung tung.', 'RỬA: Rửa mặt nhẹ nhàng tối đa 2 lần/ngày và sau khi đổ mồ hôi – dùng sữa rửa mặt dịu nhẹ (pH 5.5).', 'DỊU: Kem/sữa dưỡng ẩm không gây bít tắc (oil-free). Tránh scrub hoặc chà khăn mạnh.', 'KHÁM: Nếu mụn viêm, kéo dài >4 tuần hoặc có nguy cơ sẹo → đến da liễu.'],
         dangerSigns: ['Mụn ngày càng dày, lan xuống lưng/ngực', 'Để lại nhiều thâm, sẹo lõm rõ', 'Tự ti rõ rệt, bỏ giao tiếp, bỏ ăn'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/0601_Acne_Vulgaris.jpg/600px-0601_Acne_Vulgaris.jpg', caption: 'Mụn trứng cá - nốt đỏ viêm trên da mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/0603_Acne_Vulgaris.jpg/600px-0603_Acne_Vulgaris.jpg', caption: 'Mụn viêm sưng to trên da mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/0604_Acne_Vulgaris_on_the_chest.jpg/600px-0604_Acne_Vulgaris_on_the_chest.jpg', caption: 'Mụn trứng cá trên vùng ngực và lưng', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-03-31%20200846.png', caption: 'Mụn đầu đen – lỗ chân lông bị tắc chứa dầu và tế bào chết', source: 'Hình ảnh minh họa da có mụn đầu đen' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-03-31%20201049.png', caption: 'Mụn đầu trắng – nốt trắng li ti ở vùng mũi và má', source: 'Hình ảnh minh họa da có mụn đầu trắng' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-03-31%20203754.png', caption: 'Mụn đầu đen tập trung ở vùng mũi – lỗ chân lông to, bề mặt da sần', source: 'Hình ảnh minh họa vùng mũi có mụn đầu đen' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }, { title: 'AAD', url: 'https://aad.org' }]
       },
       {
         id: 'mun-2',
-        name: 'Mụn viêm / Mụn bọc',
+        name: 'Cục đau khó ưa- Mụn viêm / Mụn bọc',
         otherNames: 'Papules, Pustules, Cystic Acne',
         description: 'Nốt đỏ sưng đau, nặng hơn thì nằm sâu dưới da. Dễ để lại sẹo nếu xử lý sai cách.',
         causes: 'Mụn đầu đen/trắng không được xử lý → vi khuẩn P. acnes phát triển → viêm → mụn mủ, mụn bọc.',
@@ -73,15 +73,15 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Không nặn bằng móng tay, không bôi kem đánh răng hay "mẹo mạng" lên mụn.', 'RỬA: Rửa mặt dịu nhẹ, nhất là sau khi đổ mồ hôi.', 'DỊU: Chườm mát giảm sưng. Dùng benzoyl peroxide hoặc adapalene đúng cách.', 'KHÁM: Nếu mụn bọc sâu, đau nhiều → đến da liễu sớm.'],
         dangerSigns: ['Mụn sưng to, đau dữ, có dấu hiệu áp xe (mủ vàng tụ)', 'Mụn dày đặc ở mặt, ngực, lưng', 'Ảnh hưởng mạnh đến tâm trạng, giao tiếp'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/0602_Acne_Vulgaris.jpg/600px-0602_Acne_Vulgaris.jpg', caption: 'Mụn viêm đỏ sưng trên da - dạng papule', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Acne_vulgaris_2.jpg/600px-Acne_vulgaris_2.jpg', caption: 'Mụn trứng cá nang nhiễm trùng nặng dưới da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/0603_Acne_Vulgaris.jpg/600px-0603_Acne_Vulgaris.jpg', caption: 'Mụn mủ pustule sưng đỏ trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20210726_nguyen-nhan-gay-mun-boc-2.jpg', caption: 'Mụn viêm đỏ sưng to trên da – dạng papule có đầu mủ', source: 'Hình ảnh minh họa mụn viêm bọc trên da mặt' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084300.png', caption: 'Mụn viêm đỏ có mủ ở vùng má – mụn bọc nông dưới da', source: 'Hình ảnh minh họa mụn viêm có mủ trên má' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20153833.png', caption: 'Mụn mủ nhiều điểm trên da mặt – cần được khám da liễu', source: 'Hình ảnh minh họa mụn mủ lan rộng' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       },
       {
         id: 'mun-3',
-        name: 'Viêm da cơ địa',
+        name: 'Chiếc áo ngứa phiền phức- Viêm da cơ địa',
         otherNames: 'Eczema, Atopic Dermatitis',
         description: 'Da khô, ngứa, đỏ bùng phát theo đợt. Cơ địa di truyền hoặc do tiếp xúc chất không hợp.',
         causes: 'Gen di truyền + rào cản da suy yếu → da khô, dễ kích ứng → viêm khi gặp tác nhân triggers.',
@@ -90,15 +90,15 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Gãi, dùng xà phòng thơm, nước giặt mùi hắc.', 'RỬA: Tắm nước ấm vừa. Thoa kem dưỡng ẩm NGAY SAU KHI TẮM còn ẩm.', 'DỊU: Kem steroid nhẹ (hydrocortisone 1%) tối đa 7 ngày cho đợt bùng phát.', 'KHÁM: Đến da liễu để được kê kem ức chế miễn dịch.'],
         dangerSigns: ['Da đỏ rực, ngứa không ngủ được nhiều đêm', 'Có mủ, vảy vàng, sốt (nhiễm trùng thứ phát)', 'Da bong tróc rộng, có dấu hiệu nhiễm Herpes'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Atopic_dermatitis_child_3.jpg/600px-Atopic_dermatitis_child_3.jpg', caption: 'Viêm da cơ địa trên da mặt trẻ em - vùng má và trán', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Dermatite_o_eczema_atopico_avambraccio_2015.jpg/600px-Dermatite_o_eczema_atopico_avambraccio_2015.jpg', caption: 'Viêm da cơ địa trên da cẳng tay - tổn thương đỏ ngứa', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Atopic_dermatitis_child.JPG/600px-Atopic_dermatitis_child.JPG', caption: 'Viêm da cơ địa bùng phát ở trẻ nhỏ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20155359.png', caption: 'Da khô đỏ bùng phát viêm da cơ địa ở vùng má', source: 'Hình ảnh minh họa viêm da cơ địa trên da' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20172402.png', caption: 'Tổn thương viêm da cơ địa – da đỏ ngứa, khô bong tróc', source: 'Hình ảnh minh họa viêm da cơ địa bùng phát' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20175216.png', caption: 'Viêm da cơ địa ở vùng cổ – da đỏ rực và khô rát', source: 'Hình ảnh minh họa viêm da cơ địa ở cổ' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }, { title: 'AAD', url: 'https://aad.org' }]
       },
       {
         id: 'mun-4',
-        name: 'Nấm da',
+        name: 'Vòng tròn đáng ghét- Nấm da',
         otherNames: 'Tinea, Ringworm, Dermatophytosis',
         description: 'Nhiễm nấm bề mặt da, tóc, móng. Đặc trưng bởi tổn thương hình tròn, vòng đồng tâm, ngứa dữ dội.',
         causes: 'Nấm Dermatophytes lây qua tiếp xúc da-da hoặc dùng chung đồ dùng cá nhân (khăn, mũ, lược, đồ thể thao).',
@@ -107,15 +107,15 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Dùng chung khăn, mũ, lược, đồ thể thao. Để da thoáng.', 'RỬA: Giữ da KHÔ RÁO sạch sẽ. Thay vớ, quần áo thấm mồ hôi ngay.', 'DỊU: Thoa kem chống nấm clotrimazole 1% – 2 lần/ngày, liên tục 2-4 tuần.', 'KHÁM: Nếu không cải thiện sau 2 tuần → cần thuốc uống từ da liễu.'],
         dangerSigns: ['Tổn thương lan rộng khắp cơ thể', 'Nấm móng lan rộng, móng biến dạng nặng', 'Có mủ, sưng đỏ quanh tổn thương'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Dermatophytosis_20190815-02ASD.jpg/600px-Dermatophytosis_20190815-02ASD.jpg', caption: 'Tổn thương nấm da hình tròn với vòng đồng tâm đặc trưng', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Dermatophytose_cou.jpg/600px-Dermatophytose_cou.jpg', caption: 'Nấm da ở vùng cổ với tổn thương lan rộng', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Mycose_dermatophytose_dos.jpg/600px-Mycose_dermatophytose_dos.jpg', caption: 'Nấm da Dermatophytosis ở vùng lưng', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/hinh-anh-benh-nam-aspergillus.jpg', caption: 'Tổn thương nấm da hình tròn với vòng đồng tâm đặc trưng', source: 'Hình ảnh minh họa nấm da Dermatophytosis' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/hinh-anh-benh-nam-da-o-nguoi-do-nam-candida.jpg', caption: 'Nấm da ở vùng mặt – tổn thương đỏ có vảy trắng', source: 'Hình ảnh minh họa nấm da Candida trên da người' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-01%20084536.png', caption: 'Nấm da ở vùng cổ với tổn thương đỏ ngứa, có vảy', source: 'Hình ảnh minh họa nấm da ở cổ' }
         ],
         sources: [{ title: 'CDC', url: 'https://cdc.gov/fungal/diseases/ringworm.html' }]
       },
       {
         id: 'mun-5',
-        name: 'Ghẻ',
+        name: 'Con ngứa về đêm-Ghẻ',
         otherNames: 'Scabies',
         description: 'Do ký sinh trùng Sarcoptes scabiei đào đường hang dưới da. Ngứa dữ dội NHẤT LÀ VỀ ĐÊM. Lây qua tiếp xúc da-da kéo dài.',
         causes: 'Ký sinh trùng ghẻ đào đường hang trong lớp sừng da, đẻ trứng. Lây qua tiếp xúc da-da kéo dài hoặc dùng chung khăn, ga giường.',
@@ -124,147 +124,28 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Tiếp xúc da-da với người bệnh. Dùng chung khăn, ga giường.', 'RỬA: Giặt KHĂN, GA GIƯỜNG, VỚ bằng NƯỚC SÔI (>60°C) hoặc cho vào túi nilon đậy kín 72 giờ.', 'DỊU: Thoa permethrin 5% lên toàn thân từ cổ trở xuống – để qua đêm 8-12h rồi rửa sạch. Lặp lại sau 7 ngày.', 'KHÁM + TẤT CẢ NGƯỜI TRONG GIA ĐÌNH cùng điều trị đồng thời.'],
         dangerSigns: ['Ngứa không ngủ được nhiều đêm liên tiếp', 'Tổn thương lan rộng toàn thân, có mủ', 'Da trầy sâu, chảy máu, hình thành vảy dày'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Sarcoptes_scabei_2.jpg/600px-Sarcoptes_scabei_2.jpg', caption: 'Ký sinh trùng ghẻ Sarcoptes scabiei dưới kính hiển vi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/0901_Scabies.jpg/600px-0901_Scabies.jpg', caption: 'Tổn thương ghẻ trên da với đường hang đặc trưng', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Scabies-burrow.jpg/600px-Scabies-burrow.jpg', caption: 'Đường hang ghẻ dưới da tại vị trí kẽ ngón tay', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-boc-la-gi.png', caption: 'Ký sinh trùng ghẻ Sarcoptes scabiei dưới kính hiển vi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20175223.png', caption: 'Tổn thương ghẻ trên da với đường hang đặc trưng', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-04-02%20183232.png', caption: 'Đường hang ghẻ dưới da tại vị trí kẽ ngón tay', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'CDC', url: 'https://cdc.gov/parasites/scabies' }]
       },
       {
-        id: 'mun-6',
-        name: 'Chốc lở',
-        otherNames: 'Impetigo',
-        description: 'Nhiễm trùng da do tụ cầu/liên cầu. Đặc trưng bởi vết loét đỏ và VẢY VÀNG NHƯ MẬT ONG. Phổ biến ở trẻ 2-6 tuổi, có thể gặp ở học sinh tiểu học.',
-        causes: 'Vi khuẩn tụ cầu vàng (S. aureus) hoặc liên cầu (S. pyogenes) xâm nhập qua vết xước, muỗi đốt, chà xát.',
-        symptoms: ['Mụn nước nhỏ hoặc trợt da, nhanh vỡ để lại VẢY VÀNG MẬT ONG', 'Vùng da xung quanh đỏ, sưng nhẹ', 'Thường quanh mũi, miệng, tay, chân', 'Ngứa nhẹ, có thể đau rát'],
-        schoolContext: 'Lây qua tiếp xúc trực tiếp, dùng chung khăn, gối, bàn chải. Thời tiết nóng ẩm giao mùa là điều kiện thuận lợi. Trẻ gãi rồi chạm sang vùng khác gây lan.',
-        treatment: ['NGỪNG: Gãi, chạm tay bẩn vào vết loét.', 'RỬA: Rửa vết loét 2 lần/ngày bằng nước muối sinh lý hoặc xà phòng trung tính.', 'DỊU: Thoa kháng sinh bôi (mupirocin) theo chỉ định.', 'KHÁM: Nếu lan rộng, có sốt → cần kháng sinh uống. Nghỉ học đến khi khô hẳn.'],
-        dangerSigns: ['Vết loét lan rộng nhanh dù đã vệ sinh', 'Sốt cao, mệt mỏi, bỏ ăn', 'Da sưng nóng đỏ rực, rất đau'],
+        id: 'mun-7',
+        name: 'Nốt đỏ quanh sợi lông – Viêm nang lông',
+        otherNames: 'Folliculitis',
+        description: 'Viêm nang lông là tình trạng viêm nhiễm ở phần gốc (nang) sợi lông, tạo ra các nốt đỏ nhỏ hoặc mụn mủ quanh lỗ chân lông. Phổ biến ở vùng da đầu gối, cẳng chân, mặt và lưng.',
+        causes: 'Vi khuẩn tụ cầu vàng (S. aureus) xâm nhập vào nang lông qua vết xước nhỏ, cạo râu, hoặc do cọ xát quần áo. Tình trạng bít tắc nang lông + mồ hôi + vệ sinh kém cũng là yếu tố.',
+        symptoms: ['Nốt đỏ nhỏ hoặc mụn mủ quanh lỗ chân lông', 'Sợi lông mọc xoắn ốc hoặc không mọc được (lông quặn)', 'Vùng da quanh nang lông sưng đỏ, có thể ngứa hoặc đau nhẹ', 'Mủ trắng ở đầu nốt, vỡ ra khi gãi hoặc cạy', 'Có thể lan rộng thành nhiều nốt liên tiếp'],
+        schoolContext: 'Học sinh mặc đồng phục bó sát, đạp xe, chơi thể thao → cọ xát da đầu gối, cẳng chân. Tắm muộn sau giờ sinh hoạt thể chất, mồ hôi tích tụ → vi khuẩn theo mồ hôi vào nang lông. Học sinh hay cạy mụn ở chân.',
+        treatment: ['NGỪNG: Cạy, nặn, gãi vùng viêm nang lông. Mặc đồ bó sát gây cọ xát.', 'RỬA: Rửa sạch vùng da bị viêm bằng xà phòng diệt khuẩn 2 lần/ngày. Giữ da khô ráo, thay vớ sau khi đổ mồ hôi.', 'DỊU: Thoa dung dịch sát khuẩn (povidone iodine) hoặc kem kháng sinh (mupirocin) lên nốt viêm. Tránh cạo râu/lông vùng bị viêm.', 'KHÁM: Nếu viêm lan rộng, có nhiều mủ, sốt → đến da liễu cần kháng sinh uống.'],
+        dangerSigns: ['Nốt đỏ lan rộng thành mảng lớn trên da đầu hoặc lưng', 'Có mủ vàng, sưng đỏ nóng quanh vùng viêm', 'Sốt kèm theo viêm nang lông', 'Lông quặn sâu dưới da, tạo u nhọt (boil/carbuncle)'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/02_Impetigo.jpg/600px-02_Impetigo.jpg', caption: 'Tổn thương chốc lở Impetigo với vảy vàng đặc trưng', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Impetigo_elbow.jpg/600px-Impetigo_elbow.jpg', caption: 'Chốc lở ở vùng khuỷu tay với mụn nước và vảy vàng', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Impetigo_crouteux_jambes.jpg/600px-Impetigo_crouteux_jambes.jpg', caption: 'Chốc lở Impetigo trên da chân với vảy mật ong', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mun-viem-o-tran-acc-1.webp', caption: 'Nốt đỏ viêm nang lông quanh sợi lông trên da – tổn thương Folliculitis', source: 'Hình ảnh minh họa bệnh Viêm nang lông' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/bat_mi_nhung_cach_tri_mun_boc_sung_do_don_gian_va_hieu_qua_1_a290bd216b.jpg', caption: 'Viêm nang lông trên da vùng cẳng chân – nốt đỏ và mụn mủ quanh nang lông', source: 'Hình ảnh minh họa viêm nang lông ở cẳng chân' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20210726_nguyen-nhan-gay-mun-boc-2.jpg', caption: 'Viêm nang lông mãn tính – da sần, nốt đỏ li ti rải rác quanh chân lông', source: 'Hình ảnh minh họa viêm nang lông mãn tính trên da' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
-      },
-      {
-        id: 'mun-7',
-        name: 'Mụn rộp Herpes miệng',
-        otherNames: 'Herpes Simplex Virus (HSV-1), Cold Sore',
-        description: 'Nhiễm virus Herpes simplex type 1 (HSV-1). Mụn nước nhỏ tụ lại thành chùm trên nền da đỏ quanh miệng, đau rát và ngứa.',
-        causes: 'Virus Herpes simplex type 1 (HSV-1) lây qua tiếp xúc nước bọt, hôn, dùng chung cốc/chén, khăn. Virus ẩn trong thần kinh và tái phát khi miễn dịch suy giảm.',
-        symptoms: ['Mụn nước trong suốt tụ thành chùm 3-5 quả trên nền đỏ', 'Da quanh mụn đỏ, sưng nhẹ', 'Đau rát, ngứa hoặc châm chích trước khi mụn xuất hiện', 'Mụn vỡ để lại vết loét đau, khô thành vảy trong 7-10 ngày', 'Sốt nhẹ, hạch dưới hàm sưng'],
-        schoolContext: 'Lây qua dùng chung bình nước, khăn, son môi. Stress thi cử, thức khuya, đau ốm làm tái phát mụn rộp. Học sinh thường tự ti khi có mụn rộp trên môi.',
-        treatment: ['NGỪNG: Không chạm tay bẩn vào mụn. Không bóp, không lột vảy. Không dùng chung son, khăn, bình nước.', 'RỬA: Rửa tay xà phòng sau khi chạm vào vùng mụn. Giữ vùng môi sạch.', 'DỊU: Thoa kem kháng virus (acyclovir 5%) càng sớm càng tốt khi có triệu chứng tiền triệu (ngứa, rát). Chườm mát giảm đau.', 'KHÁM: Nếu tái phát >6 lần/năm → cần thuốc uống ngừa từ bác sĩ.'],
-        dangerSigns: ['Mụn lan rộng mắt, bộ phận sinh dục (HSV-2)', 'Sốt cao, hạch sưng to không giảm', 'Mụn không khỏi sau 14 ngày hoặc lan rộng rất nhanh', 'Trẻ nhỏ bị Herpes miệng lan rộng, khó ăn uống'],
-        images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Herpes_face_pommette.jpg/600px-Herpes_face_pommette.jpg', caption: 'Herpes miệng – tổn thương mụn nước tụ thành chùm trên má', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Orofacial_herpes_simplex_virus_infection_of_the_left_upper_gum.jpg/600px-Orofacial_herpes_simplex_virus_infection_of_the_left_upper_gum.jpg', caption: 'Herpes miệng – tổn thương trên nướu và môi trên', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Herpesinfection.JPG/600px-Herpesinfection.JPG', caption: 'Tổn thương Herpes simplex trên da mặt – nhiều mụn nước', source: 'Wikimedia Commons / CC BY-SA 4.0' }
-        ],
-        sources: [{ title: 'CDC', url: 'https://cdc.gov/herpes' }]
-      },
-      {
-        id: 'mun-8',
-        name: 'Rosacea (Trứng cá đỏ)',
-        otherNames: 'Rosacea, Acne Rosacea',
-        description: 'Bệnh da mãn tính gây đỏ mặt dai dẳng, giãn mao mạch, và mụn mủ nhỏ. Phổ biến ở người da trắng và da sáng 30-50 tuổi.',
-        causes: 'Nguyên nhân chưa rõ ràng: giãn mạch máu bề mặt + phản ứng viêm + vi khuẩn Demodex. Triggers: rượu, gia vị, nhiệt độ nóng, stress, tia UV.',
-        symptoms: ['Đỏ mặt dai dẳng ở vùng trung tâm (má, mũi, cằm, trán)', 'Giãn mao mạch (telangiectasia) nhìn thấy được ở má', 'Mụn mủ nhỏ (papules/pustules) trên nền da đỏ', 'Da mặt nhạy cảm, dễ bị kích ứng', 'Mũi có thể sưng to (rhinophyma) ở trường hợp nặng'],
-        schoolContext: 'Học sinh vị thành niên thường bị nhầm với mụn trứng cá thông thường. Áp lực tâm lý về ngoại hình khi mặt đỏ liên tục. Triggers phổ biến trong môi trường học đường: gia vị, nước ngọt, căng thẳng.',
-        treatment: ['NGỪNG: Uống rượu, ăn đồ cay nóng, ở môi trường nóng. Tránh xả xạc mạnh, dùng mỹ phẩm không phù hợp.', 'RỬA: Rửa mặt nhẹ nhàng với sữa rửa mặt dịu nhẹ. Tránh nước nóng.', 'DỊU: Thoa metronidazole gel hoặc azelaic acid theo chỉ định. Chống nắng SPF 30+ mỗi ngày.', 'KHÁM: Nếu đỏ mặt kéo dài >3 tuần, mụn mủ lan rộng → đến da liễu.'],
-        dangerSigns: ['Mắt bị đỏ, đau, nhạy cảm ánh sáng (Rosacea mắt – nguy cơ mất thị lực)', 'Mũi sưng to, biến dạng (rhinophyma)', 'Đỏ mặt không đáp ứng điều trị sau 8 tuần'],
-        images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Rosacea_01.jpg/600px-Rosacea_01.jpg', caption: 'Rosacea trung tâm mặt – đỏ da và giãn mao mạch ở má', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Rosacea_mild.jpg/600px-Rosacea_mild.jpg', caption: 'Rosacea nhẹ – đỏ vùng má và mũi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Acne_rosacea.jpg/600px-Acne_rosacea.jpg', caption: 'Acne Rosacea – mụn mủ nhỏ trên nền da đỏ mặt', source: 'Wikimedia Commons / CC BY-SA 4.0' }
-        ],
-        sources: [{ title: 'AAD', url: 'https://aad.org/rosacea' }]
-      },
-      {
-        id: 'mun-9',
-        name: 'Vảy nến',
-        otherNames: 'Psoriasis Vulgaris',
-        description: 'Bệnh da tự miễn mãn tính. Dát đỏ có vảy bạc đặc trưng, tổn thương đối xứng ở khuỷu, đầu gối, da đầu.',
-        causes: 'Tự miễn dịch: tế bào T lympho tấn công tế bào da → tái tạo quá nhanh (4-7 ngày thay vì 28 ngày). Yếu tố di truyền + triggers: stress, nhiễm trùng, thuốc, lạnh.',
-        symptoms: ['Dát đỏ well-defined, bề mặt có vảy bạc dày bám chặt', 'Vảy trắng bong tróc khi cạo (dễ xuất huyết điểm – Auspitz sign)', 'Vị trí đặc trưng: khuỷu tay, đầu gối, da đầu, thân mình', 'Móng tay có vết lõm (pitting), dày, bong tróc', 'Ngứa nhẹ đến vừa'],
-        schoolContext: 'Bệnh ảnh hưởng tâm lý học sinh rất nặng – tự ti về ngoại hình khi mặc đồng phục, đi bơi. Trẻ bị stress nặng (thi cử) → bùng phát. Trẻ bị nhiễm trùng (viêm họng) → khởi phát psoriasis.',
-        treatment: ['NGỪNG: Gãi, bóc vảy. Dùng kem steroid mạnh không theo chỉ định.', 'RỬA: Tắm nước ấm, dùng sữa tắm dịu nhẹ. Thoa kem dưỡng ẩm ngay sau tắm.', 'DỊU: Thoa steroid từ bác sĩ. Ánh sáng trị liệu (UVB) cho trường hợp rộng.', 'KHÁM: Đến da liễu. Bệnh cần điều trị dài hạn, có thuốc sinh học cho nặng.'],
-        dangerSigns: ['Dát đỏ lan rộng >20% diện tích cơ thể', 'Viêm khớp: sưng đau khớp, cứng khớp buổi sáng', 'Móng biến dạng nặng, bong tróc toàn bộ', 'Vảy nến mủ (psoriasis pustular) – cần nhập viện'],
-        images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Psoriasis_vulgaris_to_avoid_wrong_diagnosis_and_help_in_treating.jpg/600px-Psoriasis_vulgaris_to_avoid_wrong_diagnosis_and_help_in_treating.jpg', caption: 'Psoriasis vulgaris – dát đỏ vảy bạc đặc trưng trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/An_Arm_Covered_With_Plaque_Type_Psoriasis.jpg/600px-An_Arm_Covered_With_Plaque_Type_Psoriasis.jpg', caption: 'Vảy nến trên cánh tay – vảy bạc dày trên nền da đỏ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Psoriasis_on_elbow.jpg/600px-Psoriasis_on_elbow.jpg', caption: 'Psoriasis trên khuỷu tay – vị trí đặc trưng của vảy nến', source: 'Wikimedia Commons / CC BY-SA 4.0' }
-        ],
-        sources: [{ title: 'AAD', url: 'https://aad.org/psoriasis' }]
-      },
-      {
-        id: 'mun-10',
-        name: 'Bạch biến',
-        otherNames: 'Vitiligo',
-        description: 'Da mất sắc tố từng mảng, xuất hiện vùng trắng hoàn toàn không có melanin. Có thể lan rộng hoặc ổn định. Không lây.',
-        causes: 'Tự miễn dịch: cơ thể tấn công và phá hủy tế bào sản xuất melanin (melanocyte). Gen di truyền chiếm 20-30%. Căng thẳng, chấn thương da có thể khởi phát.',
-        symptoms: ['Vùng da TRẮNG hoàn toàn, ranh giới rõ với da bình thường', 'Vị trí: quanh miệng, mắt, tay, chân, đầu gối, khuỷu', 'Vùng trắng đồng nhất, không vảy, không ngứa', 'Tóc trên vùng tổn thương có thể bạc trắng', 'Da nhạy cảm với ánh nắng trên vùng trắng'],
-        schoolContext: 'Học sinh tự ti rất nặng vì vùng trắng trên da mặt/ Tay dễ bị bạn bè chú ý và hỏi han. Bắt nạt kỳ thị ngoại hình có thể xảy ra. Trẻ cần được tư vấn tâm lý sớm.',
-        treatment: ['NGỪNG: Xấu hổ, cô lập bản thân. Dùng kem tẩy trắng (không phải điều trị thật sự).', 'RỬA: Bảo vệ da khỏi ánh nắng: kem chống nắng SPF 30+ mỗi ngày.', 'DỊU: Thoa steroid hoặc calcineurin inhibitor (tacrolimus) theo chỉ định. Ánh sáng UVB narrowband.', 'KHÁM: Đến da liễu sớm. Điều trị hiệu quả cao nhất khi phát hiện sớm. Đường dây 1800-9090 nếu cần hỗ trợ tâm lý.'],
-        dangerSigns: ['Tổn thương lan rộng rất nhanh trong vài tuần', 'Mắt bị ảnh hưởng (vitiligo quanh mắt)', 'Có dấu hiệu bệnh tự miễn khác (tuyến giáp)', 'Trầm cảm, cô lập, có ý nghĩ tự hại'],
-        images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/0801_Vitiligo.jpg/600px-0801_Vitiligo.jpg', caption: 'Bạch biến Vitiligo – vùng da mất sắc tố trắng hoàn toàn trên cổ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/0802_Vitiligo.jpg/600px-0802_Vitiligo.jpg', caption: 'Vitiligo trên da mặt – các vùng trắng đồng nhất ranh giới rõ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Vitiligo_on_hand.jpg/600px-Vitiligo_on_hand.jpg', caption: 'Bạch biến trên bàn tay – vị trí phổ biến thường gặp', source: 'Wikimedia Commons / CC BY-SA 4.0' }
-        ],
-        sources: [{ title: 'AAD', url: 'https://aad.org/vitiligo' }]
-      },
-      {
-        id: 'mun-11',
-        name: 'Zona thần kinh',
-        otherNames: 'Shingles, Herpes Zoster',
-        description: 'Virus Varicella-Zoster (cùng virus thủy đậu) tái hoạt động trong dây thần kinh. Mụn nước排列成条带 trên một bên cơ thể theo đường dây thần kinh, kèm đau dữ dội.',
-        causes: 'Sau khi khỏi thủy đậu, virus VZV ẩn trong gốc dây thần kinh. Tái hoạt khi miễn dịch suy giảm (stress, bệnh nặng, thuốc ức chế miễn dịch, tuổi già).',
-        symptoms: ['Đau dữ dội theo đường dây thần kinh (đau thần kinh liệt)', 'Mụn nước trong排列成条带 trên một bên cơ thể, không lan sang bên kia', 'Mụn xuất hiện 1-5 ngày sau đau, thường ở ngực/lưng/mặt', 'Mụn vỡ để lại vết loét → khô → vảy trong 2-4 tuần', 'Có thể sốt nhẹ, mệt mỏi'],
-        schoolContext: 'Ít gặp ở học sinh nhỏ (đã tiêm phòng thủy đậu). Học sinh chưa tiêm phòng và chưa từng bị thủy đậu có nguy cơ. Người lớn tuổi và người suy giảm miễn dịch dễ bị Zona.',
-        treatment: ['NGỪNG: Gãi mụn nước. Để trẻ đến trường khi còn mụn nước chưa khô.', 'RỬA: Giữ vùng da sạch, khô. Rửa tay thường xuyên.', 'DỊU: Thuốc kháng virus (acyclovir, valacyclovir) hiệu quả nhất nếu uống trong 72 giờ đầu. Giảm đau: paracetamol.', 'KHÁM NGAY: Đau dữ dội, Zona ở mặt (gần mắt), người suy giảm miễn dịch.'],
-        dangerSigns: ['Zona ở vùng mắt (có thể mù mắt) → khám mắt ngay', 'Đau thần kinh kéo dài >3 tháng sau Zona (postherpetic neuralgia)', 'Zona lan rộng toàn thân, sốt cao', 'Người bệnh suy giảm miễn dịch bị Zona nặng'],
-        images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Chickenpox_blister-%28closeup%29.jpg/600px-Chickenpox_blister-%28closeup%29.jpg', caption: 'Zona thần kinh – mụn nước trên nền da đỏ theo đường dây thần kinh', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Chickenpox_blister.jpg/600px-Chickenpox_blister.jpg', caption: 'Tổn thương Zona thần kinh trên thân mình – mụn nước tụ thành vệt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/V%C3%A9sicules_varicelle_chickenpox.jpg/600px-V%C3%A9sicules_varicelle_chickenpox.jpg', caption: 'Mụn nước Zona Herpes Zoster – hình thành vệt đặc trưng theo dây thần kinh', source: 'Wikimedia Commons / CC BY-SA 4.0' }
-        ],
-        sources: [{ title: 'CDC', url: 'https://cdc.gov/shingles' }]
-      },
-      {
-        id: 'mun-12',
-        name: 'Mề đay',
-        otherNames: 'Urticaria, Hives',
-        description: 'Phản ứng dị ứng gây ra các sẩn đỏ NGỨA DỮ, thay đổi hình dạng và vị trí liên tục trong vài giờ. Cấp tính hoặc mãn tính.',
-        causes: 'Giải phóng histamine từ tế bào mast khi tiếp xúc tác nhân dị ứng: thực phẩm (tôm, đậu phộng), thuốc, côn trùng đốt, gió lạnh, áp lực tâm lý, virus.',
-        symptoms: ['Sẩn đỏ (wheals) nổi lên da, NGỨA DỮ DỘI', 'Sẩn thay đổi hình dạng, kích thước, vị trí liên tục trong vài giờ', 'Có thể có quanh mắt, môi (angioedema)', 'Da sờ ấm, căng, đau nhẹ tại sẩn', 'Cấp tính: <6 tuần. Mãn tính: >6 tuần, tái đi tái lại'],
-        schoolContext: 'Học sinh bị dị ứng thực phẩm trong bữa ăn bán trú, canteen trường. Côn trùng đốt trong giờ ra chơi. Stress thi cử → tái phát mề đay mãn tính. Gây mất tập trung học do ngứa dữ.',
-        treatment: ['NGỪNG: Tiếp xúc tác nhân gây dị ứng (nếu đã xác định). Không gãi (gãi làm nặng thêm).', 'RỬA: Ghi nhật ký ăn uống để tìm thực phẩm gây dị ứng. Rửa tay, mặt sau giờ ra chơi.', 'DỊU: Thuốc kháng histamine (cetirizine, loratadine) – không gây buồn ngủ được ưu tiên.', 'KHÁM NGAY: Khó thở, khàn tiếng, phù quanh miệng/mắt (sốc phản vệ). Sẩn mề đay không giảm sau 24h dù thuốc.'],
-        dangerSigns: ['Khó thở, thở gấp, khàn tiếng → GỌI CẤP CỨU ngay (sốc phản vệ)', 'Sưng môi, lưỡi, mí mắt (angioedema – tắc nghẽn đường thở)', 'Sẩn không biến mất sau 24h dù kháng histamine', 'Sốt cao kèm theo sẩn ngứa'],
-        images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Atopic_dermatitis_child_3.jpg/600px-Atopic_dermatitis_child_3.jpg', caption: 'Mề đay Urticaria – sẩn đỏ nổi ngứa dữ dội trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Dermatite_o_eczema_atopico_avambraccio_2015.jpg/600px-Dermatite_o_eczema_atopico_avambraccio_2015.jpg', caption: 'Phản ứng dị ứng da – tổn thương mề đay trên da cánh tay', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Atopic_dermatitis_child.JPG/600px-Atopic_dermatitis_child.JPG', caption: 'Sẩn mề đay ở trẻ – phản ứng viêm da dị ứng cấp tính', source: 'Wikimedia Commons / CC BY-SA 4.0' }
-        ],
-        sources: [{ title: 'AAD', url: 'https://aad.org/urticaria' }]
-      },
-      {
-        id: 'mun-13',
-        name: 'Phát ban do virus',
-        otherNames: 'Viral Exanthem, Measles-like rash',
-        description: 'Phát ban toàn thân do virus (rubella, measles, roseola, enterovirus). Xuất hiện sau sốt, thường là dát đỏ hoặc dát hồng lan tỏa.',
-        causes: 'Nhiều loại virus: Rubella, Measles (sởi), Roseola (HHV-6), Enterovirus (EV68, EV71),腺病毒. Lây qua giọt bắn, tiếp xúc.',
-        symptoms: ['Phát ban đỏ/hồng rải rác hoặc lan tỏa toàn thân, thường sau 1-3 ngày sốt', 'Dát phẳng (macules) hoặc nổi nhẹ (papules), không ngứa hoặc ngứa nhẹ', 'Bắt đầu ở mặt, lan xuống thân, tay chân', 'Kèm theo: sốt, mệt mỏi, đau họng, chảy mũi, hạch sưng', 'Measles: có đốm Koplik trắng trong miệng'],
-        schoolContext: 'Lây rất nhanh trong trường học, đặc biệt Measles (sởi) và Rubella. Trẻ chưa tiêm phòng đầy đủ là nhóm nguy cơ cao nhất. Cần nghỉ học ngay khi phát hiện.',
-        treatment: ['NGỪNG: Đến trường khi đang sốt và phát ban. Tự ý cho trẻ uống kháng sinh (không có tác dụng với virus).', 'RỬA: Nghỉ ngơi tại nhà, uống nhiều nước, sữa.', 'DỊU: Hạ sốt bằng paracetamol. Giữ da sạch, mặc đồ thoáng mát.', 'KHÁM NGAY: Sốt cao không hạ, khó thở, co giật, phát ban không biến mất sau 5 ngày.'],
-        dangerSigns: ['Sốt cao >39.5°C không hạ dù thuốc', 'Co giật, lú lẫn, đau đầu dữ dội (viêm não virus)', 'Khó thở, thở nhanh (viêm phổi)', 'Phát ban xuất huyết: dát đỏ không bay khi ấn kính (xuất huyết da)', 'Môi tím, trẻ ngủ li bì (dấu hiệu suy hô hấp)'],
-        images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Scarlet_fever_rash.jpg/600px-Scarlet_fever_rash.jpg', caption: 'Phát ban do virus – dát đỏ rải rác toàn thân kiểu sởi', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Child_with_scarlet_fever.jpg/600px-Child_with_scarlet_fever.jpg', caption: 'Phát ban virus exanthem trẻ em – mệt mỏi kèm theo ban', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Scarlatina_tongue.JPG/600px-Scarlatina_tongue.JPG', caption: 'Phát ban toàn thân do nhiễm virus – biểu hiện trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' }
-        ],
-        sources: [{ title: 'CDC', url: 'https://cdc.gov' }, { title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
       }
     ]
   },
@@ -289,15 +170,15 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Cho trẻ đến trường khi đang bệnh. Dùng chung đồ ăn uống, khăn.', 'RỬA: Cách ly tại nhà. Rửa tay thường xuyên bằng xà phòng.', 'DỊU: Cho ăn đồ lỏng, mềm, nguội (cháo, súp, sữa). Hạ sốt nếu cần.', 'KHÁM NGAY nếu sốt cao >39°C không hạ, co giật, biếng ăn dữ dội.'],
         dangerSigns: ['Sốt cao >39°C không hạ dù thuốc', 'Giật mình, run tay chân, quấy khóc vô cớ (dấu hiệu thần kinh)', 'Đi đứng loạng choạng, nôn ói, khó thở', 'Da nổi vân tím, vã mồ hôi lạnh (dấu hiệu sốc)'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Hand_Foot_Mouth_Disease.png/600px-Hand_Foot_Mouth_Disease.png', caption: 'Sơ đồ minh họa tổn thương bệnh Tay - Chân - Miệng trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Characteristic_rash_of_hand%2C_foot%2C_and_mouth_disease%2C_on_a_human_foot.jpg/600px-Characteristic_rash_of_hand%2C_foot%2C_and_mouth_disease%2C_on_a_human_foot.jpg', caption: 'Phỏng nước đặc trưng của bệnh Tay - Chân - Miệng trên bàn chân', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Characteristic_rash_of_hand%2C_foot%2C_and_mouth_disease%2C_on_human_hands.jpg/600px-Characteristic_rash_of_hand%2C_foot%2C_and_mouth_disease%2C_on_human_hands.jpg', caption: 'Tổn thương phỏng nước trên lòng bàn tay do bệnh HFMD', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20200727_071459_231570_tcm_max_1800x1800_png_96162025f3.png', caption: 'Sơ đồ minh họa tổn thương bệnh Tay - Chân - Miệng trên da', source: 'Hình ảnh minh họa bệnh Tay Chân Miệng' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20220604_125430_223335_tre_bi_tay_chan_mie_max_1800x1800_png_174dcc6bc8.png', caption: 'Phỏng nước đặc trưng của bệnh Tay - Chân - Miệng trên bàn chân', source: 'Hình ảnh minh họa bệnh Tay Chân Miệng ở trẻ em' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-tay-chan-mieng_0003301_710.jpeg', caption: 'Tổn thương phỏng nước trên lòng bàn tay do bệnh HFMD', source: 'Hình ảnh minh họa bệnh Tay Chân Miệng trên tay' }
         ],
         sources: [{ title: 'CDC', url: 'https://cdc.gov' }, { title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
       },
       {
         id: 'tcm-2',
-        name: 'Thủy đậu',
+        name: 'Nốt nước lắm drama-Thủy đậu',
         otherNames: 'Chickenpox, Varicella',
         description: 'Virus Varicella-Zoster. Mụn nước TRONG trên nền da ĐỎ, ngứa, sốt nhẹ. Để lại sẹo nếu gãi nhiều.',
         causes: 'Virus Varicella-Zoster lây qua giọt bắn và tiếp xúc dịch mụn nước. Một trẻ bệnh có thể lây cho nhiều bạn trong lớp.',
@@ -306,15 +187,15 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Gãi mụn nước – để lại sẹo. Đến trường khi còn vảy chưa khô hẳn.', 'RỬA: Tắm nước ấm nhẹ nhàng. Cắt móng ngắn. Mặc đồ mềm, thoáng.', 'DỊU: Thuốc chống ngứa theo chỉ định. Chườm mát giảm ngứa.', 'KHÁM NGAY nếu sốt cao liên tục, khó thở, đau đầu dữ dội.'],
         dangerSigns: ['Sốt cao liên tục không hạ', 'Mụn nước có mủ, sưng đỏ lan rộng (nhiễm trùng da)', 'Trẻ khó thở, ho nhiều (viêm phổi)', 'Đau đầu dữ dội, cứng cổ, lú lẫn (viêm não)'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Chickenpox_blister-%28closeup%29.jpg/600px-Chickenpox_blister-%28closeup%29.jpg', caption: 'Mụn nước trong suốt đặc trưng thủy đậu trên da', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Chickenpox_blister.jpg/600px-Chickenpox_blister.jpg', caption: 'Mụn nước thủy đậu chickenpox trên thân mình với nhiều vết phồng rộp', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/V%C3%A9sicules_varicelle_chickenpox.jpg/600px-V%C3%A9sicules_varicelle_chickenpox.jpg', caption: 'Mụn nước đặc trưng thủy đậu varicella trên da vai bệnh nhân', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-thuy-dau-2-1427963655144-484x360.jpg', caption: 'Mụn nước trong suốt đặc trưng thủy đậu trên da', source: 'Hình ảnh minh họa bệnh Thủy đậu trên da' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-thuy-dau-3.webp', caption: 'Mụn nước thủy đậu chickenpox trên thân mình với nhiều vết phồng rộp', source: 'Hình ảnh minh họa bệnh Thủy đậu trên cơ thể' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/z4694962895999_7f09f119c9ab64b0374672e34e8f4b1e.jpg', caption: 'Mụn nước đặc trưng thủy đậu varicella trên da vai bệnh nhân', source: 'Hình ảnh minh họa bệnh Thủy đậu varicella' }
         ],
         sources: [{ title: 'BV Nhi TW', url: 'https://benhviennhitrunguong.vn' }]
       },
       {
         id: 'tcm-3',
-        name: 'Cúm',
+        name: 'Cơn sốt nhập trường-Cúm',
         otherNames: 'Influenza',
         description: 'Virus Influenza A/B. Sốt cao ĐỘT BIẾN + đau cơ + ho + mệt MẤT ĂN NGỦ. Nặng hơn cảm thường rất nhiều.',
         causes: 'Virus Influenza lây qua giọt bắn khi ho, hắt hơi, nói chuyện. Bùng phát theo mùa (mùa lạnh, giao mùa, mùa thi).',
@@ -323,15 +204,15 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Đến trường khi đang sốt, ho, đau mỏi. Đeo khẩu trang nếu bắt buộc ra ngoài.', 'RỬA: Rửa tay thường xuyên. Dùng khăn giấy che miệng khi ho/hắt hơi.', 'DỊU: Hạ sốt bằng paracetamol. Uống nhiều nước, oresol, nước hoa quả.', 'KHÁM: Nếu sốt cao >3 ngày, khó thở, đau ngực.'],
         dangerSigns: ['Khó thở, thở nhanh, thở gấp (viêm phổi)', 'Sốt không hạ hoặc sốt lại sau 3-4 ngày', 'Đau ngực dữ dội, ho ra máu', 'Lú lẫn, không tỉnh táo, co giật'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/H1N1_Influenza_Virus_Particles_%288411599236%29.jpg/600px-H1N1_Influenza_Virus_Particles_%288411599236%29.jpg', caption: 'Virus cúm Influenza H1N1 qua kính hiển vi điện tử', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/A_family_threatened_by_influenza_is_prepared_for_a_large_sca_Wellcome_V0011966.jpg/600px-A_family_threatened_by_influenza_is_prepared_for_a_large_sca_Wellcome_V0011966.jpg', caption: 'Gia đình bị ảnh hưởng bởi cúm Influenza mùa dịch', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Three_miserable_men_suffering_from_gout%2C_toothache_and_flu_Wellcome_V0012085.jpg/600px-Three_miserable_men_suffering_from_gout%2C_toothache_and_flu_Wellcome_V0012085.jpg', caption: 'Người bệnh cúm Influenza với các triệu chứng mệt mỏi đau đầu toàn thân', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/viruscum1-crop-1738918501629.webp', caption: 'Virus cúm Influenza H1N1 qua kính hiển vi điện tử', source: 'Hình ảnh minh họa virus cúm Influenza' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-cum-mua-do-virus-cum-influenza-chung-a-va-b-gay-ra.webp', caption: 'Virus cúm Influenza A và B gây bệnh cúm mùa', source: 'Hình ảnh minh họa bệnh cúm Influenza' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/cum-01-1.png', caption: 'Người bệnh cúm Influenza với các triệu chứng mệt mỏi đau đầu toàn thân', source: 'Hình ảnh minh họa bệnh cúm mùa' }
         ],
         sources: [{ title: 'WHO', url: 'https://who.int/influenza' }]
       },
       {
         id: 'tcm-4',
-        name: 'Đau mắt đỏ',
+        name: 'Mắt hồng hờn dỗi-Đau mắt đỏ',
         otherNames: 'Viêm kết mạc, Conjunctivitis',
         description: 'Viêm kết mạc do virus (Adenovirus) hoặc vi khuẩn. Mắt đỏ rực + ghèn/đục nhiều + chảy nước mắt. Lây LAN NHANH trong lớp.',
         causes: 'Adenovirus (phổ biến nhất) hoặc vi khuẩn (Staph, Strep). Lây qua dùng chung khăn, gối, kính, hoặc chạm tay vào dịch tiết mắt.',
@@ -340,9 +221,9 @@ const HEALTH_LIBRARY = [
         treatment: ['NGỪNG: Dùng chung khăn, gối, kính, thuốc nhỏ mắt. Đến trường khi đang đỏ mắt nhiều ghèn.', 'RỬA: Nhỏ nước muối sinh lý (NaCl 0.9%) thường xuyên. Rửa tay xà phòng ngay sau khi chạm vào mắt.', 'DỊU: Thuốc nhỏ mắt kháng virus hoặc kháng sinh theo đơn bác sĩ.', 'KHÁM: Nếu đỏ nặng, mờ mắt, đau nhiều, hoặc không cải thiện sau 3 ngày.'],
         dangerSigns: ['Đau nhức mắt dữ dội, đau sâu vào hốc mắt', 'Nhìn mờ, suy giảm thị lực đột ngột', 'Mắt rất sợ ánh sáng, không thể mở mắt', 'Chảy mủ đặc hoặc có máu từ kết mạc'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Conjunctivitis_5174.jpg/600px-Conjunctivitis_5174.jpg', caption: 'Viêm kết mạc đỏ rực – mắt đỏ đặc trưng của bệnh đau mắt đỏ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/An_eye_with_conjunctivitis.jpg/600px-An_eye_with_conjunctivitis.jpg', caption: 'Mắt bị viêm kết mạc hồng đỏ từng vùng trên lòng trắng mắt', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/ConjunctivitisRedEye.jpg/600px-ConjunctivitisRedEye.jpg', caption: 'Đau mắt đỏ kết mạc với mạch máu đỏ tập trung quanh giác mạc', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/benh-dau-mat-do4-min.jpg', caption: 'Viêm kết mạc đỏ rực – mắt đỏ đặc trưng của bệnh đau mắt đỏ', source: 'Hình ảnh minh họa bệnh Đau mắt đỏ' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/mat-do.webp', caption: 'Mắt bị viêm kết mạc hồng đỏ từng vùng trên lòng trắng mắt', source: 'Hình ảnh minh họa mắt đỏ do viêm kết mạc' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/bi_dau_mat_do_bao_lau_thi_khoi_nhung_luu_y_can_biet_de_phuc_hoi_nhanh_4_b381ff7e32.png', caption: 'Đau mắt đỏ kết mạc với mạch máu đỏ tập trung quanh giác mạc', source: 'Hình ảnh minh họa đau mắt đỏ kết mạc' }
         ],
         sources: [{ title: 'BV Mắt TW', url: 'https://vnio.vn' }]
       }
@@ -360,24 +241,24 @@ const HEALTH_LIBRARY = [
     diseases: [
       {
         id: 'tl-1',
-        name: 'Stress học tập & Rối loạn giấc ngủ',
-        otherNames: 'Academic Stress, Sleep Disorder',
-        description: 'Căng thẳng tâm lý do áp lực thi cử, điểm số, kỳ vọng gia đình. Dẫn đến mất ngủ, lo âu, đau đầu.',
-        causes: 'Áp lực thi cử, bài tập nhiều, kỳ vọng từ gia đình, so sánh với bạn bè, stress mạng xã hội.',
-        symptoms: ['Mất ngủ hoặc ngủ không sâu giấc, thức dậy mệt', 'Đau đầu, đau bụng không rõ nguyên nhân thực thể', 'Lo âu, bồn chồn, khó tập trung trong học tập', 'Thay đổi cảm xúc: dễ khóc, cáu gắt, cô lập'],
-        schoolContext: 'Học sinh lớp cuối (lớp 9, lớp 12) đặc biệt dễ bị stress nặng. Giao mùa thi là cao điểm.',
-        treatment: ['NGỪNG: Áp lực thêm về điểm số, so sánh con với "con nhà người ta".', 'RỬA: Chia sẻ với người tin tưởng (bạn bè, thầy cô, cha mẹ). Viết nhật ký cảm xúc.', 'DỊU: Vận động nhẹ 30 phút/ngày. Ngủ đủ 7-8h/đêm. Hạn chế caffeine, mạng xã hội buổi tối.', 'KHÁM: Nếu kéo dài >2 tuần → gặp chuyên gia tâm lý học đường. Gọi 1800-9090.'],
-        dangerSigns: ['Không ngủ được nhiều ngày liên tiếp', 'Có ý nghĩ tự làm đau bản thân', 'Hoảng sợ tột độ, cơn hoảng panic', 'Bỏ ăn, bỏ học, cô lập hoàn toàn'],
+        name: 'Kẻ cướp đêm – Rối loạn giấc ngủ',
+        otherNames: 'Sleep Disorder, Insomnia',
+        description: 'Rối loạn giấc ngủ là tình trạng khó ngủ, ngủ không sâu giấc, hoặc thức dậy quá sớm/quá muộn. Ngủ không đủ giấc khiến học sinh mệt mỏi, khó tập trung, giảm hiệu quả học tập.',
+        causes: 'Áp lực học tập, thi cử, sử dụng điện thoại/máy tính trước giờ ngủ, môi trường ồn ào, chế độ ăn uống không đều đặn, căng thẳng tâm lý.',
+        symptoms: ['Khó chìm vào giấc ngủ, thức giấc nhiều lần trong đêm', 'Ngủ không sâu giấc, thức dậy vẫn mệt mỏi', 'Ngủ quá ít (<7h) hoặc quá nhiều (>10h)', 'Buồn ngủ vào giờ học, khó tập trung, nhớ kém', 'Cáu gắt, lo âu, đau đầu vào buổi sáng'],
+        schoolContext: 'Học sinh thức khuya ôn bài, lướt mạng xã hội trước giờ ngủ, uống trà/cà phê buổi chiều. Áp lực thi cử khiến stress → mất ngủ. Ngủ muộn dậy sớm → thiếu ngủ mãn tính.',
+        treatment: ['NGỪNG: Dùng điện thoại, xem phim, chơi game trước giờ ngủ 1 tiếng. Ăn no trước giờ ngủ.', 'RỬA: Tắt đèn, giữ phòng yên tĩnh, mát mẻ (20-22°C). Tập thở sâu hoặc thiền 5-10 phút trước khi ngủ.', 'DỊU: Ngủ đúng giờ cố định mỗi ngày (kể cả cuối tuần). Hạn chế caffeine sau 14h. Đọc sách giấy nhẹ nhàng.', 'KHÁM: Ngủ không được >3 lần/tuần kéo dài >2 tuần → gặp bác sĩ. Gọi 1800-9090 nếu cần hỗ trợ tâm lý.'],
+        dangerSigns: ['Không ngủ được >3 đêm liên tiếp mà không có lý do', 'Ngủ nói mê, hoảng sợ tột độ về đêm (night terror)', 'Buồn ngủ gục trong giờ học, ngủ gật liên tục (có thể là narcolepsy)', 'Có ý nghĩ tự hại do mất ngủ kéo dài'],
         images: [
           { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pediatric_polysomnogram.jpg/600px-Pediatric_polysomnogram.jpg', caption: 'Đo giấc ngủ Polysomnography – phát hiện rối loạn giấc ngủ ở trẻ', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg/600px-Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg.png', caption: 'Biểu đồ minh họa stress và các yếu tố ảnh hưởng đến tâm lý tuổi học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Thay đổi tâm lý tuổi dậy thì ảnh hưởng đến giấc ngủ và học tập', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg/600px-Etapes_de_la_construction_de_l%27identit%C3%A9_sexuelle_d%27un_%C3%AAtre_humain_%28sch%C3%A9ma_non_titr%C3%A9_et_non_l%C3%A9gend%C3%A9%29.svg.png', caption: 'Biểu đồ minh họa stress và các yếu tố ảnh hưởng đến giấc ngủ tuổi học đường', source: 'Wikimedia Commons / CC BY-SA 4.0' },
+          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png/600px-Early_and_late_maturing_boys_11.5_to_14.6_and_early_and_late_maturing_girls_11.5_to_14.5_yo.png', caption: 'Thay đổi giấc ngủ và học tập ở tuổi vị thành niên do rối loạn giấc ngủ', source: 'Wikimedia Commons / CC BY-SA 4.0' }
         ],
         sources: [{ title: 'BV Tâm thần TW', url: 'https://benhvienphantin.vn' }, { title: 'Đường dây hỗ trợ 1800-9090', url: 'https://hoisongtructuyen.gov.vn' }]
       },
       {
         id: 'tl-2',
-        name: 'Thay đổi nội tiết tuổi dậy thì',
+        name: 'Cơn bão hormone-dậy thì/thay đổi nội tiết',
         otherNames: 'Puberty Changes',
         description: 'Giai đoạn chuyển tiếp sinh lý mạnh mẽ: thay đổi hormone → mụn, chiều cao, cảm xúc thất thường. Nữ 8-13 tuổi, Nam 9-14 tuổi.',
         causes: 'Tuyến sinh dục bắt đầu hoạt động → hormone (estrogen, testosterone) tăng mạnh → thay đổi cơ thể và tâm lý.',
@@ -423,18 +304,18 @@ const HEALTH_LIBRARY = [
       },
       {
         id: 'vs-2',
-        name: 'Nhiễm khuẩn da',
-        otherNames: 'Bacterial Skin Infection',
-        description: 'Vi khuẩn (tụ cầu, liên cầu) xâm nhập qua vết xước, muỗi đốt, chà xát. Gây sốt, da đỏ sưng nóng, có mủ.',
-        causes: 'Tụ cầu vàng (S. aureus) và liên cầu (S. pyogenes) xâm nhập qua vết trầy, muỗi đốt, viêm da tiếp xúc.',
-        symptoms: ['Da đỏ, sưng nóng, đau nhức rõ', 'Có thể có mủ, áp xe', 'Sốt kèm theo', 'Hạch lympho sưng đau ở vùng gần tổn thương'],
-        schoolContext: 'Trẻ hay cào, gãi vết trầy → vi khuẩn xâm nhập. Điều kiện nóng ẩm, mồ hôi nhiều, vệ sinh kém làm tăng nguy cơ.',
-        treatment: ['NGỪNG: Gãi, chạm tay bẩn vào vết thương.', 'RỬA: Rửa sạch vết thương bằng nước muối sinh lý. Giữ khô ráo.', 'DỊU: Chườm mát nếu sưng nhẹ. Thoa kháng sinh bôi nếu có đơn.', 'KHÁM NGAY: Nếu sốt cao, mủ nhiều, lan rộng → cần kháng sinh uống/toàn thân.'],
-        dangerSigns: ['Sốt cao kèm run rẩy, lạnh run', 'Mủ tụ lớn, sưng đỏ lan rộng nhanh', 'Da đỏ nóng bỏng, đau dữ dội (viêm mô tế bào)', 'Hạch sưng to, khó cử động'],
+        name: 'Nhiễm trùng da do tụ cầu/nhọt',
+        otherNames: 'Impetigo (Staphylococcal)',
+        description: 'Nhiễm trùng da do tụ cầu vàng và liên cầu. Đặc trưng bởi viêm tróc da và VÀNG NHẠT MỦ NẶNG. Phổ biến ở trẻ 2–6 tuổi, có thể tiếp tục bị ở học sinh tiểu học.',
+        causes: 'Vi khuẩn tụ cầu vàng (Staphylococcus aureus) hoặc liên cầu (Streptococcus pyogenes) xâm nhập qua vết xước, mẩn đỏ, da ướt.',
+        symptoms: ['Mụn nước nhỏ phát triển, vỡ dễ tạo VÀNG NHẠT MỦ nặng', 'Vi sinh vật quanh quanh mụn, ẩm nhẹ', 'Thường quanh mặt, miệng', 'Những cụm đỏ nổi, mụn, sẩn', 'Ngứa nhẹ, nổi mẩn ngứa'],
+        schoolContext: 'Lây qua tiếp xúc trực tiếp trong lớp học, dùng chung khăn, gối, vật dụng cá nhân. Thời tiết nóng ẩm, mùa hè là điều kiện thuận lợi. Trẻ hay cào gãi vết thương → lan rộng.',
+        treatment: ['NGỪNG: Chạm tay bẩn vào vết loét. Dùng chung khăn, gối, vật dụng.', 'RỬA: Rửa tay sạch sạch sày bằng xà phòng diệt khuẩn. Rửa vết loét 2 lần/ngày bằng nước muối sinh lý hoặc dung dịch phòng ngừa trùng.', 'DỊU: Thoa kháng sinh bôi (mupirocin) theo chỉ định. Giữ da khô ráo.', 'KHÁM: Nếu lan rộng, có sốt → cần kháng sinh uống. Nghỉ học nếu cần.'],
+        dangerSigns: ['Vết loét ăn rộng nhanh, có da đen hoại tử', 'Sốt cao, mệt mỏi, đau ỉa', 'Da đỏ nóng rực, phồng rộp lớn', 'Nhiễm trùng lan rộng toàn thân ở trẻ em, da đầu'],
         images: [
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Bullous_eruption_of_the_hands_due_to_streptococcus_infection_Wellcome_L0062919.jpg/600px-Bullous_eruption_of_the_hands_due_to_streptococcus_infection_Wellcome_L0062919.jpg', caption: 'Nhiễm khuẩn da do Streptococcus gây phồng rộp trên da tay', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/OSC_Microbio_21_02_impetigo.jpg/600px-OSC_Microbio_21_02_impetigo.jpg', caption: 'Hình minh họa vi khuẩn gây nhiễm khuẩn da Staphylococcus và Streptococcus', source: 'Wikimedia Commons / CC BY-SA 4.0' },
-          { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Gaillard%27s_medical_journal_%281882%29_%2814792245183%29.jpg/600px-Gaillard%27s_medical_journal_%281882%29_%2814792245183%29.jpg', caption: 'Biểu hiện nhiễm khuẩn da nặng lan rộng trên cơ thể', source: 'Wikimedia Commons / CC BY-SA 4.0' }
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/20210607_022440_259276_nhiem_khuan_da_tu_c_max_1800x1800_jpg_766b1ed24d.jpg', caption: 'Tổn thương nhiễm trùng da do tụ cầu với vảy vàng đặc trưng', source: 'Hình ảnh minh họa bệnh Nhiễm khuẩn da' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/choc-lo-1448202947970.webp', caption: 'Nhiễm trùng da ở vùng khuỷu tay với mụn nước và vảy vàng', source: 'Hình ảnh minh họa bệnh Nhiễm khuẩn da do tụ cầu' },
+          { url: 'https://raw.githubusercontent.com/dophuhung02112008/eduhealth-ai/main/public/images/articles/Screenshot%202026-03-31%20201436.png', caption: 'Nhiễm trùng da do tụ cầu trên da chân với vảy mật ong', source: 'Hình ảnh minh họa bệnh Nhiễm khuẩn da ở chân' }
         ],
         sources: [{ title: 'BV Da liễu TW', url: 'https://dalieu.vn' }]
       }
@@ -2392,7 +2273,7 @@ const App: React.FC = () => {
             </button>
             <button onClick={() => { setTab('news'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'news' ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
-              <Newspaper size={18} />Tin tức
+              <Newspaper size={18} />HOẠT ĐỘNG
             </button>
             <button onClick={() => { setTab('findcare'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'findcare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
@@ -2409,429 +2290,307 @@ const App: React.FC = () => {
         {tab === 'library' && !selectedCat && !selectedDisease && (
           <div className="space-y-6 animate-in fade-in duration-300">
 
-            {/* ═══ HEALTH ARTICLES SECTION — Auto-updated school health news ═══ */}
-            <div className="space-y-3">
-              {/* Header Banner */}
-              <div
-                onClick={() => setArticlesOpen(!articlesOpen)}
-                className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-5 text-white cursor-pointer relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01]"
-                style={{ boxShadow: '0 0 30px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.2)' }}
-              >
-                <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse" />
-                <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-lg animate-pulse" style={{ animationDelay: '1s' }} />
-                <div className="absolute inset-0 rounded-2xl border-2 border-white/20" />
+            {/* ── 2-COLUMN LAYOUT ── */}
+            <div className="flex flex-col lg:flex-row gap-5">
 
-                <div className="relative flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="relative">
-                      <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
-                        <BookOpen size={28} className="text-white" />
+              {/* ════ LEFT: CẨM NANG THƯ VIỆN ════ */}
+              <div className="lg:w-1/2 space-y-4">
+
+                {/* Cẩm nang header */}
+                <div className={`rounded-2xl p-4 text-white relative overflow-hidden ${darkMode ? '' : ''}`}
+                  style={{
+                    background: darkMode
+                      ? 'linear-gradient(135deg, #1e293b 0%, #334155 100%)'
+                      : 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 60%, #db2777 100%)',
+                    boxShadow: darkMode ? '' : '0 0 30px rgba(99,102,241,0.3)',
+                  }}
+                >
+                  <div className="absolute -top-8 -right-8 w-24 h-24 bg-white/10 rounded-full blur-xl animate-pulse" />
+                  <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-white/10 rounded-full blur-lg animate-pulse" style={{ animationDelay: '1s' }} />
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl shadow">📚</div>
+                      <div>
+                        <h2 className="text-base font-black tracking-tight">Cẩm nang thư viện học đường</h2>
+                        <p className="text-white/70 text-[10px]">{totalDiseases} bài viết · 4 danh mục · 30+ bệnh lý</p>
+                      </div>
+                    </div>
+                    <p className="text-white/70 text-xs leading-relaxed mt-2">Thông tin y khoa cập nhật giúp nhận biết, phòng ngừa và xử lý các vấn đề sức khỏe thường gặp trong môi trường học đường.</p>
+                  </div>
+                </div>
+
+                {/* Category Dropdown */}
+                <div ref={dropdownRef}>
+                  <button
+                    onClick={() => setCatOpen(!catOpen)}
+                    className={`w-full border-2 rounded-2xl p-3.5 flex items-center justify-between hover:shadow-lg transition-all duration-300 group active:scale-[0.99] ${darkMode ? 'bg-slate-800 border-slate-600 hover:border-purple-400' : 'bg-white border-slate-200 hover:border-purple-400'}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-xl shadow group-hover:scale-110 transition-transform duration-300">📋</div>
+                      <div className="text-left">
+                        <p className={`font-black text-sm ${darkMode ? 'text-white' : 'text-slate-800'}`}>Danh mục bệnh</p>
+                        <p className="text-slate-400 text-xs">Chọn để xem chi tiết</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-slate-400 hidden sm:block">4 danh mục</span>
+                      <div className={`w-8 h-8 ${darkMode ? 'bg-slate-700' : 'bg-purple-50'} rounded-lg flex items-center justify-center transition-all duration-300 ${catOpen ? 'rotate-180 bg-purple-100' : ''}`}>
+                        <ChevronDown size={18} className={darkMode ? 'text-slate-300' : 'text-purple-500'} />
+                      </div>
+                    </div>
+                  </button>
+
+                  {catOpen && (
+                    <div className="mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 relative animate-in slide-in-from-top-2 duration-200">
+                      {HEALTH_LIBRARY.map((cat: any, idx: number) => (
+                        <button
+                          key={cat.category}
+                          onClick={() => { setSelectedCat(cat.category); setCatOpen(false); setSelectedDisease(null); }}
+                          className={`w-full flex items-center gap-3 p-3.5 hover:bg-slate-50 transition-all duration-200 border-b border-slate-50 last:border-0 group`}
+                          style={{ animationDelay: `${idx * 50}ms` }}
+                        >
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl ${getCategoryIconBg(cat)} group-hover:scale-110 transition-transform duration-300`}>{cat.icon}</div>
+                          <div className="flex-1 text-left">
+                            <p className={`font-bold text-sm group-hover:text-purple-500 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
+                            <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
+                          </div>
+                          <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${getCategoryGradient(cat)} flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300`}>→</div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Category Cards Grid */}
+                {!search && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {HEALTH_LIBRARY.map((cat: any, idx: number) => (
+                      <button
+                        key={cat.category}
+                        onClick={() => { setSelectedCat(cat.category); setSelectedDisease(null); }}
+                        className={`rounded-xl shadow hover:shadow-xl transition-all duration-300 overflow-hidden border text-left group ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 hover:-translate-y-0.5'}`}
+                        style={{ animationDelay: `${idx * 80}ms` }}
+                      >
+                        <div className={`h-1 bg-gradient-to-r ${getCategoryGradient(cat)}`} />
+                        <div className="flex items-center gap-2.5 px-3.5 pt-3 pb-2">
+                          <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0 ${getCategoryIconBg(cat)}`}>{cat.icon}</div>
+                          <div className="min-w-0 flex-1">
+                            <p className={`font-black text-xs leading-tight line-clamp-1 group-hover:text-purple-500 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
+                            <p className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
+                          </div>
+                        </div>
+                        <div className="px-3.5 pb-2.5">
+                          <div className="space-y-1">
+                            {cat.diseases.slice(0, 4).map((d: any) => (
+                              <p key={d.id} className={`text-[11px] leading-relaxed truncate flex items-start gap-1.5 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
+                                <span className={`shrink-0 mt-0.5 ${darkMode ? 'text-purple-400' : 'text-purple-300'}`}>•</span>
+                                <span className="truncate">{d.name}</span>
+                              </p>
+                            ))}
+                          </div>
+                          {cat.diseases.length > 4 && (
+                            <p className={`text-[10px] mt-1 font-bold ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>+{cat.diseases.length - 4} bài khác</p>
+                          )}
+                        </div>
+                        <div className="px-3.5 pb-2.5">
+                          <div className={`flex items-center gap-1 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity ${darkMode ? 'text-purple-400' : 'text-purple-500'}`}>
+                            Xem tất cả <ChevronRight size={10} />
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Search Results */}
+                {search && filteredLibrary.length > 0 && (
+                  <div className="space-y-3">
+                    <div className={`pill-card rounded-xl p-3 border flex items-center gap-2 ${darkMode ? 'border-slate-700' : 'border-purple-100'}`}>
+                      <Search size={16} className={darkMode ? 'text-slate-400' : 'text-purple-500'} />
+                      <p className={`text-xs font-bold ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>Tìm thấy <span className="text-purple-500">{filteredLibrary.reduce((s: number, c: any) => s + c.diseases.length, 0)}</span> kết quả cho "{search}"</p>
+                    </div>
+                    {filteredLibrary.map((cat: any) => (
+                      <div key={cat.category}>
+                        <h3 className={`text-sm font-black flex items-center gap-1.5 mb-2 ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}><span className="text-base">{cat.icon}</span> {cat.category}</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {cat.diseases.map((d: any) => (
+                            <div key={d.id} onClick={() => { setSelectedCat(cat.category); setSelectedDisease(d); }}
+                              className={`rounded-xl overflow-hidden cursor-pointer group border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100'}`}>
+                              <div className="aspect-video bg-slate-100 dark:bg-slate-700 overflow-hidden">
+                                <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  onError={(e: any) => { e.target.style.display = 'none'; }} />
+                              </div>
+                              <div className="p-2.5">
+                                <h4 className={`font-bold text-xs group-hover:text-purple-500 transition-colors line-clamp-1 ${darkMode ? 'text-white' : 'text-slate-800'}`}>{d.name}</h4>
+                                <p className={`text-[10px] line-clamp-2 mt-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{d.description}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {search && filteredLibrary.length === 0 && (
+                  <div className={`text-center py-10 rounded-2xl ${darkMode ? 'bg-slate-800' : 'bg-white shadow border'}`}>
+                    <div className="text-4xl mb-2">🔍</div>
+                    <p className={`font-bold text-sm ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Không tìm thấy "{search}"</p>
+                  </div>
+                )}
+              </div>
+
+              {/* ════ RIGHT: TIN Y TẾ HỌC ĐƯỜNG ════ */}
+              <div className="lg:w-1/2 space-y-3">
+
+                {/* Header Banner */}
+                <div
+                  onClick={() => setArticlesOpen(!articlesOpen)}
+                  className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 rounded-2xl p-4 text-white cursor-pointer relative overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
+                  style={{ boxShadow: '0 0 20px rgba(59,130,246,0.35)' }}
+                >
+                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl animate-pulse" />
+                  <div className="absolute -bottom-5 -left-5 w-20 h-20 bg-white/10 rounded-full blur-lg animate-pulse" style={{ animationDelay: '1s' }} />
+                  <div className="absolute inset-0 rounded-2xl border border-white/20" />
+
+                  <div className="relative flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow">
+                        <BookOpen size={24} />
                         {healthArticles.length > 0 && (
                           <div className="absolute -top-1 -right-1 w-5 h-5 bg-cyan-400 rounded-full flex items-center justify-center text-[10px] font-black animate-bounce shadow-lg">
                             {healthArticles.length > 9 ? '9+' : healthArticles.length}
                           </div>
                         )}
                       </div>
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-black flex items-center gap-2 tracking-tight">
-                        📖 Tin y tế học đường
-                        <span className="bg-white/20 backdrop-blur-sm text-xs px-2 py-0.5 rounded-full font-medium animate-pulse">
-                          AUTO ⏱
-                        </span>
-                      </h2>
-                      <p className="text-white/80 text-sm mt-0.5 flex items-center gap-2 flex-wrap">
-                        <Clock3 size={12} />
-                        {healthArticles.length} bài báo y tế · Mỗi ngày 1 bài mới
-                        {loadingArticles && <span className="ml-1 flex items-center gap-1"><RefreshCw size={10} className="animate-spin" />đang tải...</span>}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-1.5 flex flex-col items-center">
-                      <span className="text-[10px] text-white/60 font-medium">Ngày cập nhật</span>
-                      <span className="font-black text-xs font-mono">{getNextArticleDate()}</span>
-                      <span className="text-[10px] text-white/50 font-medium mt-0.5">⏰ {formatCountdown(countdown)}</span>
-                    </div>
-                    <div className={`w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-transform duration-300 ${articlesOpen ? 'rotate-180' : ''}`}>
-                      <ChevronDown size={20} className="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Category pills */}
-                {articlesOpen && (
-                  <div className="mt-4 flex flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-                    {['Sức khỏe học đường','Dinh dưỡng học đường','Phòng bệnh','Sức khỏe tâm thần','Bệnh da liễu','Sơ cứu','Tiêm chủng','Sức khỏe mắt'].map(cat => {
-                      const count = healthArticles.filter((a: any) => a.category === cat).length;
-                      return count > 0 && (
-                        <button key={cat} className="px-3 py-1.5 rounded-full text-xs font-bold bg-white/20 text-white hover:bg-white/30 transition-all">
-                          🏫 {cat} ({count})
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Articles list — scroll-to-load-more */}
-              {articlesOpen && (
-                <div className="space-y-3">
-                  {loadingArticles ? (
-                    <div className="flex justify-center py-10">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                        <p className="text-slate-400 text-sm font-medium animate-pulse">Đang tải bài báo y tế...</p>
+                      <div>
+                        <h2 className="text-lg font-black flex items-center gap-2 tracking-tight">
+                          📖 Tin y tế học đường
+                          <span className="bg-white/20 text-[10px] px-2 py-0.5 rounded-full font-medium animate-pulse">AUTO</span>
+                        </h2>
+                        <p className="text-white/80 text-xs flex items-center gap-1.5 flex-wrap">
+                          <Clock3 size={11} />{healthArticles.length} bài báo y tế · Mỗi ngày 1 bài mới
+                          {loadingArticles && <span className="ml-1 flex items-center gap-1"><RefreshCw size={10} className="animate-spin" /></span>}
+                        </p>
                       </div>
                     </div>
-                  ) : healthArticles.length === 0 && olderArticles.length === 0 ? (
-                    <div className="text-center py-10 bg-white rounded-2xl shadow-lg border border-slate-100">
-                      <div className="text-5xl mb-3">📰</div>
-                      <p className="font-bold text-slate-400">Chưa có bài báo nào</p>
-                      <p className="text-xs text-slate-400 mt-1">Hệ thống sẽ tự động cập nhật sớm</p>
+                    <div className="flex flex-col items-end gap-1.5">
+                      <div className="bg-white/20 rounded-xl px-2.5 py-1 text-center">
+                        <p className="text-[9px] text-white/60 font-medium">Ngày cập nhật</p>
+                        <p className="font-black text-[10px] font-mono">{getNextArticleDate()}</p>
+                        <p className="text-[9px] text-white/50">⏰ {formatCountdown(countdown)}</p>
+                      </div>
+                      <div className={`w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center transition-transform duration-300 ${articlesOpen ? 'rotate-180' : ''}`}>
+                        <ChevronDown size={16} />
+                      </div>
                     </div>
-                  ) : (
-                    <>
-                      {/* Newest articles (scroll-to-load-more) */}
-                      {healthArticles.slice(0, visibleCount).map((article: any, idx: number) => (
-                        <div
-                          key={article.id || idx}
-                          onClick={() => openArticleModal(article)}
-                          className={`pill-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col sm:flex-row transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${darkMode ? 'pill-card-dark' : ''}`}
-                          style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
-                        >
-                          {article.image_url && (
-                            <div className="w-full sm:w-40 h-40 sm:min-h-[100px] shrink-0 overflow-hidden bg-slate-100">
-                              <img
-                                src={article.image_url}
-                                alt={article.title}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
-                              />
-                            </div>
-                          )}
-                          <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
-                            {article.category && (
-                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full w-fit mb-1.5 ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-50 text-blue-600'}`}>
-                                🏫 {article.category}
-                              </span>
-                            )}
-                            <h3 className={`font-black group-hover:text-blue-500 transition-colors line-clamp-2 leading-snug text-sm sm:text-base ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>
-                              {article.title}
-                            </h3>
-                            {article.summary && (
-                              <p className={`text-xs mt-1 line-clamp-2 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{article.summary}</p>
-                            )}
-                            <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
-                              <div className="flex items-center gap-2">
-                                <span className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>📰 {article.source_name}</span>
-                                {article.read_time && (
-                                  <span className="text-[10px] text-slate-400 flex items-center gap-0.5">⏱ {article.read_time} phút đọc</span>
-                                )}
-                              </div>
-                              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1 ${darkMode ? 'bg-emerald-900/40 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>
-                                Xem chi tiết <ChevronRight size={8} />
-                              </span>
-                            </div>
-                            {article.tags && article.tags.length > 0 && (
-                              <div className="flex gap-1 mt-2 flex-wrap">
-                                {article.tags.slice(0, 3).map((tag: string) => (
-                                  <span key={tag} className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${darkMode ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>#{tag}</span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                  </div>
 
-                      {/* Load more button (newer articles beyond first 3) */}
-                      {healthArticles.length > visibleCount && (
-                        <button
-                          onClick={() => setVisibleCount(prev => Math.min(prev + 3, healthArticles.length))}
-                          className={`pill-card rounded-2xl w-full py-3 text-sm font-bold text-blue-500 hover:text-blue-600 transition-all flex items-center justify-center gap-2 hover:shadow-xl border ${darkMode ? 'border-slate-700' : 'border-blue-100'} active:scale-95`}
-                        >
-                          <ChevronDown size={16} />
-                          Xem thêm {Math.min(3, healthArticles.length - visibleCount)} bài báo mới
-                          <span className="text-slate-400 font-normal text-xs">({visibleCount}/{healthArticles.length})</span>
-                        </button>
-                      )}
-
-                      {/* Scroll hint */}
-                      {healthArticles.length > 0 && (
-                        <div className="flex items-center justify-center gap-2 py-1">
-                          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
-                          <span className="text-[10px] text-slate-400 flex items-center gap-1">
-                            <ChevronDown size={10} /> Lướt xuống để xem bài cũ hơn
-                          </span>
-                          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
-                        </div>
-                      )}
-
-                      {/* Older articles dropdown */}
-                      {olderArticles.length > 0 && (
-                        <details className={`pill-card rounded-2xl overflow-hidden group ${darkMode ? 'pill-card-dark' : ''}`}>
-                          <summary className="flex items-center justify-between p-4 cursor-pointer list-none hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-                            <div className="flex items-center gap-2">
-                              <span className={`text-xs font-bold px-2 py-1 rounded-full ${darkMode ? 'bg-slate-600 text-slate-300' : 'bg-slate-100 text-slate-500'}`}>
-                                📚 Bài báo trước đó
-                              </span>
-                              <span className={`text-[10px] ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-                                {olderArticles.length} bài
-                              </span>
-                            </div>
-                            <ChevronDown size={16} className="text-slate-400 group-open:rotate-180 transition-transform" />
-                          </summary>
-                          <div className="border-t border-slate-100 dark:border-slate-700 divide-y divide-slate-50 dark:divide-slate-700">
-                            {olderArticles.map((article: any, idx: number) => (
-                              <div
-                                key={article.id || idx}
-                                onClick={() => openArticleModal(article)}
-                                className="p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
-                              >
-                                <div className="flex items-start gap-3">
-                                  {article.image_url && (
-                                    <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-slate-100">
-                                      <img src={article.image_url} alt="" className="w-full h-full object-cover" onError={(e: any) => e.target.style.display = 'none'} />
-                                    </div>
-                                  )}
-                                  <div className="flex-1 min-w-0">
-                                    <p className={`text-xs font-bold line-clamp-2 leading-snug ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{article.title}</p>
-                                    <p className={`text-[10px] mt-1 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>📰 {article.source_name} · {article.published_date}</p>
-                                  </div>
-                                  <ChevronRight size={12} className="text-slate-300 shrink-0 mt-1" />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </details>
-                      )}
-
-                      {/* Loading older indicator */}
-                      {loadingOlder && (
-                        <div className="flex items-center justify-center gap-2 py-2 text-xs text-slate-400">
-                          <RefreshCw size={12} className="animate-spin" />
-                          Đang tải thêm...
-                        </div>
-                      )}
-                    </>
+                  {articlesOpen && (
+                    <div className="mt-3 flex flex-wrap gap-1.5" onClick={(e) => e.stopPropagation()}>
+                      {['Sức khỏe học đường','Dinh dưỡng','Phòng bệnh','Tâm thần','Da liễu','Sơ cứu','Tiêm chủng','Mắt'].map(cat => {
+                        const count = healthArticles.filter((a: any) => a.category === cat).length;
+                        return count > 0 && (
+                          <button key={cat} className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/20 text-white hover:bg-white/30 transition-all">
+                            {cat} ({count})
+                          </button>
+                        );
+                      })}
+                    </div>
                   )}
                 </div>
-              )}
-            </div>
 
-            {/* Divider with animation */}            {/* Divider with animation */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
-              <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
-                <BookOpen size={14} />
-                <span>Cẩm nang thư viện học đường</span>
-                <BookOpen size={14} />
-              </div>
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
-            </div>
+                {/* Articles list */}
+                {articlesOpen && (
+                  <div className="space-y-2.5">
+                    {loadingArticles ? (
+                      <div className={`flex flex-col items-center justify-center py-12 rounded-2xl ${darkMode ? 'bg-slate-800' : 'bg-white shadow'}`}>
+                        <div className="w-10 h-10 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mb-3" />
+                        <p className={`text-sm font-medium animate-pulse ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Đang tải bài báo y tế...</p>
+                      </div>
+                    ) : healthArticles.length === 0 && olderArticles.length === 0 ? (
+                      <div className={`text-center py-12 rounded-2xl ${darkMode ? 'bg-slate-800' : 'bg-white shadow border border-slate-100'}`}>
+                        <div className="text-5xl mb-3">📰</div>
+                        <p className="font-bold text-slate-400 text-sm">Chưa có bài báo nào</p>
+                        <p className="text-xs text-slate-400 mt-1">Hệ thống sẽ tự động cập nhật sớm</p>
+                      </div>
+                    ) : (
+                      <>
+                        {healthArticles.slice(0, visibleCount).map((article: any, idx: number) => (
+                          <div
+                            key={article.id || idx}
+                            onClick={() => openArticleModal(article)}
+                            className={`rounded-xl overflow-hidden cursor-pointer group flex gap-0 transition-all duration-300 hover:shadow-lg ${darkMode ? 'bg-slate-800' : 'bg-white shadow border border-slate-100 hover:-translate-y-0.5'}`}
+                            style={{ animationDelay: `${idx * 60}ms` }}
+                          >
+                            {article.image_url && (
+                              <div className="w-28 h-28 shrink-0 overflow-hidden bg-slate-100">
+                                <img src={article.image_url} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                  onError={(e: any) => { e.target.style.display = 'none'; }} />
+                              </div>
+                            )}
+                            <div className="flex-1 p-3 flex flex-col justify-between min-w-0">
+                              {article.category && (
+                                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full w-fit mb-1 ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-50 text-blue-600'}`}>{article.category}</span>
+                              )}
+                              <h3 className={`font-black text-xs line-clamp-2 group-hover:text-blue-500 transition-colors leading-snug ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{article.title}</h3>
+                              <div className="flex items-center justify-between mt-1 flex-wrap gap-1">
+                                <span className={`text-[10px] ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>📰 {article.source_name}</span>
+                                <span className={`text-[10px] px-1.5 py-0.5 rounded-full flex items-center gap-0.5 ${darkMode ? 'bg-emerald-900/40 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>
+                                  Xem <ChevronRight size={8} />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
 
-            {/* Hero + Category Dropdown - Pill Card style */}
-            <div className="relative">
-              <div className={`rounded-3xl p-6 text-white relative overflow-hidden transition-all duration-500 ${darkMode ? 'shadow-2xl border border-slate-700' : ''}`}
-                style={{
-                  background: darkMode ? 'linear-gradient(135deg, #1e293b 0%, #334155 100%)' : 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%)',
-                  boxShadow: darkMode ? '0 0 40px rgba(0,0,0,0.5)' : '0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(168, 85, 247, 0.2)'
-                }}>
-                {/* Animated particles */}
-                <div className="absolute inset-0 overflow-hidden">
-                  {[...Array(8)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute w-2 h-2 bg-white/20 rounded-full animate-float"
-                      style={{
-                        left: `${10 + i * 12}%`,
-                        top: `${15 + (i % 4) * 22}%`,
-                        animationDuration: `${3 + i * 0.6}s`,
-                        animationDelay: `${i * 0.4}s`,
-                      }}
-                    />
-                  ))}
-                </div>
-                {/* Glow orbs */}
-                <div className="absolute -top-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10"><School size={160} /></div>
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-xl border border-white/20 animate-heartbeat">
-                      📚
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-black flex items-center gap-2 tracking-tight">
-                        Cẩm nang thư viện học đường
-                        <span className="pill-tag bg-white/20 text-white text-xs animate-blink">✨ Mới</span>
-                      </h2>
-                    </div>
-                  </div>
-                  <p className="text-white/80 max-w-xl text-sm leading-relaxed">Thông tin y khoa cập nhật giúp học sinh và phụ huynh nhận biết, phòng ngừa và xử lý các vấn đề sức khỏe thường gặp trong môi trường học đường.</p>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    <span className="pill-tag bg-white/20 text-white border border-white/20">
-                      🏥 {totalDiseases} bài viết
-                    </span>
-                    <span className="pill-tag bg-white/20 text-white border border-white/20">
-                      📂 4 danh mục
-                    </span>
-                    <span className="pill-tag bg-rose-500/30 text-white border border-rose-400/30">
-                      🔬 30+ bệnh lý
-                    </span>
-                  </div>
-                </div>
-              </div>
+                        {healthArticles.length > visibleCount && (
+                          <button onClick={() => setVisibleCount(prev => Math.min(prev + 3, healthArticles.length))}
+                            className={`w-full py-2.5 rounded-xl text-xs font-bold text-blue-500 hover:text-blue-600 transition-all flex items-center justify-center gap-2 border ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-blue-100 bg-white'}`}>
+                            <ChevronDown size={14} />Xem thêm {Math.min(3, healthArticles.length - visibleCount)} bài
+                            <span className="text-slate-400 font-normal">({visibleCount}/{healthArticles.length})</span>
+                          </button>
+                        )}
 
-              {/* Category Dropdown Button */}
-              <div className="mt-4" ref={dropdownRef}>
-                <button
-                  onClick={() => setCatOpen(!catOpen)}
-                  className={`w-full border-2 rounded-2xl p-4 flex items-center justify-between hover:shadow-xl transition-all duration-300 group active:scale-[0.99] ${darkMode ? 'bg-slate-800 border-slate-600 hover:border-rose-400' : 'bg-white border-slate-200 hover:border-rose-400'}`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      📋
-                    </div>
-                    <div className="text-left">
-                      <p className={`font-black text-lg ${darkMode ? 'text-white' : 'text-slate-800'}`}>Cẩm nang thư viện học đường</p>
-                      <p className="text-slate-400 text-sm">Chọn danh mục bệnh để xem chi tiết</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-400 font-medium hidden sm:block">4 danh mục</span>
-                    <div className={`w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center transition-all duration-300 ${catOpen ? 'rotate-180 bg-rose-100' : ''}`}>
-                      <ChevronDown size={22} className={`text-rose-500 transition-colors ${catOpen ? '' : ''}`} />
-                    </div>
-                  </div>
-                </button>
+                        {olderArticles.length > 0 && (
+                          <details className={`rounded-xl overflow-hidden ${darkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white shadow border border-slate-100'}`}>
+                            <summary className="flex items-center justify-between p-3 cursor-pointer list-none hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-xs font-bold">
+                              <span className={`${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>📚 Bài báo trước đó ({olderArticles.length} bài)</span>
+                              <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform" />
+                            </summary>
+                            <div className={`border-t ${darkMode ? 'border-slate-700' : 'border-slate-100'}`}>
+                              {olderArticles.map((article: any, idx: number) => (
+                                <div key={article.id || idx} onClick={() => openArticleModal(article)}
+                                  className={`p-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors border-b last:border-0 ${darkMode ? 'border-slate-700' : 'border-slate-50'}`}>
+                                  <div className="flex items-start gap-2">
+                                    {article.image_url && (
+                                      <div className="w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                                        <img src={article.image_url} alt="" className="w-full h-full object-cover" onError={(e: any) => e.target.style.display = 'none'} />
+                                      </div>
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                      <p className={`text-[11px] font-bold line-clamp-2 ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>{article.title}</p>
+                                      <p className={`text-[9px] mt-0.5 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>📰 {article.source_name}</p>
+                                    </div>
+                                    <ChevronRight size={10} className="text-slate-300 shrink-0 mt-0.5" />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </details>
+                        )}
 
-                {/* Dropdown Menu */}
-                {catOpen && (
-                  <div className="mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 relative animate-in slide-in-from-top-2 duration-200">
-                    {HEALTH_LIBRARY.map((cat: any, idx: number) => (
-                      <button
-                        key={cat.category}
-                        onClick={() => {
-                          setSelectedCat(cat.category);
-                          setCatOpen(false);
-                          setSelectedDisease(null);
-                        }}
-                        className={`w-full flex items-center gap-4 p-4 hover:bg-slate-50 transition-all duration-200 border-b border-slate-50 last:border-0 group animate-in slide-in-from-left duration-200`}
-                        style={{ animationDelay: `${idx * 50}ms`, animationFillMode: 'both' }}
-                      >
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${getCategoryIconBg(cat)} group-hover:scale-110 transition-transform duration-300`}>
-                          {cat.icon}
-                        </div>
-                        <div className="flex-1 text-left">
-                          <p className={`font-bold group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
-                          <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
-                        </div>
-                        <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${getCategoryGradient(cat)} flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110`}>
-                          →
-                        </div>
-                      </button>
-                    ))}
+                        {loadingOlder && (
+                          <div className="flex items-center justify-center gap-2 py-2 text-xs text-slate-400">
+                            <RefreshCw size={12} className="animate-spin" />Đang tải thêm...
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
                 )}
               </div>
             </div>
-
-            {/* Category Cards Grid — Equal height, aligned labels */}
-            {!search && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-                {HEALTH_LIBRARY.map((cat: any, idx: number) => (
-                  <button
-                    key={cat.category}
-                    onClick={() => { setSelectedCat(cat.category); setSelectedDisease(null); }}
-                    className={`rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border text-left group animate-in slide-in-from-bottom flex flex-col h-full animate-in slide-in-from-bottom ${darkMode ? 'bg-slate-800 border-slate-700 hover:border-slate-600' : 'bg-white border-slate-100 hover:-translate-y-1'}`}
-                    style={{ animationDelay: `${idx * 100}ms`, animationFillMode: 'both' }}
-                  >
-                    {/* Color bar */}
-                    <div className={`h-1.5 bg-gradient-to-r ${getCategoryGradient(cat)} relative overflow-hidden shrink-0 ${darkMode ? 'opacity-80' : ''}`}>
-                      {!darkMode && <div className="absolute inset-0 bg-white/20 animate-shimmer" />}
-                    </div>
-
-                    {/* Header */}
-                    <div className="flex items-center gap-3 px-5 pt-5 pb-4 shrink-0">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 ${getCategoryIconBg(cat)} group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
-                        {cat.icon}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className={`font-black text-sm leading-tight truncate group-hover:text-rose-400 transition-colors ${darkMode ? 'text-white' : 'text-slate-800'}`}>{cat.category}</p>
-                        <p className={`text-xs mt-0.5 ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>{cat.diseases.length} bài viết</p>
-                      </div>
-                    </div>
-
-                    {/* Disease list — max 5 items, equal bullet column */}
-                    <div className="px-5 pb-1 flex-1">
-                      <div className="space-y-1.5">
-                        {cat.diseases.slice(0, 5).map((d: any) => (
-                          <p key={d.id} className={`text-xs leading-relaxed truncate flex items-start gap-1.5 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
-                            <span className={`shrink-0 mt-0.5 ${darkMode ? 'text-rose-400' : 'text-rose-300'}`}>•</span>
-                            <span className="truncate">{d.name}</span>
-                          </p>
-                        ))}
-                      </div>
-                      {cat.diseases.length > 5 && (
-                        <p className={`text-xs mt-2 font-bold ${darkMode ? 'text-slate-500' : 'text-slate-300'}`}>+{cat.diseases.length - 5} bài khác</p>
-                      )}
-                    </div>
-
-                    {/* Footer */}
-                    <div className="px-5 pb-4 pt-2 mt-auto shrink-0">
-                      <div className={`flex items-center gap-1 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity ${darkMode ? 'text-rose-400' : 'text-rose-500'}`}>
-                        Xem tất cả <ChevronRight size={12} />
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* Search Results - Pill Card grid */}
-            {search && filteredLibrary.length > 0 && (
-              <div className="space-y-4">
-                <div className={`pill-card rounded-2xl p-4 border flex items-center gap-3 ${darkMode ? 'border-slate-700' : 'border-rose-100'}`}>
-                  <div className="w-10 h-10 bg-rose-100 dark:bg-rose-900/50 rounded-xl flex items-center justify-center text-rose-500 shrink-0">
-                    <Search size={18} />
-                  </div>
-                  <p className={`text-sm font-bold ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>
-                    Tìm thấy <span className="text-rose-500">{filteredLibrary.reduce((s: number, c: any) => s + c.diseases.length, 0)}</span> kết quả cho "
-                    <span className="text-rose-500">"{search}"</span>"
-                  </p>
-                </div>
-                {filteredLibrary.map((cat: any) => (
-                  <div key={cat.category} className="space-y-3">
-                    <h3 className={`text-base font-black flex items-center gap-2 ${darkMode ? 'text-slate-200' : 'text-slate-700'}`}>
-                      <span className="text-xl">{cat.icon}</span> {cat.category}
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                      {cat.diseases.map((d: any) => (
-                        <div key={d.id} onClick={() => { setSelectedCat(cat.category); setSelectedDisease(d); }}
-                          className={`pill-card rounded-2xl overflow-hidden cursor-pointer group transition-all duration-400 ${darkMode ? 'pill-card-dark' : ''}`}>
-                          <div className="pill-image-wrap aspect-video">
-                            <img src={d.images[0]?.url} alt={d.name} className="w-full h-full object-cover" onError={(e: any) => { e.target.style.display = 'none'; e.target.parentElement.style.background = darkMode ? '#1e293b' : '#f1f5f9'; }} />
-                          </div>
-                          <div className="p-3 space-y-1">
-                            <h4 className={`font-black text-sm group-hover:text-rose-500 transition-colors line-clamp-1 ${darkMode ? 'text-slate-100' : 'text-slate-800'}`}>{d.name}</h4>
-                            <p className={`text-xs line-clamp-2 ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>{d.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {search && filteredLibrary.length === 0 && (
-              <div className="text-center py-12 bg-white rounded-2xl shadow-lg border border-slate-100">
-                <div className="text-5xl mb-3">🔍</div>
-                <p className="font-bold text-slate-400">Không tìm thấy kết quả cho "{search}"</p>
-                <p className="text-sm text-slate-400 mt-1">Thử tìm với từ khóa khác</p>
-              </div>
-            )}
           </div>
         )}
 
@@ -3177,27 +2936,86 @@ const App: React.FC = () => {
         {/* ══ NEWSFEED ══ */}
         {tab === 'news' && (
           <div className="space-y-4 animate-in fade-in duration-300">
-            <div className="bg-gradient-to-r from-rose-500 to-orange-500 rounded-2xl p-4 text-white flex items-center justify-between">
-              <div>
-                <h2 className="font-bold text-lg">📣 Tin tức sức khỏe học đường</h2>
-                <p className="text-white/80 text-sm">Tin tức realtime từ cán bộ y tế & giáo viên</p>
+
+            {/* ── Banner Hero ── */}
+            <div className="relative bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 rounded-2xl overflow-hidden p-6 flex items-center justify-between shadow-xl">
+
+              {/* Left content */}
+              <div className="flex-1 min-w-0">
+                <div className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+                  <Video size={10} /> KHO VIDEO GIÁO DỤC
+                </div>
+                <h2 className="font-black text-white text-2xl leading-tight mb-2">Hoạt động sức khỏe</h2>
+                <p className="text-white/80 text-xs leading-relaxed max-w-[260px]">
+                  Video phòng chống bệnh, bài giảng sức khoẻ từ các bác sĩ y tế và giáo viên. Cảm ơn ý kiến đóng góp để chúng tôi cải thiện!
+                </p>
               </div>
-              <button onClick={() => setShowForm(true)} className="bg-white text-rose-600 px-4 py-2 rounded-xl font-bold text-sm hover:shadow-lg transition-all flex items-center gap-2">
-                <Plus size={16} />Đăng bài
-              </button>
+
+              {/* Right icon */}
+              <div className="relative w-28 h-28 shrink-0 flex items-center justify-center">
+                <div className="absolute inset-0 bg-white/10 rounded-full animate-pulse" />
+                <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center rotate-6 shadow-lg">
+                  <svg viewBox="0 0 48 48" width="48" height="48" fill="none">
+                    <rect x="6" y="10" width="36" height="28" rx="4" stroke="white" strokeWidth="2.5" fill="white/20"/>
+                    <polygon points="20,18 20,30 30,24" fill="white"/>
+                    <path d="M6 14 L6 10 L12 10 L12 14" stroke="white" strokeWidth="2.5" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                </div>
+              </div>
             </div>
+
+            {/* ── Filter Pills ── */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+              {[
+                { key: null, label: 'TẤT CẢ', icon: '🔖' },
+                { key: 'video', label: 'VIDEO', icon: '🎬' },
+                { key: 'article', label: 'BÀI VIẾT', icon: '📝' },
+                { key: 'infographic', label: 'INFOGRAPHIC', icon: '🖼️' },
+              ].map(f => (
+                <button
+                  key={f.key ?? 'all'}
+                  onClick={() => setNewsFilter(f.key)}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all shrink-0 ${
+                    newsFilter === f.key
+                      ? 'bg-gradient-to-r from-rose-500 to-purple-500 text-white shadow-lg shadow-rose-200'
+                      : darkMode
+                      ? 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                      : 'bg-white text-slate-500 shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  <span>{f.icon}</span>
+                  <span>{f.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* ── Post Grid ── */}
             {loadingPosts ? (
-              <div className="flex justify-center py-12"><div className="animate-spin w-10 h-10 border-4 border-rose-500 border-t-transparent rounded-full" /></div>
-            ) : posts.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-2xl shadow">
-                <p className="text-4xl mb-2">📭</p>
-                <p className="font-bold text-slate-400">Chưa có bài đăng nào</p>
+              <div className="flex justify-center py-16">
+                <div className="animate-spin w-10 h-10 border-4 border-rose-500 border-t-transparent rounded-full" />
+              </div>
+            ) : filteredNews.length === 0 ? (
+              <div className={`text-center py-16 rounded-2xl ${darkMode ? 'bg-slate-800' : 'bg-white shadow-sm'}`}>
+                <p className="text-5xl mb-3">📭</p>
+                <p className={`font-bold text-base ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>Chưa có bài đăng nào</p>
+                <p className={`text-sm mt-1 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>Hãy là người đầu tiên đăng bài!</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {posts.map(p => <PostCard key={p.id} post={p} onOpen={() => setDetailPost(p)} darkMode={darkMode} />)}
+                {filteredNews.map(p => (
+                  <PostCard key={p.id} post={p} onOpen={() => setDetailPost(p)} darkMode={darkMode} />
+                ))}
               </div>
             )}
+
+            {/* ── FAB: Đăng bài mới ── */}
+            <button
+              onClick={() => setShowForm(true)}
+              className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-500 text-white px-5 py-3.5 rounded-2xl shadow-2xl shadow-rose-300/60 font-black text-sm hover:shadow-rose-400/80 hover:scale-105 active:scale-95 transition-all"
+            >
+              <Plus size={20} />
+              Đăng bài mới
+            </button>
           </div>
         )}
 
