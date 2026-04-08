@@ -2623,11 +2623,15 @@ const App: React.FC = () => {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Tìm kiếm bệnh, triệu chứng..."
               className={`w-full pl-10 pr-4 py-2.5 rounded-xl border focus:outline-none focus:border-rose-400 transition-colors ${darkMode ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-800'}`} />
           </div>
-          {/* NAV TABS */}
+          {/* NAV TABS — Logical order: Cẩm nang → Cơ sở y tế → AI Sàng lọc → Hoạt động */}
           <div className="flex gap-1 overflow-x-auto pb-1">
             <button onClick={() => { setTab('library'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'library' ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
               <BookOpen size={18} />Cẩm nang thư viện{selectedCat && ` › ${selectedCat}`}
+            </button>
+            <button onClick={() => { setTab('findcare'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'findcare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
+              <MapPin size={18} />Cơ sở y tế
             </button>
             <button onClick={() => { setTab('aiscan'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'aiscan' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
@@ -2636,10 +2640,6 @@ const App: React.FC = () => {
             <button onClick={() => { setTab('news'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'news' ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
               <Newspaper size={18} />HOẠT ĐỘNG
-            </button>
-            <button onClick={() => { setTab('findcare'); setCatOpen(false); setSelectedCat(null); setSelectedDisease(null); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${tab === 'findcare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-slate-500 hover:bg-slate-100'}`}>
-              <MapPin size={18} />Cơ sở y tế
             </button>
           </div>
         </div>
