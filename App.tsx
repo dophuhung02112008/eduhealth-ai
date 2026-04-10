@@ -2675,6 +2675,7 @@ const App: React.FC = () => {
                       <div>
                         <h2 className="text-base font-black tracking-tight">Cẩm nang thư viện học đường</h2>
                         <p className="text-white/70 text-[10px]">{totalDiseases} bài viết · 6 danh mục · 30+ bệnh lý</p>
+                        <p className="text-white/50 text-[9px] mt-0.5 italic">Nội dung mang tính giáo dục sức khỏe, không thay thế tư vấn y tế chuyên môn.</p>
                       </div>
                     </div>
                     <p className="text-white/70 text-xs leading-relaxed mt-2">Cẩm nang sức khỏe bỏ túi cho học sinh và phụ huynh. Chia sẻ những thông tin hữu ích về các dấu hiệu sức khỏe thường gặp và cách bảo vệ bản thân trong môi trường học đường.</p>
@@ -2690,7 +2691,7 @@ const App: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-xl shadow group-hover:scale-110 transition-transform duration-300">📋</div>
                       <div className="text-left">
-                        <p className={`font-black text-sm ${darkMode ? 'text-white' : 'text-slate-800'}`}>Danh mục bệnh</p>
+                        <p className={`font-black text-sm ${darkMode ? 'text-white' : 'text-slate-800'}`}>Danh mục sức khỏe học đường</p>
                         <p className="text-slate-400 text-xs">Chọn để xem chi tiết</p>
                       </div>
                     </div>
