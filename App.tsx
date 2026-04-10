@@ -2652,11 +2652,11 @@ const App: React.FC = () => {
         {tab === 'library' && !selectedCat && !selectedDisease && (
           <div className="space-y-6 animate-in fade-in duration-300">
 
-            {/* ── 2-COLUMN LAYOUT ── */}
+            {/* ── 2-COLUMN LAYOUT — Cẩm nang 2/3, Tin tức 1/3 ── */}
             <div className="flex flex-col lg:flex-row gap-5">
 
-              {/* ════ LEFT: CẨM NANG THƯ VIỆN ════ */}
-              <div className="lg:w-1/2 space-y-4">
+              {/* ════ LEFT: CẨM NANG THƯ VIỆN (2/3 width) ════ */}
+              <div className="lg:w-2/3 space-y-4">
 
                 {/* Cẩm nang header */}
                 <div className={`rounded-2xl p-4 text-white relative overflow-hidden ${darkMode ? '' : ''}`}
@@ -2802,8 +2802,8 @@ const App: React.FC = () => {
                 )}
               </div>
 
-              {/* ════ RIGHT: TIN Y TẾ HỌC ĐƯỜNG ════ */}
-              <div className="lg:w-1/2 space-y-3">
+              {/* ════ RIGHT: TIN Y TẾ HỌC ĐƯỜNG (1/3 width) ════ */}
+              <div className="lg:w-1/3 space-y-3">
 
                 {/* Header Banner */}
                 <div
